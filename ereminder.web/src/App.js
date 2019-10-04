@@ -5,6 +5,7 @@ import Input from "./components/Input";
 import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Reminders from "./pages/Reminders";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       </span>
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
+      <Route path="/reminders" component={Reminders} />
     </Router>
   );
 }
