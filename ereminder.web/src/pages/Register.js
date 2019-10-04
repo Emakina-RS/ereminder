@@ -10,7 +10,7 @@ const Register = () => (
     <Input placeholder="Unesite vašu šifru" />
     <Input placeholder="Ponovite vašu šifru" />
     <div className="Register-center">
-      <Link to="/register" className="button">
+      <Link to="/new-reminder" className="button">
         Registruj se
       </Link>
       <span>
