@@ -1,9 +1,20 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.App-content > div {
+  height: 100%;
 }
 
 .App-logo {
   height: 40vmin;
+}
+
+.App-content {
+  flex: 1;
 }
 
 .App-header {

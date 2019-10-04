@@ -18,17 +18,21 @@ import Reminders from "./pages/Reminders";
 function App() {
   return (
     <Router>
-      <Navbar />
-      <Switch>
-        <Route path="/register" component={Register} />
-        <Route path="/login" component={Login} />
-        <Route path="/forgot-password" component={ForgotPassword} />
-        <Route path="/new-reminder" component={NewReminder} />
-        <Route path="/reminders" component={Reminders} />
-        <Route path="/notifications" component={Notifications} />
-        <Route path="/calendar" component={Calendar} />
-        <Redirect to="/register" />
-      </Switch>
+      <div className="App">
+        <Navbar />
+        <div className="App-content">
+          <Switch>
+            <Route path="/register" component={Register} />
+            <Route path="/login" component={Login} />
+            <Route path="/forgot-password" component={ForgotPassword} />
+            <Route path="/new-reminder" component={NewReminder} />
+            <Route path="/reminders" component={Reminders} />
+            <Route path="/notifications" component={Notifications} />
+            <Route path="/calendar" component={Calendar} />
+            <Redirect to="/register" />
+          </Switch>
+        </div>
+      </div>
     </Router>
   );
 }
