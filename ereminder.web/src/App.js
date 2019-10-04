@@ -9,15 +9,8 @@ import Reminders from "./pages/Reminders";
 
 function App() {
   return (
-    <Router>
+    <Router className="" >
       <Navbar />
-      <Input placeholder="Unesite vašu e-mail adresu" />
-      <Input placeholder="Unesite vašu šifru" />
-      <Input placeholder="Ponovite vašu šifru" />
-      <Link to="/register">Registruj se</Link>
-      <span>
-        Već imate nalog? Uloguj se <Link to="/login">ovde</Link>
-      </span>
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       <Route path="/reminders" component={Reminders} />

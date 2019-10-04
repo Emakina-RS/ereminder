@@ -21,17 +21,17 @@
     align-self: center;
 }
 
-ul {
+.links ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-li {
+.links li {
     display: inline;
 }
 
-a {
+.links a {
     color: white;
     text-align: center;
     text-decoration: none;
@@ -40,7 +40,7 @@ a {
     text-transform: uppercase;
 }
 
-li:not(:last-child)::after {
+.links li:not(:last-child)::after {
     content: ' |';
     color: white;
 }

@@ -1,0 +1,7 @@
+.content {
+    display: grid;
+    grid-template-areas: '1';
+}
+.center {
+    margin: 0 auto;
+}

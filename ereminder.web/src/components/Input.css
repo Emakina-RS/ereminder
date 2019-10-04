@@ -1,0 +1,15 @@
+input {
+    background-color: #fff;
+    margin: 0 auto;
+    width: 555px;
+    height: 50px;
+   /* border-radius */
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+input::placeholder{
+    text-align: left;
+    padding: 10px 30px;
+}
