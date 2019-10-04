@@ -4,11 +4,11 @@ import logo from "../assets/icon/logo.svg";
 import "./Navbar.css";
 
 const Navbar = () => (
-  <div className="header">
-    <Link to="/" className="header-logo">
+  <div className="Navbar">
+    <Link to="/" className="Navbar-logo">
       <img src={logo} alt="logo" />
     </Link>
-    <div className="links">
+    <div className="Navbar-links">
       <ul>
         <li>
           <Link to="/reminders" className="a">
