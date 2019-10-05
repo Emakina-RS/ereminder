@@ -1,5 +1,6 @@
 const models = require('../models');
 const passwordEncryptionHelper = require('../helpers/passwordEncryptionHelper');
+
 module.exports.register = async function (body) {
     let result =  await passwordEncryptionHelper.getEncryptedValue(body.password, (hash) => {
          return createUser(hash, body);

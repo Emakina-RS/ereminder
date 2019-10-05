@@ -5,7 +5,7 @@ const dbIntializer = require('./dbInitializer');
 const schedule = require('./core/scheduler.js');
 const bodyParser = require('body-parser');
 const routes = require('./routes/routes');
-const authenticationHelper = require('./helpers/AuthenticationHelper');
+const authenticationHelper = require('./helpers/authenticationHelper');
 
 schedule.frequentReminderJob();
 schedule.dailyReminderJob();

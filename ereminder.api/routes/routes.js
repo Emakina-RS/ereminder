@@ -3,7 +3,7 @@
 const authenticationController = require('../controllers/AuthenticationController');
 const accountController = require('../controllers/AccountController');
 const notificationController = require('../controllers/NotificationController');
-const authenticationHelper = require('../helpers/AuthenticationHelper');
+const authenticationHelper = require('../helpers/authenticationHelper');
 const userValidator = require('../validators/userValidator');
 
 module.exports = function(app) {
