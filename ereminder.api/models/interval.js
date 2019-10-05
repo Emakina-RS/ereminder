@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   var Interval = sequelize.define('Interval', {
      id: {
@@ -6,8 +7,8 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-    DisplayName: DataTypes.STRING,
-    ValueInMinutes: DataTypes.INTEGER
+    displayName: DataTypes.STRING,
+    valueInHours: DataTypes.INTEGER
   });
 
   Interval.associate = function (models) {

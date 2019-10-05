@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-
+    value: DataTypes.STRING
   });
 
   NotificationType.associate = function (models) {
