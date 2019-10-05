@@ -6,8 +6,8 @@
     "5 .";
   gap: 30px;
   width: 60%;
-  margin: auto;
-  overflow: hidden;
+  margin: 0 auto;
+  height: 70%;
 }
 .Notifications > h1 {
   text-transform: uppercase;
@@ -47,6 +47,9 @@
   display: grid;
   grid-template: "1 2";
   margin-left: 100px;
+  place-items: start;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 80% 80%;
 }
 
 .Notificationsection-label {

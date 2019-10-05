@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Radio.css";
 
 const Radio = props => {
-  const [isSelected, setIsSelected] = useState(false);
   return (
-    <div className="Radio-container">
-      <div
-        className="Radio"
-        style={isSelected ? { backgroundColor: "#bc1e2d" } : {}}
-        onClick={() => setIsSelected(!isSelected)}
-      >
-        {" "}
-      </div>
-      <p>{props.text}</p>
+    <div className="Radio">
+      <label className="radio-lable">
+        <input
+          type="radio"
+          className="radio"
+          id={props.text}
+          name={props.name}
+        />
+        <span>{props.text}</span>
+      </label>
     </div>
   );
 };

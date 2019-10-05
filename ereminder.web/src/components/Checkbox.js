@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Checkbox.css";
 
-const Checkbox = () => {
-  const [isChecked, setIsChecked] = useState(false);
+const Checkbox = props => {
   return (
-    <div
-      className="Checkbox"
-      style={isChecked ? { backgroundColor: "#bc1e2d" } : {}}
-      onClick={() => setIsChecked(!isChecked)}
-    />
+    <div className="Checkbox">
+      <label className="checkbox-lable">
+        <input
+          type="checkbox"
+          className="checkbox"
+          id={props.text}
+          name={props.name}
+        />
+        <span className="checkbox-text">{props.text}</span>
+      </label>
+    </div>
   );
 };
 

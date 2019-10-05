@@ -18,12 +18,12 @@ const Notifications = () => (
         icon={recepti}
         title="Recepti"
         options={[
-          "1 mesec",
-          "2 meseca",
-          "3 meseca",
-          "4 meseca",
-          "5 meseci",
-          "6 meseci"
+          "1 mesec  ",
+          "2 meseca ",
+          "3 meseca ",
+          "4 meseca ",
+          "5 meseci ",
+          "6 meseci "
         ]}
       />
       <Notificationsection
@@ -53,16 +53,15 @@ const Notificationsection = ({ icon, title, options }) => (
   <div className="Notificationsection">
     <div className="Notificationsection-heading">
       <div className="Notificationsection-logo-container">
-        <img className="Notificationsection-logo" src={icon} />
+        <img className="Notificationsection-logo" src={icon} alt={icon} />
       </div>
       <div className="Notificationsection-Checkbox">
-        <Checkbox />
+        <Checkbox text={title} name={title} />
       </div>
-      {title}
     </div>
     <div className="Notificationsection-container">
       {options.map((option, index) => (
-        <Radio text={option} />
+        <Radio key={index} text={option} name={title} />
       ))}
     </div>
   </div>

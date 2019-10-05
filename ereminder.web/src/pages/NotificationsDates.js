@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import MaskedInput from "react-text-mask";
 import Input from "../components/Input";
 import "./NotificationsDates.css";
 
@@ -30,17 +31,30 @@ const NotificationsDates = () => (
 
 const DateSelector = ({ selectorType, label }) => {
   const customClass =
-    selectorType.length != 1
+    selectorType.length !== 1
       ? " DateSelector-picker-date-time"
       : " DateSelector-picker";
+
+  if (selectorType.time === true) {
+  }
 
   return (
     <div className="DateSelector">
       <h3 className="DateSelector-label">{label}</h3>
       <div className={customClass}>
-        {selectorType.map((option, index) => (
-          <Input type={option} />
-        ))}
+        {selectorType.map((option, index) => {
+          if (option == "date") {
+            return <Input type={option} />;
+          } else {
+            return (
+              <MaskedInput
+                mask={[/[1-23]/, /\d/, "-", /[0-59]/, /\d/]}
+                className="time"
+                keepCharPositions={true}
+              />
+            );
+          }
+        })}
       </div>
     </div>
   );
