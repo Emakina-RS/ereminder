@@ -26,15 +26,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
-* {
-  font-size: 18pt;
-}
-
-.Register-button {
-  width: 555px;
-}
-
-.span-link {
-  color: white;
-}
