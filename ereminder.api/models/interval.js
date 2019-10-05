@@ -17,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'intervalId',
         otherKey: 'notificationTypeId'
     });
-    models.User.hasMany(models.Notification);
   };
 
   return Interval;

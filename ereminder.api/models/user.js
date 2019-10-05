@@ -24,13 +24,13 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.associate = function (models) {
-    models.InitialConfiguration.belongsTo(models.InitialConfiguration, {
+    models.User.hasOne(models.InitialConfiguration, {
       foreignKey: {
         allowNull: false
       }
     });
 
-    models.InitialConfiguration.hasMany(models.Notification, {
+    models.User.hasMany(models.Notification, {
       as: 'notifications'
     });
 };
