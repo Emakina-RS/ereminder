@@ -4,8 +4,6 @@ const util = require('util');
 const userService = require('../services/userService');
 const authenticationHelper = require('../helpers/authenticationHelper');
 
-
-
 exports.Register = async function(req, res) {
     try{
         await userService.register(req.body);
@@ -34,7 +32,7 @@ exports.ForgotPassword = async function(req, res) {
 
     res.status(200).json({
         message: util.format("If there's an account for %s, an email is sent with a link to reset password.", req.body.email)
-    });;
+    });
 }
 
 exports.ResetPassword = async function() {
