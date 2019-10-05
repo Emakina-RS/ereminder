@@ -1,33 +1,52 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import "./Register.css";
 
+const register = (email, password, confirmPassword) => dispatch => {
+  dispatch({
+    type: "REGISTER"
+  });
+  fetch("/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email,
+      password,
+      confirmpassword: confirmPassword
+    })
+  })
+    .then(() =>
+      dispatch({
+        type: "REGISTER_SUCCESSFUL"
+      })
+    )
+    .catch(() =>
+      dispatch({
+        type: "REGISTER_FAILED"
+      })
+    );
+};
+
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmpassword] = useState("");
+  const isFetching = useSelector(state => state.isFetching);
+  const dispatch = useDispatch();
 
   return (
     <div className="Register">
       <div className="Register-content">
         <h1>Registruj se</h1>
         <form
-          onSubmit={async event => {
+          onSubmit={event => {
             event.preventDefault();
-            const response = await fetch("/register", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({
-                email,
-                password,
-                confirmpassword: confirmPassword
-              })
-            });
-            console.log(response);
+            dispatch(register(email, password, confirmPassword));
           }}
         >
           <Input
@@ -51,7 +70,9 @@ const Register = () => {
             type="password"
             value={confirmPassword}
           />
-          <Button>Registruj se</Button>
+          <Button>
+            {isFetching ? "Registracija u toku..." : "Registruj se"}
+          </Button>
           <div className="Register-allready">
             <h2>
               Već imate nalog? Uloguj se{" "}
