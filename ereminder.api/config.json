@@ -1,0 +1,29 @@
+{
+    "development": {
+        "mailSettings": {
+            "smtp": "smtp.gmail.com",
+            "port": 587,
+            "username": "dev@vegaitsourcing.rs",
+            "password": "development",
+            "enableSsl": true,
+            "fromEmail": "hackhaton@emakina.rs"
+        },
+        "databaseConnection": {
+            "dialect": "mysql",
+            "username": "ereminder",
+            "password": "d0@z%8$HFo0v",
+            "host": "127.0.0.1",
+            "database": "ereminder"
+        }
+    },
+    "production": {
+        "mailSettings": {
+            "smtp": "",
+            "port": 587,
+            "username": "",
+            "password": "",
+            "enableSsl": true,
+            "fromEmail": ""
+        }
+    }
+}

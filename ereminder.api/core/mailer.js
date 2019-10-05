@@ -1,36 +1,27 @@
 'use strict';
+
 const nodemailer = require('nodemailer');
+const config = require('../config/config');
+const mailSettings = global.globalConfig.mailSettings;
 
-exports.sendPendingNotifications = function () {
-    async function main() {
-        // Generate test SMTP service account from ethereal.email
-        // Only needed if you don't have a real mail account for testing
-        let testAccount = await nodemailer.createTestAccount();
+exports.sendPendingNotifications = async function(subject, body, to) {
+    let transporter = nodemailer.createTransport({
+        pool: true,
+        host: mailSettings.smtp,
+        port: mailSettings.port,
+        secure: mailSettings.enableSsl,
+        auth: {
+            user: mailSettings.username,
+            pass: mailSettings.password
+        }
+    });
 
-        let transporter = nodemailer.createTransport({
-            pool: true,
-            host: 'smtp.ethereal.email',
-            port: 587,
-            secure: false, // true for 465, false for other ports
-            auth: {
-                user: testAccount.user, // generated ethereal user
-                pass: testAccount.pass // generated ethereal password
-            }
-        });
+    let info = await transporter.sendMail({
+        from: mailSettings.fromEmail,
+        to: to,
+        subject: subject,
+        html: body
+    });
 
-        let info = await transporter.sendMail({
-            from: '"Crvena Linija" <ereminder@example.com>',
-            to: 'hari@example.com, djole@example.com', // get user emails from notifications array
-            subject: 'Testing eReminder',
-            text: 'Please schedule an appointment...',
-            html: '<b>Please schedule an appointment...</b>'
-        });
-
-        transporter.close();
-
-        console.log('Message sent: %s', info.messageId);
-        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    }
-
-    main().catch(console.error);
-};
+    console.log('Message sent: %s', info.messageId);
+}
