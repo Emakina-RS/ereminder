@@ -40,7 +40,7 @@ const Login = () => {
           type="password"
           value={password}
         />
-        <Button>{isSubmitting ? "Logujem se..." : "Uloguj se"}</Button>
+        <Button disabled={isSubmitting}>Uloguj se</Button>
         <div className="Login-allready">
           <h2>
             Nemate nalog? Registruj se{" "}

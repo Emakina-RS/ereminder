@@ -70,9 +70,7 @@ const Register = () => {
             type="password"
             value={confirmPassword}
           />
-          <Button>
-            {isFetching ? "Registracija u toku..." : "Registruj se"}
-          </Button>
+          <Button disabled={isFetching}>Registruj se</Button>
           <div className="Register-allready">
             <h2>
               Već imate nalog? Uloguj se{" "}
