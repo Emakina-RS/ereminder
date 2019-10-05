@@ -8,7 +8,7 @@ const routes = require('./routes/routes');
 const authenticationHelper = require('./helpers/authenticationHelper');
 
 schedule.frequentReminderJob();
-schedule.dailyReminderJob();
+//schedule.dailyReminderJob();
 
 var app = express()
     .use(bodyParser.urlencoded({ extended: true }))
