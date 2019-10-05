@@ -2,104 +2,100 @@ const constants = require('../config/constants');
 const { body, validationResult } = require('express-validator');
 const authenticationHelper = require('../helpers/AuthenticationHelper');
 const moment = require('moment');
-exports.validateRegister = [
 
+exports.validateRegister = [
     body('email')
-    .exists()
-    .withMessage(constants.errorMessages.requiredField('Email'))
-    .isEmail().withMessage(constants.errorMessages.invalidEmail),
+        .exists()
+        .withMessage(constants.errorMessages.requiredField('Email'))
+        .isEmail().withMessage(constants.errorMessages.invalidEmail),
     body('password')
-    .exists()
-    .withMessage(constants.errorMessages.requiredField('Password'))
-    .custom((value,{req}) => {
-        if (value !== req.body.confirmpassword) {
-            throw new Error(constants.errorMessages.unmatchedPassword);
-        }
-        return value;
-    })
-    .withMessage(constants.errorMessages.unmatchedPassword)
+        .exists()
+        .withMessage(constants.errorMessages.requiredField('Password'))
+        .custom((value,{req}) => {
+            if (value !== req.body.confirmpassword) {
+                throw new Error(constants.errorMessages.unmatchedPassword);
+            }
+            return value;
+        })
+        .withMessage(constants.errorMessages.unmatchedPassword)
 ];
 
 exports.validateResetPassword = [
-    body('password')
-    .exists()
-    .withMessage(constants.errorMessages.requiredField('Password')),
-    body('confirm_password')
-    .exists()
-    .withMessage(constants.errorMessages.requiredField('Confirm password'))
-    .matches('password')
-    .withMessage(constants.errorMessages.unmatchedPassword)
+    body('token')
+        .exists()
+        .withMessage(constants.errorMessages.requiredField('token')),
+    body('currentPassword')
+        .exists()
+        .withMessage(constants.errorMessages.requiredField('currentPassword')),
+    body('newPassword')
+        .exists()
+        .withMessage(constants.errorMessages.requiredField('newPassword'))
 ];
 
 exports.validateForgotPassword = [
     body('email')
-    .exists()
-    .withMessage(constants.errorMessages.requiredField('Email'))
-    .isEmail().withMessage(constants.errorMessages.invalidEmail)
+        .exists()
+        .withMessage(constants.errorMessages.requiredField('Email'))
+        .isEmail().withMessage(constants.errorMessages.invalidEmail)
 ];
 
 exports.validateLogin = [
     body('username')
-    .exists()
-    .withMessage(constants.errorMessages.requiredField('Email'))
-    .isEmail().withMessage(constants.errorMessages.invalidEmail),
+        .exists()
+        .withMessage(constants.errorMessages.requiredField('Email'))
+        .isEmail().withMessage(constants.errorMessages.invalidEmail),
     body('password')
-    .exists()
-    .withMessage(constants.errorMessages.requiredField('Password'))
+        .exists()
+        .withMessage(constants.errorMessages.requiredField('Password'))
 ];
 
 exports.validateConfigInitialization = [
     authenticationHelper.EnsureAuthenticated(),
     body('lastTimeTookPills')
-    .exists()
-    .withMessage(constants.errorMessages.requiredField)
-    .custom((value,{req}) => {
-        if (!validateDateTime(value)) {
-            throw new Error(constants.errorMessages.validateDate);
-        }
-        return value;
-    }),
- 
+        .exists()
+        .withMessage(constants.errorMessages.requiredField)
+        .custom((value, {req}) => {
+            if (!validateDateTime(value)) {
+                throw new Error(constants.errorMessages.validateDate);
+            }
+            return value;
+        }),
     body('lastTimeInPharmacy')
-    .exists()
-    .withMessage(constants.errorMessages.requiredField)
-    .custom((value,{req}) => {
-        if (!validateDate(value)) {
-            throw new Error(constants.errorMessages.invalidDate);
-        }
-        return value;
-    }),
-
+        .exists()
+        .withMessage(constants.errorMessages.requiredField)
+        .custom((value,{req}) => {
+            if (!validateDate(value)) {
+                throw new Error(constants.errorMessages.invalidDate);
+            }
+            return value;
+        }),
     body('lastTimeGotPrescription')
-    .exists()
-    .withMessage(constants.errorMessages.requiredField)
-    .custom((value,{req}) => {
-        if (!validateDate(value)) {
-            throw new Error(constants.errorMessages.validateDate);
-        }
-        return value;
-    }),
-
+        .exists()
+        .withMessage(constants.errorMessages.requiredField)
+        .custom((value, {req}) => {
+            if (!validateDate(value)) {
+                throw new Error(constants.errorMessages.validateDate);
+            }
+            return value;
+        }),
     body('lastTimeGotReferral')
-    .exists()
-    .withMessage(constants.errorMessages.requiredField('lastTimeGotReferral'))
-    .custom((value,{req}) => {
-        if (!validateDate(value)) {
-            throw new Error(constants.errorMessages.validateDate);
-        }
-        return value;
-    }),
-
+        .exists()
+        .withMessage(constants.errorMessages.requiredField('lastTimeGotReferral'))
+        .custom((value, {req}) => {
+            if (!validateDate(value)) {
+                throw new Error(constants.errorMessages.validateDate);
+            }
+            return value;
+        }),
     body('lastTimeExamination')
-    .exists()
-    .withMessage(constants.errorMessages.requiredField)
-    .custom((value,{req}) => {
-        if (!validateDate(value)) {
-            throw new Error(constants.errorMessages.validateDate);
-        }
-        return value;
-    }),
-
+        .exists()
+        .withMessage(constants.errorMessages.requiredField)
+        .custom((value, {req}) => {
+            if (!validateDate(value)) {
+                throw new Error(constants.errorMessages.validateDate);
+            }
+            return value;
+        })
 ]
 
 exports.returnValidationResults = (req, res, next) => {
@@ -120,9 +116,9 @@ exports.convertToUCTDateTime = (dateTime) => {
 
 function validateDateTime(dateTime){
     return moment(dateTime, constants.stringFormats.dateTime, true).isValid();
-  }
+}
 
 function validateDate(date){
-  return  moment(date, constants.stringFormats.date, true).isValid();
+    return  moment(date, constants.stringFormats.date, true).isValid();
 }
 

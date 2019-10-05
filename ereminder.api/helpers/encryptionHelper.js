@@ -1,26 +1,21 @@
 'use string'
 
 const crypto = require('crypto');
-const algorithm = 'aes-256-cbc';
-const encryptionKey = 'B^Da3u0qOWI19&BA4prRLD4a^6pdQZ6n';
+const algorithm = 'aes-128-cbc';
+const password = 'testpassword';
 
 exports.Encrypt = function(text) {
-    let iv = crypto.randomBytes(16);
-    let cipher = crypto.createCipheriv(algorithm, Buffer.from(encryptionKey), iv);
-    let encrypted = cipher.update(text);
+    var ciper = crypto.createCipher(algorithm, password);
+    var crypted = ciper.update(text, 'utf8', 'hex')
+    crypted += ciper.final('hex');
 
-    encrypted = Buffer.concat([encrypted, cipher.final()]);
-    return iv.toString('hex') + ':' + encrypted.toString('hex');
+    return crypted;
 }
 
 exports.Decrypt = function(text) {
-    let textParts = text.split(':');
-    let iv = Buffer.from(textParts.shift(), 'hex');
-    let encryptedText = Buffer.from(textParts.join(':'), 'hex');
-    let decipher = crypto.createDecipheriv(algorithm, Buffer.from(encryptionKey), iv);
-    let decrypted = decipher.update(encryptedText);
+    var decipher = crypto.createDecipher(algorithm, password);
+    var decrypted = decipher.update(text, 'hex', 'utf8')
+    decrypted += decipher.final('utf8');
 
-    decrypted = Buffer.concat([decrypted, decipher.final()]);
-
-    return decrypted.toString();
+    return decrypted;
 }

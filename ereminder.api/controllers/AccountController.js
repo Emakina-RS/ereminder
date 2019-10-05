@@ -35,6 +35,17 @@ exports.ForgotPassword = async function(req, res) {
     });
 }
 
-exports.ResetPassword = async function() {
-    //TODO:
+exports.ResetPassword = async function(req, res) {
+    try {
+        await userService.resetPassword(req.body.token, req.body.currentPassword, req.body.newPassword);
+
+        res.status(200).json({
+            message: util.format("Password has been successfully reset.")
+        });
+    }
+    catch(e) {
+        res.status(500).json({
+            message: e.message
+        });
+    }
 }

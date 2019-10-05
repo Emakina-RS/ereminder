@@ -31,6 +31,16 @@ module.exports.sendForgotPasswordEmail = async function(email) {
      await mailer.send(mailSubjects.resetPasswordSubject, body, email);
 }
 
+module.exports.resetPassword = async function(token, currentPassword, newPassword) {
+     let userId = getUserIdFromToken(token);
+     let user = await models.User.findOne({ id: userId });
+
+     ensureCurrentPasswordIsValid(user, currentPassword);
+
+     let newPasswordHashed = await passwordEncryptionHelper.getEncryptedValue(newPassword);
+     await models.User.update( { password: newPasswordHashed }, { where: { id: userId} });
+}
+
 module.exports.setInitConfiguration = async function (body, userID) {
      return await createInitConfiguration(body, userID);
 }
@@ -41,14 +51,6 @@ async function createUser(hash, body) {
         password: hash,
     })
     .then((newUser) => { return newUser; });
-}
-
-function getResetPasswordToken(user) {
-     let date = new Date();
-     date.setHours(date.getHours() + 1);
-
-     let token = util.format('id=%s&validByDate=%s', user.id, date);
-     return ecryptionHelper.Encrypt(token);
 }
 
 async function createInitConfiguration(body, userID) {
@@ -77,4 +79,40 @@ async function createInitConfiguration(body, userID) {
      configObj.UserId = userID;
      return models.InitialConfiguration.create(configObj)
       .then((newConfig) => { return newConfig; });
+}
+
+function getResetPasswordToken(user) {
+     let date = new Date();
+     date.setHours(date.getHours() + 1);
+
+     let token = util.format('{ "id": "%s", "validByDate": "%s" }', user.id, date);
+
+     return ecryptionHelper.Encrypt(token);
+}
+
+function getUserIdFromToken(token) {
+     let decryptedToken = ecryptionHelper.Decrypt(token);
+     let tokenJson = JSON.parse(decryptedToken);
+
+     ensureTokenDateIsValid(tokenJson.validByDate);
+
+     return tokenJson.id;
+}
+
+async function ensureCurrentPasswordIsValid(user, currentPassword) {
+     if (!user) {
+          throw Error("Non-existing user");
+     }
+
+     let validPassword = await passwordEncryptionHelper.compare(currentPassword, user.password);
+     if (!validPassword) {
+          throw Error("The user current password is invalid!");
+     }
+}
+
+function ensureTokenDateIsValid(date) {
+     let tokenDate = new Date(date);
+     let currentDate = new Date();
+
+     return tokenDate.getTime() < currentDate.getTime();
 }
