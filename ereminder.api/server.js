@@ -13,7 +13,7 @@ const logger = require('./helpers/logger');
 const config = require('./config/config');
 const corsUrls = global.globalConfig.corsUrls;
 
-schedule.frequentReminderJob();
+//schedule.frequentReminderJob();
 //schedule.dailyReminderJob();
 
 var app = express()
