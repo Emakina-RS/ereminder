@@ -1,26 +1,38 @@
 import React from "react";
-import { BrowserRouter as Router, Link, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch
+} from "react-router-dom";
 import "./App.css";
-import Input from "./components/Input";
 import Navbar from "./components/Navbar";
+import Calendar from "./pages/Calendar";
+import ForgotPassword from "./pages/ForgotPassword";
 import Login from "./pages/Login";
+import NewReminder from "./pages/NewReminder";
+import Notifications from "./pages/Notifications";
 import Register from "./pages/Register";
 import Reminders from "./pages/Reminders";
 
 function App() {
   return (
     <Router>
-      <Navbar />
-      <Input placeholder="Unesite vašu e-mail adresu" />
-      <Input placeholder="Unesite vašu šifru" />
-      <Input placeholder="Ponovite vašu šifru" />
-      <Link to="/register">Registruj se</Link>
-      <span>
-        Već imate nalog? Uloguj se <Link to="/login">ovde</Link>
-      </span>
-      <Route path="/login" component={Login} />
-      <Route path="/register" component={Register} />
-      <Route path="/reminders" component={Reminders} />
+      <div className="App">
+        <Navbar />
+        <div className="App-content">
+          <Switch>
+            <Route path="/register" component={Register} />
+            <Route path="/login" component={Login} />
+            <Route path="/forgot-password" component={ForgotPassword} />
+            <Route path="/new-reminder" component={NewReminder} />
+            <Route path="/reminders" component={Reminders} />
+            <Route path="/notifications" component={Notifications} />
+            <Route path="/calendar" component={Calendar} />
+            <Redirect to="/register" />
+          </Switch>
+        </div>
+      </div>
     </Router>
   );
 }

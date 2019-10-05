@@ -1,46 +1,46 @@
-.header {
-    margin:auto;
-    width:100%;
-    background-color: #bd1e2c;
-    height: 100px;
-    display: grid;
-    grid-template-areas: '1 1';
+.Navbar {
+  margin: auto;
+  width: 100%;
+  background-color: #bd1e2c;
+  height: 100px;
+  display: grid;
+  grid-template-areas: "1 1";
 }
 
-.header-logo {
-    grid-area: 1;
-    width: 207px;
-    height: 50px;
-    justify-self: center;
-    align-self: center;
+.Navbar-logo {
+  grid-area: 1;
+  width: 207px;
+  height: 50px;
+  justify-self: center;
+  align-self: center;
 }
 
-.links {
-    grid-area: 1;
-    justify-self: center;
-    align-self: center;
+.Navbar-links {
+  grid-area: 1;
+  justify-self: center;
+  align-self: center;
 }
 
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+.Navbar-links ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
-li {
-    display: inline;
+.Navbar-links li {
+  display: inline;
 }
 
-a {
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    padding: 14px 25px;
-    text-transform: uppercase;
+.Navbar-links a {
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  padding: 14px 25px;
+  text-transform: uppercase;
 }
 
-li:not(:last-child)::after {
-    content: ' |';
-    color: white;
+.Navbar-links li:not(:last-child)::after {
+  content: " |";
+  color: white;
 }

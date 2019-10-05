@@ -1,0 +1,8 @@
+.Register {
+  background-image: url("../assets/images/background.png");
+  display: grid;
+  grid-template-areas: "1";
+}
+.Register-center {
+  margin: 0 auto;
+}

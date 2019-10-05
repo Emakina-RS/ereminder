@@ -1,17 +1,24 @@
 import React from "react";
-import "./Navbar.css";
+import { Link } from "react-router-dom";
 import logo from "../assets/icon/logo.svg";
+import "./Navbar.css";
 
 const Navbar = () => (
-  <div className="header">
-    <img src={logo} className="header-logo" alt="logo" />
-    <div className="links">
+  <div className="Navbar">
+    <Link to="/" className="Navbar-logo">
+      <img src={logo} alt="logo" />
+    </Link>
+    <div className="Navbar-links">
       <ul>
         <li>
-          <a href="">Povratak na sajt</a>
+          <Link to="/reminders" className="a">
+            Povratak na sajt
+          </Link>
         </li>
         <li>
-          <a href="">Izloguj se</a>
+          <Link to="/" className="a">
+            Izloguj se
+          </Link>
         </li>
       </ul>
     </div>
