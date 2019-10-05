@@ -1,6 +1,3 @@
-.Reminders {
-}
-
 .Reminders-grid {
   display: grid;
   grid-template-columns: 50% 50%;
@@ -54,12 +51,12 @@
 }
 
 .ReminderSection-label {
-  font-size: 20px;
-  padding: 1.1em 1em;
+  font-size: 1.25em;
+  padding: 1.1rem 1rem;
 }
 
 .ReminderSection-link {
-  font-size: 20px;
+  font-size: 1.25em;
   color: #bd1e2c;
   text-decoration: none;
   text-transform: uppercase;

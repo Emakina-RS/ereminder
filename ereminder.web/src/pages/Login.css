@@ -1,4 +1,4 @@
-.Register {
+.Login {
   background-image: url("../assets/images/background.png");
   display: flex;
   flex-flow: column;
@@ -6,11 +6,11 @@
   align-items: center;
 }
 
-.Register-content {
+.Login-content {
   width: 550px;
 }
 
-.Register h1 {
+.Login h1 {
   color: white;
   text-transform: uppercase;
   font-weight: normal;
@@ -18,7 +18,7 @@
   letter-spacing: 0.1rem;
 }
 
-.Register input {
+.Login input {
   display: block;
   margin-bottom: 1.5rem;
   border-radius: 5px;
@@ -28,26 +28,27 @@
   width: 100%;
 }
 
-.Register input:last-of-type {
+.Login input:last-of-type {
   margin-bottom: 2rem;
 }
 
-.Register input::placeholder {
+.Login input::placeholder {
   color: black;
 }
 
-.Register-allready {
-  display: inline-block;
+.Login-allready {
+  display: flex;
+  justify-content: space-between;
   padding: 0.5rem 0;
 }
 
-.Register-allready h2 {
+.Login-allready h2 {
   color: white;
   font-style: italic;
   font-weight: 300;
   font-size: 1.25em;
 }
 
-.Register-span-link {
+.Login-span-link {
   color: white;
 }
