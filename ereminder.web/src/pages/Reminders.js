@@ -9,7 +9,7 @@ import Checkbox from "../components/Checkbox";
 import "./Reminders.css";
 
 const Reminders = () => (
-  <div>
+  <div className="Reminders">
     <h1>Želim podsetnik na:</h1>
     <ReminderSection icon={lekovi} title="Lek" options={["12h", "24h"]} />
     <ReminderSection
@@ -42,14 +42,9 @@ const Reminders = () => (
 const ReminderSection = ({ icon, title, options }) => (
   <div className="ReminderSection">
     <div className="ReminderSection-heading">
-      <img
-        src={icon}
-        style={{
-          backgroundColor: "#bc1e2d",
-          height: "60px",
-          width: "60px"
-        }}
-      />
+      <div className="ReminderSection-logo-container">
+        <img className="ReminderSection-logo" src={icon} />
+      </div>
       <div className="ReminderSection-Checkbox">
         <Checkbox />
       </div>
