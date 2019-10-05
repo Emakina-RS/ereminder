@@ -4,16 +4,19 @@ const authenticationController = require('../controllers/AuthenticationControlle
 const accountController = require('../controllers/AccountController');
 const notificationController = require('../controllers/NotificationController');
 const authenticationHelper = require('../helpers/AuthenticationHelper');
+const userValidator = require('../validators/userValidator');
 
 module.exports = function(app) {
-    app.route('/authenticate')
-        .post(authenticationController.Authenticate);
+    app.post('/authenticate', userValidator.validateLogin, (req,res) => userValidator.returnValidationResults(req, res, authenticationController.Authenticate));
 
-    app.route('/register')
-        .post(accountController.Register);
+    app.route('/register',)
+        .post(userValidator.validateRegister, (req,res) => userValidator.returnValidationResults(req, res, accountController.Register));
 
     app.route('/resetpassword')
-        .post(accountController.ResetPassword);
+        .post(userValidator.ResetPassword, (req,res) => userValidator.returnValidationResults(req, res, accountController.ResetPassword));
+
+    app.route('/forgotpassword')
+        .post(userValidator.ResetPassword, (req,res) => userValidator.returnValidationResults(req, res, accountController.ForgotPassword));
 
     app.post('/notification', authenticationHelper.EnsureAuthenticated(), notificationController.CreateNotification);
 };

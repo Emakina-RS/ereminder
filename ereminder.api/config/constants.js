@@ -6,7 +6,7 @@ const Constants = {
         date:'dd-mm-yyyy'
     },
     errorMessages:{
-        requiredField: (fieldName) => '${fieldName} is required',
+        requiredField: (fieldName) =>  `${fieldName} is required`,
         invalidDate:'',
         invalidDateTime:'',
         invalidDateTime:'',

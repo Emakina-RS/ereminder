@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken');
 const AuthenticationHelper = require('../helpers/AuthenticationHelper');
 const models  = require('../models');
 
-exports.Authenticate = async function(request, response, next) {
+exports.Authenticate = async function(request, response) {
+
     const { username, password } = request.body;
 
     if (username && password) {
