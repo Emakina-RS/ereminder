@@ -12,6 +12,9 @@ import {
   startOfWeek
 } from "date-fns";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import edit from "../assets/icon/edit.svg";
+import info from "../assets/icon/info.svg";
 import { ReactComponent as LeftArrow } from "../assets/icon/left.svg";
 import { ReactComponent as RightArrow } from "../assets/icon/right.svg";
 import "./Calendar.css";
@@ -54,6 +57,33 @@ const Calendar = () => {
   const eachDay = eachDayOfInterval({ start, end });
   return (
     <div className="Calendar">
+      <div className="Calendar-nav">
+        <ul className="Calendar-nav-links">
+          <li>
+            <img src={edit} alt="edit" className="icon" />
+            <Link to="/notifications" className="">
+              Izmeni notifikacije
+            </Link>
+          </li>
+          <li>
+            <img src={edit} alt="edit" className="icon" />
+            <Link to="/notifications-date" className="">
+              Izmeni pocetne datume
+            </Link>
+          </li>
+          <li>
+            <img src={edit} alt="edit" className="icon" />
+            <Link to="/notifications-type" className="">
+              Izmeni tip
+            </Link>
+          </li>
+        </ul>
+
+        <span>
+          <img src={info} alt="info" className="icon" />
+          Info
+        </span>
+      </div>
       <div className="Calendar-header">
         <LeftArrow
           style={{ height: "30px" }}

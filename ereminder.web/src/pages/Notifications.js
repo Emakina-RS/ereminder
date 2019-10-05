@@ -43,7 +43,7 @@ const Notifications = () => (
       />
     </div>
 
-    <Link className="Notificationsection-link" to="/notifications">
+    <Link className="Notificationsection-link" to="/calendar">
       Nastavi
     </Link>
   </div>

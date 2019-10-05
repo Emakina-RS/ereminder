@@ -5,7 +5,7 @@
     "3 4"
     "5 .";
   gap: 30px;
-  width: 80%;
+  width: 60%;
   margin: auto;
   overflow: hidden;
 }
@@ -53,4 +53,11 @@
   font-size: 1.25em;
   padding: 1rem 1rem;
   width: 100%;
+}
+
+.NotificationDate-link {
+  font-size: 1.25em;
+  color: #bd1e2c;
+  text-decoration: none;
+  text-transform: uppercase;
 }

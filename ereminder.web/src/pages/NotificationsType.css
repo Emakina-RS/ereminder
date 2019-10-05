@@ -1,9 +1,9 @@
-.Notifications {
+.NotificationsType {
   margin: auto;
-  width: 555px;
+  width: 550px;
 }
 
-.Notifications > h1 {
+.NotificationsType > h1 {
   text-transform: uppercase;
   font-weight: normal;
 }

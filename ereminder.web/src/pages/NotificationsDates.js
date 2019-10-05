@@ -22,7 +22,7 @@ const NotificationsDates = () => (
       <DateSelector selectorType={["date"]} label={LABEL.UPUT} />
       <DateSelector selectorType={["date"]} label={LABEL.NALAZI} />
     </div>
-    <Link className="ReminderSection-link" to="/notifications">
+    <Link className="NotificationDate-link" to="/calendar">
       Nastavi
     </Link>
   </div>

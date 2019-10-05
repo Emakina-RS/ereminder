@@ -6,7 +6,7 @@ import "./NotificationsType.css";
 const NotificationsType = ({ history }) => (
   <div className="NotificationsType">
     <h1>Odaberi način podsećanja</h1>
-    <NotificationSection title="SMS" />
+    {/* <NotificationSection title="SMS" /> */}
     <NotificationSection title="Mail" />
     <NotificationSection title="Calendar" />
     <Button

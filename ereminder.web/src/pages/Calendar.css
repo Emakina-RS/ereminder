@@ -1,7 +1,46 @@
 .Calendar-main {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  margin: 0 390px;
+  width: 60%;
+  margin: 0 auto;
+}
+
+.Calendar-nav .icon {
+  height: 30px;
+  width: 30px;
+}
+
+.Calendar-nav {
+  padding-top: 2rem;
+  height: 60px;
+  margin: auto;
+  width: 60%;
+  display: grid;
+  grid-template-areas: "1 1";
+}
+
+.Calendar-nav-links ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.Calendar-nav-links li {
+  display: inline;
+}
+
+.Calendar-nav-links a,
+.Calendar-nav-links span {
+  font-size: 1em;
+  font-weight: bold;
+  color: #bd1e2c;
+  text-decoration: none;
+  text-transform: uppercase;
+  padding-right: 0.5em;
+}
+
+.Calendar-nav-links li:last-child a {
+  padding-right: 0;
 }
 
 .Calendar-header {
