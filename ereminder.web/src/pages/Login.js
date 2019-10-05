@@ -19,7 +19,7 @@ const Login = ({ history }) => (
           </Link>
         </h2>
         <h2>
-          <Link className="Login-span-link" to="/password-reset">
+          <Link className="Login-span-link" to="/forgot-password">
             Zaboravili ste Vašu šifru?
           </Link>
         </h2>

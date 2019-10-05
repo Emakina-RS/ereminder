@@ -24,7 +24,6 @@ function App() {
           <Switch>
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
-
             <Route path="/forgot-password" component={ForgotPassword} />
             <Route path="/new-reminder" component={NewReminder} />
             <Route path="/reminders" component={Reminders} />
