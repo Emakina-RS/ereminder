@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import { logIn } from "../actions";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import useInput from "../hooks/useInput";
 import "./Login.css";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const email = useInput("email", "Unesite Vašu e-mail adresu");
+  const password = useInput("password", "Unesite šifru");
   const { isSubmitting, shouldRedirect } = useSelector(state => state.login);
   const dispatch = useDispatch();
   if (shouldRedirect) {
@@ -19,27 +20,13 @@ const Login = () => {
       <form
         onSubmit={event => {
           event.preventDefault();
-          dispatch(logIn(email, password));
-          setEmail("");
-          setPassword("");
+          dispatch(logIn(email.value, password.value));
         }}
         className="Login-content"
       >
         <h1>Uloguj se</h1>
-        <Input
-          name="email"
-          onChange={event => setEmail(event.target.value)}
-          placeholder="Unesite Vašu e-mail adresu"
-          type="email"
-          value={email}
-        />
-        <Input
-          name="password"
-          onChange={event => setPassword(event.target.value)}
-          placeholder="Unesite šifru"
-          type="password"
-          value={password}
-        />
+        <Input type="email" {...email} />
+        <Input type="password" {...password} />
         <Button disabled={isSubmitting}>Uloguj se</Button>
         <div className="Login-allready">
           <h2>

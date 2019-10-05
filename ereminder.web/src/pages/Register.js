@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import useInput from "../hooks/useInput";
 import "./Register.css";
 
 const register = (email, password, confirmPassword) => dispatch => {
@@ -33,9 +34,9 @@ const register = (email, password, confirmPassword) => dispatch => {
 };
 
 const Register = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmpassword] = useState("");
+  const email = useInput("email", "Unesite Vašu e-mail adresu");
+  const password = useInput("password", "Unesite šifru");
+  const confirmPassword = useInput("confirm-password", "Ponovite šifru");
   const isFetching = useSelector(state => state.register.isFetching);
   const dispatch = useDispatch();
 
@@ -46,30 +47,14 @@ const Register = () => {
         <form
           onSubmit={event => {
             event.preventDefault();
-            dispatch(register(email, password, confirmPassword));
+            dispatch(
+              register(email.value, password.value, confirmPassword.value)
+            );
           }}
         >
-          <Input
-            name="email"
-            onChange={event => setEmail(event.target.value)}
-            placeholder="Unesite Vašu e-mail adresu"
-            type="email"
-            value={email}
-          />
-          <Input
-            name="password"
-            onChange={event => setPassword(event.target.value)}
-            placeholder="Unesite šifru"
-            type="password"
-            value={password}
-          />
-          <Input
-            name="confirm-password"
-            onChange={event => setConfirmpassword(event.target.value)}
-            placeholder="Ponovite šifru"
-            type="password"
-            value={confirmPassword}
-          />
+          <Input type="email" {...email} />
+          <Input type="password" {...password} />
+          <Input type="password" {...confirmPassword} />
           <Button disabled={isFetching}>Registruj se</Button>
           <div className="Register-allready">
             <h2>
