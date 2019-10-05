@@ -1,5 +1,8 @@
 {
     "development": {
+        "apiUrl": "http://dev-api.ereminder.com/",
+        "apiPort": 8081,
+        "corsUrls": [ "http://dev.ereminder.com/" ],
         "mailSettings": {
             "smtp": "smtp.gmail.com",
             "port": 587,
@@ -23,6 +26,9 @@
         }
     },
     "production": {
+        "apiUrl": "",
+        "apiPort": "",
+        "corsUrls": [ "" ],
         "mailSettings": {
             "smtp": "",
             "port": 587,
@@ -31,6 +37,9 @@
             "enableSsl": true,
             "fromEmail": ""
         },
+        "mailSubjects": {
+            "resetPasswordSubject": "Zaboravili ste lozinku?"
+        },
         "databaseConnection": {
             "dialect": "mysql",
             "username": "ereminder",
@@ -38,8 +47,8 @@
             "host": "",
             "database": "ereminder"
         },
-        "urls": {
-            "resetPassword": "/resetpassword"
+        "siteUrls": {
+            "resetPassword": ""
         }
     }
 }
