@@ -8,9 +8,7 @@
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "node-cron": "^2.0.3",
-<<<<<<< HEAD
     "nodemailer": "^6.3.0",
-=======
     "express-sequelize": "0.0.4",
     "fs": "0.0.1-security",
     "mysql": "^2.17.1",
@@ -19,7 +17,6 @@
     "jsonwebtoken": "^8.5.1",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
->>>>>>> d63e559206c56227ca064d5371d369bbe37dfb7b
     "sequelize": "^5.19.2"
   },
   "devDependencies": {
