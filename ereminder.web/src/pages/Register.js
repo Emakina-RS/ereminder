@@ -1,21 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Button from "../components/Button";
 import Input from "../components/Input";
 import "./Register.css";
 
-const Register = () => (
+const Register = ({ history }) => (
   <div className="Register">
-    <h1>Register</h1>
-    <Input placeholder="Unesite vašu e-mail adresu" />
-    <Input placeholder="Unesite vašu šifru" />
-    <Input placeholder="Ponovite vašu šifru" />
-    <div className="Register-center">
-      <Link to="/register" className="button">
+    <div className="Register-content">
+      <h1>Registruj se</h1>
+      <Input placeholder="Unesite Vašu e-mail adresu" />
+      <Input placeholder="Unesite šifru" />
+      <Input placeholder="Ponovite šifru" />
+      <Button onClick={() => history.push("/new-reminder")}>
         Registruj se
-      </Link>
-      <span>
+      </Button>
+      <span className="Register-span">
         Već imate nalog? Uloguj se{" "}
-        <Link className="span-link" to="/login">
+        <Link className="Register-span-link" to="/login">
           ovde
         </Link>
       </span>

@@ -1,7 +1,43 @@
 .Register {
-  display: grid;
-  grid-template-areas: "1";
+  background-image: url("../assets/images/background.png");
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
 }
-.Register-center {
-  margin: 0 auto;
+
+.Register-content {
+  width: 550px;
+}
+
+.Register h1 {
+  color: white;
+  text-transform: uppercase;
+  padding: 1em 0;
+}
+
+.Register input {
+  display: block;
+  margin-bottom: 40px;
+  border-radius: 5px;
+  font-size: 18px;
+  box-sizing: border-box;
+  font-size: 18px;
+  padding: 1.2em 1em;
+  width: 100%;
+}
+
+.Register input::placeholder {
+  color: black;
+}
+
+.Register-span {
+  display: block;
+  padding: 1em 0;
+  color: white;
+  font-style: italic;
+}
+
+.Register-span-link {
+  color: white;
 }

@@ -4,12 +4,27 @@
   "description": "Ereminder applicaion",
   "main": "server.js",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "debug": "^4.1.1",
     "express": "^4.17.1",
     "node-cron": "^2.0.3",
+<<<<<<< HEAD
     "nodemailer": "^6.3.0",
+=======
+    "express-sequelize": "0.0.4",
+    "fs": "0.0.1-security",
+    "mysql": "^2.17.1",
+    "mysql2": "^1.7.0",
+    "path": "^0.12.7",
+    "jsonwebtoken": "^8.5.1",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+>>>>>>> d63e559206c56227ca064d5371d369bbe37dfb7b
     "sequelize": "^5.19.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^1.19.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"

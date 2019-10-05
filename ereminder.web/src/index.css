@@ -1,33 +1,27 @@
+@font-face {
+  font-family: "Roboto Condensed";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./assets/font/RobotoCondensed-Regular.woff2") format("woff2");
+}
+
+html {
+  height: 100%;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: "Roboto Condensed";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  padding: 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+input {
+  font-family: "Roboto Condensed";
 }
 
-* {
-  font-size: 18pt;
-}
-
-.button {
-  color: white;
-  display: block;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
-  width: 555px;
-  height: 50px;
-  text-align: center;
-  background-color: #bd1e2c;
-}
-
-.span-link {
-  color: white;
+#root {
+  height: 100%;
 }

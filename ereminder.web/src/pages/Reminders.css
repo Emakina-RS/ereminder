@@ -1,3 +1,12 @@
+.Reminders {
+  font-family: "Roboto Condensed";
+}
+
+.Reminders > h1 {
+  text-transform: uppercase;
+  font-weight: normal;
+}
+
 .ReminderSection + .ReminderSection {
   margin-top: 60px;
 }
@@ -7,6 +16,24 @@
   background-color: #f5f3f4;
   display: flex;
   margin-bottom: 28px;
+  text-transform: uppercase;
+}
+
+.ReminderSection-logo-container {
+  align-items: center;
+  background-color: #bc1e2d;
+  display: flex;
+  height: 60px;
+  justify-content: center;
+  width: 60px;
+}
+
+.ReminderSection-logo {
+  height: 30px;
+}
+
+.ReminderSection-logo > svg {
+  height: 30px;
 }
 
 .ReminderSection-Checkbox {
