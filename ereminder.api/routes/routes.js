@@ -15,5 +15,7 @@ module.exports = function(app) {
 
     app.post('/forgotpassword', userValidator.validateForgotPassword, (req,res) => userValidator.returnValidationResults(req, res, accountController.ForgotPassword));
 
+    app.post('/initconfig', userValidator.validateConfigInitialization , (req,res) => userValidator.returnValidationResults(req, res, accountController.SetInitConfiguration));
+
     app.post('/notification', authenticationHelper.EnsureAuthenticated(), notificationController.CreateNotification);
 };
