@@ -5,16 +5,18 @@ import "./NotificationsType.css";
 
 const NotificationsType = ({ history }) => (
   <div className="NotificationsType">
-    <h1>Odaberi način podsećanja</h1>
-    {/* <NotificationSection title="SMS" /> */}
-    <NotificationSection title="Mail" />
-    <NotificationSection title="Calendar" />
-    <Button
-      style={{ marginTop: "60px" }}
-      onClick={() => history.push("/calendar")}
-    >
-      Kreiraj podsetnik
-    </Button>
+    <div className="NotificationsType-content">
+      <h1>Odaberi način podsećanja</h1>
+      {/* <NotificationSection title="SMS" /> */}
+      <NotificationSection title="Mail" />
+      <NotificationSection title="Calendar" />
+      <Button
+        style={{ marginTop: "60px" }}
+        onClick={() => history.push("/calendar")}
+      >
+        Kreiraj podsetnik
+      </Button>
+    </div>
   </div>
 );
 

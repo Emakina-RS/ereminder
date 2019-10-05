@@ -13,6 +13,7 @@ import {
 } from "date-fns";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import dispansery from "../assets/icon/apoteka2.svg";
 import edit from "../assets/icon/edit.svg";
 import info from "../assets/icon/info.svg";
 import { ReactComponent as LeftArrow } from "../assets/icon/left.svg";
@@ -55,6 +56,11 @@ const Calendar = () => {
   const eachDayOfFirstWeek = eachDayOfInterval({ start, end: endOfFirstWeek });
   const end = endOfWeek(endOfMonth(date), { weekStartsOn: 1 });
   const eachDay = eachDayOfInterval({ start, end });
+  const legendItems = [
+    { type: dispansery, date: "03-10-2019" },
+    { type: dispansery, date: "03-10-2019" },
+    { type: dispansery, date: "03-10-2019" }
+  ];
   return (
     <div className="Calendar">
       <div className="Calendar-nav">
@@ -79,36 +85,78 @@ const Calendar = () => {
           </li>
         </ul>
 
-        <span>
+        <div className="Calendar-info-links">
           <img src={info} alt="info" className="icon" />
-          Info
-        </span>
+          <button
+            className="info-button"
+            onClick={() => {
+              console.log("infoButton");
+            }}
+          >
+            Info
+          </button>
+        </div>
       </div>
       <div className="Calendar-header">
-        <LeftArrow
-          style={{ height: "30px" }}
-          onClick={() => setDate(addMonths(date, -1))}
-        />
-        <div>{`${dateAsMonthString(date)} ${getYear(date)}`}</div>
-        <RightArrow
-          style={{ height: "30px" }}
-          onClick={() => setDate(addMonths(date, 1))}
-        />
+        <div className="ch-left-arrow">
+          <LeftArrow
+            style={{ height: "30px" }}
+            onClick={() => setDate(addMonths(date, -1))}
+          />
+        </div>
+        <div className="ch-month">{`${dateAsMonthString(date)} ${getYear(
+          date
+        )}`}</div>
+        <div className="ch-right-arrow">
+          <RightArrow
+            style={{ height: "30px" }}
+            onClick={() => setDate(addMonths(date, 1))}
+          />
+        </div>
       </div>
       <div className="Calendar-main">
-        {eachDayOfFirstWeek.map((day, index) => {
-          console.log(getDay(day));
-          return <div key={index}>{dateAsDayString(day)}</div>;
-        })}
-        {eachDay.map((day, index) => {
-          const inMonth = day.getMonth() === date.getMonth();
-          return (
-            <div key={index} style={inMonth ? {} : { color: "#adadad" }}>
-              {format(day, "d")}
-            </div>
-          );
-        })}
+        <div className="Calendar-day-of-week">
+          {eachDayOfFirstWeek.map((day, index) => {
+            console.log(getDay(day));
+            return (
+              <div className="day-of-week" key={index}>
+                {dateAsDayString(day)}
+              </div>
+            );
+          })}
+        </div>
+        <div className="Calendar-days">
+          {eachDay.map((day, index) => {
+            const inMonth = day.getMonth() === date.getMonth();
+            return (
+              <div
+                className="day"
+                key={index}
+                style={inMonth ? {} : { color: "#adadad" }}
+              >
+                {format(day, "d")}
+              </div>
+            );
+          })}
+        </div>
       </div>
+      <div className="Calendar-legend">
+        <h3>{dateAsMonthString(date)}:</h3>
+        <div className="Calendar-legend-list">
+          {legendItems.map((lType, index) => {
+            return <LegendItem lType={lType} />;
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const LegendItem = ({ lType }) => {
+  return (
+    <div className="legend">
+      <img className="legend-item" src={lType.type} alt={lType.type} />
+      <label className="legend-label">{lType.date}</label>
     </div>
   );
 };

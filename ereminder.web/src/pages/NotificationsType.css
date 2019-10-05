@@ -1,11 +1,20 @@
 .NotificationsType {
   margin: auto;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.NotificationsType-content {
   width: 550px;
 }
 
-.NotificationsType > h1 {
+.NotificationsType h1 {
   text-transform: uppercase;
   font-weight: normal;
+  padding: 1rem 0;
+  letter-spacing: 0.1rem;
 }
 
 .NotificationSection {
