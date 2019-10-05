@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "Roboto Condensed";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./assets/RobotoCondensed-Regular.woff2") format("woff2");
+}
+
 html {
   height: 100%;
 }
@@ -24,16 +31,8 @@ code {
   font-size: 18pt;
 }
 
-.button {
-  color: white;
-  display: block;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
+.Register-button {
   width: 555px;
-  height: 50px;
-  text-align: center;
-  background-color: #bd1e2c;
 }
 
 .span-link {
