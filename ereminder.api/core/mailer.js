@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 const config = require('../config/config');
 const mailSettings = global.globalConfig.mailSettings;
 
-exports.sendPendingNotifications = async function(subject, body, to) {
+exports.send = async function(subject, body, to) {
     let transporter = nodemailer.createTransport({
         pool: true,
         host: mailSettings.smtp,
@@ -16,12 +16,10 @@ exports.sendPendingNotifications = async function(subject, body, to) {
         }
     });
 
-    let info = await transporter.sendMail({
+    await transporter.sendMail({
         from: mailSettings.fromEmail,
         to: to,
         subject: subject,
         html: body
     });
-
-    console.log('Message sent: %s', info.messageId);
 }

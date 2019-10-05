@@ -7,15 +7,20 @@ const authenticationHelper = require('../helpers/authenticationHelper');
 const userValidator = require('../validators/userValidator');
 
 module.exports = function(app) {
-    app.post('/authenticate', userValidator.validateLogin, (req,res) => userValidator.returnValidationResults(req, res, authenticationController.Authenticate));
+    app.post('/authenticate', userValidator.validateLogin,
+        (req, res) => userValidator.returnValidationResults(req, res, authenticationController.Authenticate));
 
-    app.post('/register', userValidator.validateRegister, (req,res) => userValidator.returnValidationResults(req, res, accountController.Register));
+    app.post('/register', userValidator.validateRegister,
+        (req, res) => userValidator.returnValidationResults(req, res, accountController.Register));
 
-    app.post('/resetpassword', userValidator.validateResetPassword, (req,res) => userValidator.returnValidationResults(req, res, accountController.ResetPassword));
+    app.post('/resetpassword', userValidator.validateResetPassword,
+        (req, res) => userValidator.returnValidationResults(req, res, accountController.ResetPassword));
 
-    app.post('/forgotpassword', userValidator.validateForgotPassword, (req,res) => userValidator.returnValidationResults(req, res, accountController.ForgotPassword));
+    app.post('/forgotpassword', userValidator.validateForgotPassword,
+        (req, res) => userValidator.returnValidationResults(req, res, accountController.ForgotPassword));
 
-    app.post('/initconfig', userValidator.validateConfigInitialization , (req,res) => userValidator.returnValidationResults(req, res, accountController.SetInitConfiguration));
+    app.post('/initconfig', userValidator.validateConfigInitialization,
+        (req, res) => userValidator.returnValidationResults(req, res, accountController.SetInitConfiguration));
 
     app.post('/notification', authenticationHelper.EnsureAuthenticated(), notificationController.CreateNotification);
 };

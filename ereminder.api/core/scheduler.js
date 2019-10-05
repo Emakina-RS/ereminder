@@ -11,7 +11,7 @@ exports.frequentReminderJob = function () {
         console.log("running a task every 3 minutes");
         let allNotifications = notificationService.getAllNotifications();
         // console.log(allNotifications);
-        mailer.sendPendingNotifications();
+        //mailer.send(); //TODO: make a call here to the notificationService, which will prepare and send an email.
     });
 };
 
@@ -20,7 +20,7 @@ exports.dailyReminderJob = function () {
     // then pass them as param to sendPendingNotifications()
     cron.schedule("* 10 * * *", function() {
         console.log("running a task every day at 10 AM");
-        mailer.sendPendingNotifications();
+        //mailer.send(); //TODO: make a call here to the notificationService, which will prepare and send an email.
     });
 };
 

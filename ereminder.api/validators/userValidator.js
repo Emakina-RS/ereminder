@@ -3,7 +3,6 @@ const { body, validationResult } = require('express-validator');
 const authenticationHelper = require('../helpers/AuthenticationHelper');
 
 exports.validateRegister = [
-
     body('email')
     .exists()
     .withMessage(constants.errorMessages.requiredField('Email'))
@@ -90,7 +89,6 @@ exports.validateConfigInitialization = [
     .withMessage(constants.errorMessages.futureDate)
     .isAfter()
     .withMessage(constants.errorMessages.invalidDate)
-
 ]
 
 exports.returnValidationResults = (req, res, next) => {

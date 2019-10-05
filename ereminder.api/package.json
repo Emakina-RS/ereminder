@@ -4,8 +4,10 @@
   "description": "Ereminder applicaion",
   "main": "server.js",
   "dependencies": {
+    "append-query": "^2.1.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
+    "crypto": "^1.0.1",
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "express-sequelize": "0.0.4",
@@ -20,7 +22,8 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "path": "^0.12.7",
-    "sequelize": "^5.19.2"
+    "sequelize": "^5.19.2",
+    "util": "^0.12.1"
   },
   "devDependencies": {
     "nodemon": "^1.19.3"
