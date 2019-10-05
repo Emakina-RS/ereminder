@@ -2,6 +2,9 @@
 
 const util = require('util');
 const userService = require('../services/userService');
+const authenticationHelper = require('../helpers/authenticationHelper');
+
+
 
 exports.Register = async function(req, res) {
     try{
@@ -14,7 +17,12 @@ exports.Register = async function(req, res) {
 
 exports.SetInitConfiguration = async function(req, res) {
     try{
-        await userService.setInitConfiguration(req.body);
+        var currentUserID = authenticationHelper.getUserIdFromRequest(req);
+        if(!currentUserID){
+            return res.status(401).json({ error: 'Unauthorized' })
+        }
+        await userService.setInitConfiguration(req.body, currentUserID);
+
         return res.status(200).json({ message: 'Configuration setup' })
     }catch(e){
         return res.status(500).json({ error: 'Internal error' })

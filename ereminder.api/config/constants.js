@@ -2,8 +2,8 @@
 
 const Constants = {
     stringFormats:{
-        dateTime:'dd-mm-yyyy hh:mm:ss',
-        date:'dd-mm-yyyy'
+        dateTime:'DD-MM-YYYY HH:mm:ss',
+        date:'DD-MM-YYYY'
     },
     errorMessages:{
         requiredField: (fieldName) =>  `${fieldName} is required`,
