@@ -35,7 +35,7 @@ const Reminders = () => (
       title="Nalazi"
       options={["Svakih 12 meseci"]}
     />
-    <Link to="/">Nastavi</Link>
+    <Link to="/notifications">Nastavi</Link>
   </div>
 );
 

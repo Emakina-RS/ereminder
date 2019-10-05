@@ -1,0 +1,42 @@
+.Notifications {
+  margin: auto;
+  width: 555px;
+}
+
+.Notifications > h1 {
+  text-transform: uppercase;
+  font-weight: normal;
+}
+
+.NotificationSection {
+  align-items: center;
+  background-color: #f5f3f4;
+  display: flex;
+  margin-bottom: 28px;
+  text-transform: uppercase;
+}
+
+.NotificationSection + .NotificationSection {
+  margin-top: 60px;
+}
+
+.NotificationSection-heading {
+  align-items: center;
+  background-color: #f5f3f4;
+  display: flex;
+  margin-bottom: 28px;
+  text-transform: uppercase;
+}
+
+.NotificationSection-logo-container {
+  align-items: center;
+  background-color: #bc1e2d;
+  display: flex;
+  height: 60px;
+  justify-content: center;
+  width: 60px;
+}
+
+.NotificationSection-Checkbox {
+  padding: 0 20px 0 38px;
+}
