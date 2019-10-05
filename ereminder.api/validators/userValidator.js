@@ -9,11 +9,14 @@ exports.validateRegister = [
     .isEmail().withMessage(constants.errorMessages.invalidEmail),
     body('password')
     .exists()
-    .withMessage(constants.errorMessages.requiredField('Password')),
-    body('confirm_password')
-    .exists()
-    .withMessage(constants.errorMessages.requiredField('Confirm password'))
-    .matches('password')
+    .withMessage(constants.errorMessages.requiredField('Password'))
+    .custom((value,{req}) => {
+        if (value !== req.body.confirmpassword) {
+            throw new Error(constants.errorMessages.unmatchedPassword);
+        } else {
+            return value;
+        }
+    })
     .withMessage(constants.errorMessages.unmatchedPassword)
 ];
 

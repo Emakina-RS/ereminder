@@ -9,14 +9,11 @@ const userValidator = require('../validators/userValidator');
 module.exports = function(app) {
     app.post('/authenticate', userValidator.validateLogin, (req,res) => userValidator.returnValidationResults(req, res, authenticationController.Authenticate));
 
-    app.route('/register',)
-        .post(userValidator.validateRegister, (req,res) => userValidator.returnValidationResults(req, res, accountController.Register));
+    app.post('/register', userValidator.validateRegister, (req,res) => userValidator.returnValidationResults(req, res, accountController.Register));
 
-    app.route('/resetpassword')
-        .post(userValidator.ResetPassword, (req,res) => userValidator.returnValidationResults(req, res, accountController.ResetPassword));
+    app.post('/resetpassword', userValidator.validateResetPassword, (req,res) => userValidator.returnValidationResults(req, res, accountController.ResetPassword));
 
-    app.route('/forgotpassword')
-        .post(userValidator.ResetPassword, (req,res) => userValidator.returnValidationResults(req, res, accountController.ForgotPassword));
+    app.post('/forgotpassword', userValidator.validateForgotPassword, (req,res) => userValidator.returnValidationResults(req, res, accountController.ForgotPassword));
 
     app.post('/notification', authenticationHelper.EnsureAuthenticated(), notificationController.CreateNotification);
 };
