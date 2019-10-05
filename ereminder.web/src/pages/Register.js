@@ -36,7 +36,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmpassword] = useState("");
-  const isFetching = useSelector(state => state.isFetching);
+  const isFetching = useSelector(state => state.register.isFetching);
   const dispatch = useDispatch();
 
   return (

@@ -1,33 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { applyMiddleware, createStore } from "redux";
+import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from "redux-thunk";
 import App from "./App";
 import "./index.css";
+import login from "./reducers/login";
+import register from "./reducers/register";
+import token from "./reducers/token";
 import * as serviceWorker from "./serviceWorker";
 
-const initialState = {
-  isFetching: false
-};
-
-const registerReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case "REGISTER":
-      return {
-        isFetching: true
-      };
-    case "REGISTER_SUCCESSFUL":
-    case "REGISTER_FAILED":
-      return {
-        isFetching: false
-      };
-    default:
-      return state;
-  }
-};
-
-const store = createStore(registerReducer, applyMiddleware(thunk));
+const store = createStore(
+  combineReducers({
+    login,
+    register,
+    token
+  }),
+  applyMiddleware(thunk)
+);
 
 ReactDOM.render(
   <Provider store={store}>
