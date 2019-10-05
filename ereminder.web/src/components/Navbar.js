@@ -5,22 +5,24 @@ import "./Navbar.css";
 
 const Navbar = () => (
   <div className="Navbar">
-    <Link to="/" className="Navbar-logo">
-      <img src={logo} alt="logo" />
-    </Link>
-    <div className="Navbar-links">
-      <ul>
-        <li>
-          <Link to="/reminders" className="a">
-            Povratak na sajt
-          </Link>
-        </li>
-        <li>
-          <Link to="/" className="a">
-            Izloguj se
-          </Link>
-        </li>
-      </ul>
+    <div className="Navbar-content">
+      <Link to="/" className="Navbar-logo">
+        <img src={logo} alt="logo" />
+      </Link>
+      <div className="Navbar-links">
+        <ul>
+          <li>
+            <Link to="/reminders" className="a">
+              Povratak na sajt
+            </Link>
+          </li>
+          <li>
+            <Link to="/" className="a">
+              Izloguj se
+            </Link>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 );

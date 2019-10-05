@@ -1,13 +1,21 @@
 .Reminders {
 }
 
+.Reminders-grid {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-areas:
+    "1 2"
+    "3 4"
+    "5 .";
+  gap: 30px;
+  width: 80%;
+  margin: auto;
+  overflow: hidden;
+}
 .Reminders > h1 {
   text-transform: uppercase;
   font-weight: normal;
-}
-
-.ReminderSection + .ReminderSection {
-  margin-top: 60px;
 }
 
 .ReminderSection-heading {

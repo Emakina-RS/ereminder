@@ -1,8 +1,14 @@
 .Navbar {
-  margin: auto;
   width: 100%;
-  background-color: #bd1e2c;
   height: 100px;
+  background-color: #bd1e2c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Navbar-content {
+  width: 80%;
   display: grid;
   grid-template-areas: "1 1";
 }
@@ -11,14 +17,13 @@
   grid-area: 1;
   width: 207px;
   height: 50px;
-  justify-self: center;
   align-self: center;
 }
 
 .Navbar-links {
   grid-area: 1;
-  justify-self: center;
   align-self: center;
+  justify-self: end;
 }
 
 .Navbar-links ul {
@@ -44,4 +49,7 @@
 .Navbar-links li:not(:last-child)::after {
   content: " |";
   color: white;
+}
+.Navbar-links li:last-child a {
+  padding-right: 0;
 }

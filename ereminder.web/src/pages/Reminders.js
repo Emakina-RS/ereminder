@@ -11,30 +11,33 @@ import "./Reminders.css";
 const Reminders = () => (
   <div className="Reminders">
     <h1>Želim podsetnik na:</h1>
-    <ReminderSection icon={lekovi} title="Lek" options={["12h", "24h"]} />
-    <ReminderSection
-      icon={recepti}
-      title="Recepti"
-      options={[
-        "1 mesec",
-        "2 meseca",
-        "3 meseca",
-        "4 meseca",
-        "5 meseci",
-        "6 meseci"
-      ]}
-    />
-    <ReminderSection
-      icon={apoteka}
-      title="Apoteka"
-      options={["Svaki mesec", "Dva meseca"]}
-    />
-    <ReminderSection icon={uputi} title="Uput" options={["Svaki 6 meseci"]} />
-    <ReminderSection
-      icon={nalazi}
-      title="Nalazi"
-      options={["Svakih 12 meseci"]}
-    />
+    <div className="Reminders-grid">
+      <ReminderSection icon={lekovi} title="Lek" options={["12h", "24h"]} />
+      <ReminderSection
+        icon={recepti}
+        title="Recepti"
+        options={[
+          "1 mesec",
+          "2 meseca",
+          "3 meseca",
+          "4 meseca",
+          "5 meseci",
+          "6 meseci"
+        ]}
+      />
+      <ReminderSection
+        icon={apoteka}
+        title="Apoteka"
+        options={["Svaki mesec", "Dva meseca"]}
+      />
+      <ReminderSection icon={uputi} title="Uput" options={["Svaki 6 meseci"]} />
+      <ReminderSection
+        icon={nalazi}
+        title="Nalazi"
+        options={["Svakih 12 meseci"]}
+      />
+    </div>
+
     <Link to="/notifications">Nastavi</Link>
   </div>
 );
