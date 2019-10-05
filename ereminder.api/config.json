@@ -1,0 +1,54 @@
+{
+    "development": {
+        "apiUrl": "http://dev-api.ereminder.com/",
+        "apiPort": 8081,
+        "corsUrls": [ "http://dev.ereminder.com/" ],
+        "mailSettings": {
+            "smtp": "smtp.gmail.com",
+            "port": 587,
+            "username": "dev@emakina.rs",
+            "password": "development",
+            "enableSsl": false,
+            "fromEmail": "dev@emakina.rs"
+        },
+        "mailSubjects": {
+            "resetPasswordSubject": "Zaboravili ste lozinku?"
+        },
+        "databaseConnection": {
+            "dialect": "mysql",
+            "username": "ereminder",
+            "password": "d0@z%8$HFo0v",
+            "host": "127.0.0.1",
+            "database": "ereminder"
+        },
+        "siteUrls": {
+            "resetPassword": "http://dev.ereminder.com/resetpassword"
+        }
+    },
+    "production": {
+        "apiUrl": "",
+        "apiPort": "",
+        "corsUrls": [ "" ],
+        "mailSettings": {
+            "smtp": "",
+            "port": 587,
+            "username": "",
+            "password": "",
+            "enableSsl": true,
+            "fromEmail": ""
+        },
+        "mailSubjects": {
+            "resetPasswordSubject": "Zaboravili ste lozinku?"
+        },
+        "databaseConnection": {
+            "dialect": "mysql",
+            "username": "ereminder",
+            "password": "",
+            "host": "",
+            "database": "ereminder"
+        },
+        "siteUrls": {
+            "resetPassword": ""
+        }
+    }
+}

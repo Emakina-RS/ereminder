@@ -1,12 +1,128 @@
-.Calendar-main {
+.Calendar-day-of-week,
+.Calendar-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  margin: 0 390px;
+  width: 60%;
+  margin: 0 auto;
+  padding-bottom: 1rem;
+}
+
+.day-of-week {
+  font-size: 0.875em;
+  color: #c4c4c4;
+  border-bottom: 1px solid #f5f3f3;
+  padding: 1.25rem 0;
+}
+
+.day {
+  font-size: 1.875em;
+  color: #333333;
+  height: 74px;
+  border-bottom: 1px solid #f5f3f3;
+  margin: 1rem 0 0 0;
+}
+
+.Calendar-nav .icon {
+  height: 30px;
+  width: 30px;
+}
+
+.Calendar-nav {
+  height: 60px;
+  margin: 0 auto;
+  width: 60%;
+  display: grid;
+  grid-template-areas: "1 1";
+  padding: 2rem 0;
+}
+
+.Calendar-nav-links {
+  display: flex;
+  flex-direction: row;
+}
+
+.Calendar-nav-links ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  padding-inline-start: 0;
+}
+
+.Calendar-nav-links li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.Calendar-nav-links a,
+.Calendar-nav-links span {
+  font-size: 1.25em;
+  line-height: 1.437em;
+  letter-spacing: 0.001em;
+  font-weight: bold;
+  color: #bd1e2c;
+  text-decoration: none;
+  text-transform: uppercase;
+  padding: 0 1rem;
+}
+
+.Calendar-nav-links li:last-child a {
+  padding-right: 0;
+}
+
+.Calendar-info-links {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 1rem;
+}
+
+.info-button {
+  background: none;
+  color: inherit;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  font-size: 1.25em;
+  line-height: 1.437em;
+  letter-spacing: 0.001em;
+  font-weight: bold;
+  color: #bd1e2c;
+  text-decoration: none;
+  text-transform: uppercase;
+  padding: 0 0 0 1rem;
 }
 
 .Calendar-header {
+  position: relative;
+  margin: 0 auto;
+  width: 60%;
   display: flex;
   justify-content: center;
+  align-items: center;
+  background-color: #f5f3f3;
+  text-transform: uppercase;
+  height: 70px;
+}
+
+.ch-month {
+  font-size: 1.875em;
+}
+
+.ch-left-arrow {
+  position: absolute;
+  left: 0;
+  margin-left: 30px;
+}
+.ch-right-arrow {
+  position: absolute;
+  right: 0;
+  margin-right: 30px;
 }
 
 .Calendar-week {
@@ -17,4 +133,42 @@
 .Calendar-day {
   height: 60px;
   width: 30px;
+}
+
+.Calendar-legend {
+  margin: 0 auto;
+  width: 60%;
+  text-align: left;
+}
+.Calendar-legend h3 {
+  padding: 0;
+  margin: 0 0 1rem 0;
+  color: #333333;
+  font-size: 1.25em;
+  line-height: 1.437em;
+  letter-spacing: 0.001em;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.Calendar-legend-list {
+  display: flex;
+  flex-direction: row;
+}
+
+.legend {
+  display: flex;
+  flex-direction: row;
+}
+
+.legend-item {
+  width: 20px;
+  height: 20px;
+}
+
+.legend-label {
+  font-size: 1em;
+  line-height: 1.437em;
+  letter-spacing: 0.001em;
+  padding: 0 2rem 0 1rem;
 }

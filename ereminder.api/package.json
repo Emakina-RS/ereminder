@@ -4,14 +4,20 @@
   "description": "Ereminder applicaion",
   "main": "server.js",
   "dependencies": {
+    "append-query": "^2.1.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "express-sequelize": "0.0.4",
     "express-validator": "^6.2.0",
     "fs": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "log-to-file": "^2.0.1",
     "mysql": "^2.17.1",
     "mysql2": "^1.7.0",
     "node-cron": "^2.0.3",
@@ -19,7 +25,8 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "path": "^0.12.7",
-    "sequelize": "^5.19.2"
+    "sequelize": "^5.19.2",
+    "util": "^0.12.1"
   },
   "devDependencies": {
     "nodemon": "^1.19.3"

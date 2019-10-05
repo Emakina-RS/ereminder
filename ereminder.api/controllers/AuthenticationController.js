@@ -6,7 +6,6 @@ const authenticationHelper = require('../helpers/authenticationHelper');
 const passwordEncryptionHelper = require('../helpers/passwordEncryptionHelper');
 
 exports.Authenticate = async function(request, response) {
-
     const { username, password } = request.body;
 
     if (username && password) {

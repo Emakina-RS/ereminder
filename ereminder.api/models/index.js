@@ -1,14 +1,15 @@
 'use strict';
 
-var fs        = require('fs');
-var path      = require('path');
-var Sequelize = require('sequelize');
-var basename  = path.basename(__filename);
-var env       = 'development';
-var config    = require(__dirname + '/../config/config.js')[env];
-var db        = {};
+const fs        = require('fs');
+const path      = require('path');
+const Sequelize = require('sequelize');
+const basename  = path.basename(__filename);
+const db        = {};
 
-var sequelize = new Sequelize(config.database, config.username, config.password, config);
+const config = require('../config/config');
+const databaseConnection = global.globalConfig.databaseConnection;
+
+var sequelize = new Sequelize(databaseConnection.database, databaseConnection.username, databaseConnection.password, databaseConnection);
 
 fs.readdirSync(__dirname)
   .filter(file => {

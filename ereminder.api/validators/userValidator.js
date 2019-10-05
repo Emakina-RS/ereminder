@@ -1,7 +1,7 @@
 const constants = require('../config/constants');
 const { body, validationResult } = require('express-validator');
 const authenticationHelper = require('../helpers/AuthenticationHelper');
-
+const moment = require('moment');
 exports.validateRegister = [
 
     body('email')
@@ -14,9 +14,8 @@ exports.validateRegister = [
     .custom((value,{req}) => {
         if (value !== req.body.confirmpassword) {
             throw new Error(constants.errorMessages.unmatchedPassword);
-        } else {
-            return value;
         }
+        return value;
     })
     .withMessage(constants.errorMessages.unmatchedPassword)
 ];
@@ -54,42 +53,52 @@ exports.validateConfigInitialization = [
     body('lastTimeTookPills')
     .exists()
     .withMessage(constants.errorMessages.requiredField)
-    .isISO8601(constants.stringFormats.dateTime)
-    .withMessage(constants.errorMessages.futureDate)
-    .isAfter()
-    .withMessage(constants.errorMessages.invalidDateTime),
-
+    .custom((value,{req}) => {
+        if (!validateDateTime(value)) {
+            throw new Error(constants.errorMessages.validateDate);
+        }
+        return value;
+    }),
+ 
     body('lastTimeInPharmacy')
     .exists()
     .withMessage(constants.errorMessages.requiredField)
-    .isISO8601(constants.stringFormats.date)
-    .withMessage(constants.errorMessages.futureDate)
-    .isAfter()
-    .withMessage(constants.errorMessages.invalidDate),
+    .custom((value,{req}) => {
+        if (!validateDate(value)) {
+            throw new Error(constants.errorMessages.invalidDate);
+        }
+        return value;
+    }),
 
     body('lastTimeGotPrescription')
     .exists()
     .withMessage(constants.errorMessages.requiredField)
-    .isISO8601(constants.stringFormats.date)
-    .withMessage(constants.errorMessages.futureDate)
-    .isAfter()
-    .withMessage(constants.errorMessages.invalidDate),
+    .custom((value,{req}) => {
+        if (!validateDate(value)) {
+            throw new Error(constants.errorMessages.validateDate);
+        }
+        return value;
+    }),
 
     body('lastTimeGotReferral')
     .exists()
-    .withMessage(constants.errorMessages.requiredField)
-    .isISO8601(constants.stringFormats.date)
-    .withMessage(constants.errorMessages.futureDate)
-    .isAfter()
-    .withMessage(constants.errorMessages.invalidDate),
+    .withMessage(constants.errorMessages.requiredField('lastTimeGotReferral'))
+    .custom((value,{req}) => {
+        if (!validateDate(value)) {
+            throw new Error(constants.errorMessages.validateDate);
+        }
+        return value;
+    }),
 
     body('lastTimeExamination')
     .exists()
     .withMessage(constants.errorMessages.requiredField)
-    .isISO8601(constants.stringFormats.date)
-    .withMessage(constants.errorMessages.futureDate)
-    .isAfter()
-    .withMessage(constants.errorMessages.invalidDate)
+    .custom((value,{req}) => {
+        if (!validateDate(value)) {
+            throw new Error(constants.errorMessages.validateDate);
+        }
+        return value;
+    }),
 
 ]
 
@@ -100,3 +109,20 @@ exports.returnValidationResults = (req, res, next) => {
     }
     return next(req, res);
 }
+
+exports.convertToUCTDate = (date) => {
+    return moment.utc(date).format(constants.stringFormats.date);
+}
+
+exports.convertToUCTDateTime = (dateTime) => {
+    return moment.utc(dateTime).format(constants.stringFormats.dateTime);
+}
+
+function validateDateTime(dateTime){
+    return moment(dateTime, constants.stringFormats.dateTime, true).isValid();
+  }
+
+function validateDate(date){
+  return  moment(date, constants.stringFormats.date, true).isValid();
+}
+
