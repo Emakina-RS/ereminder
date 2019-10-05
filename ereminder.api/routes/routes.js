@@ -22,8 +22,11 @@ module.exports = function(app) {
     app.post('/initconfig', userValidator.validateConfigInitialization,
         (req, res) => userValidator.returnValidationResults(req, res, accountController.SetInitConfiguration));
 
+    app.get('/initconfig', authenticationHelper.EnsureAuthenticated(), notificationController.getConfigurationDashboard);
+
     app.post('/notification', authenticationHelper.EnsureAuthenticated(), notificationController.CreateNotification);
 
     app.get('/notificationdashboard', authenticationHelper.EnsureAuthenticated(), notificationController.getNotificationDashboard);
+
 
 };

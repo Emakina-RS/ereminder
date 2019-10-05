@@ -27,3 +27,13 @@ exports.getNotificationDashboard = async function(req, res) {
         return res.status(500).json({ error: 'Internal error' })
     }
 }
+
+exports.getConfigurationDashboard = async function(req, res) {
+    try{
+        var currentUserID = authenticationHelper.getUserIdFromRequest(req);
+        let dashboard = await notificationService.getConfigurationDashboard(currentUserID);
+        return res.status(200).json(dashboard);
+    } catch(e){
+        return res.status(500).json({ error: 'Internal error' })
+    }
+}

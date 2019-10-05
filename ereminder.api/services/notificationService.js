@@ -64,7 +64,12 @@ exports.getNotificationDashboard = async function (userID) {
 
     let usersConfiguration = await getDashboardForUpdating(userID);
 
-    return await NotificationDashboard(usersConfiguration);
+    return await notificationDashboard(usersConfiguration);
+};
+
+exports.getConfigurationDashboard = async function (userID) {
+
+    return await models.InitialConfiguration.findOne({ UserId: userID });
 };
 
 async function getDashboardForUpdating(userID){
@@ -80,7 +85,7 @@ async function getDashboardForUpdating(userID){
     });
 }
 
-async function NotificationDashboard(usersConfiguration){
+async function notificationDashboard(usersConfiguration){
 
     let allConfiguration = await getAllConfiguration();
     allConfiguration = allConfiguration.sort((a, b) => {
