@@ -22,7 +22,7 @@ const App = () => {
   return (
     <Router>
       <div className="App">
-        <Navbar />
+        <Navbar isLoggedIn={isLoggedIn} />
         <div className="App-content">
           {isLoggedIn ? (
             <Switch>

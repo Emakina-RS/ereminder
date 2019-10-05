@@ -20,7 +20,7 @@ const store = createStore(
 
 ReactDOM.render(
   <Provider store={store}>
-    <App className="full" />
+    <App />
   </Provider>,
   document.getElementById("root")
 );
@@ -30,7 +30,7 @@ if (process.env.NODE_ENV === "development" && module.hot) {
     const NextApp = require("./App").default;
     ReactDOM.render(
       <Provider store={store}>
-        <NextApp className="full" />
+        <NextApp />
       </Provider>,
       document.getElementById("root")
     );
