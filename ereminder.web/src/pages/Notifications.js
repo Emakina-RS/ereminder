@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "../components/Button";
-import Checkbox from "../components/Checkbox";
+import Radio from "../components/Radio";
 import "./Notifications.css";
 
 const Notifications = ({ history }) => (
@@ -22,7 +22,7 @@ export const NotificationSection = ({ title }) => (
   <div className="NotificationSection">
     <div className="NotificationSection-logo-container" />
     <div className="NotificationSection-Checkbox">
-      <Checkbox />
+      <Radio />
     </div>
     {title}
   </div>
