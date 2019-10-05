@@ -1,0 +1,20 @@
+.Calendar-main {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin: 0 390px;
+}
+
+.Calendar-header {
+  display: flex;
+  justify-content: center;
+}
+
+.Calendar-week {
+  border-bottom: 1px solid #f5f3f3;
+  display: flex;
+}
+
+.Calendar-day {
+  height: 60px;
+  width: 30px;
+}
