@@ -6,6 +6,7 @@ import nalazi from "../assets/icon/nalazi.svg";
 import recepti from "../assets/icon/recepti.svg";
 import uputi from "../assets/icon/uputi.svg";
 import Checkbox from "../components/Checkbox";
+import Radio from "../components/Radio";
 import "./Reminders.css";
 
 const Reminders = () => (
@@ -38,7 +39,9 @@ const Reminders = () => (
       />
     </div>
 
-    <Link to="/notifications">Nastavi</Link>
+    <Link className="ReminderSection-link" to="/notifications">
+      Nastavi
+    </Link>
   </div>
 );
 
@@ -53,12 +56,11 @@ const ReminderSection = ({ icon, title, options }) => (
       </div>
       {title}
     </div>
-    {options.map((option, index) => (
-      <label key={index}>
-        <input type="radio" name={title} />
-        {option}
-      </label>
-    ))}
+    <div className="ReminderSection-container">
+      {options.map((option, index) => (
+        <Radio text={option} />
+      ))}
+    </div>
   </div>
 );
 

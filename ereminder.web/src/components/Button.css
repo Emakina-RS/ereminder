@@ -1,10 +1,10 @@
 .Button {
   background-color: #bd1e2c;
   border: none;
+  border-radius: 5px;
   color: #ffffff;
   display: block;
-  font-family: "Roboto Condensed";
-  font-size: 16px;
+  font-size: 20px;
   padding: 1.25em 0;
   text-transform: uppercase;
   width: 100%;

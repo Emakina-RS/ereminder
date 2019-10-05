@@ -44,5 +44,23 @@
 }
 
 .ReminderSection-Checkbox {
-  padding: 0 20px 0 38px;
+  padding: 0 20px 0 40px;
+}
+
+.ReminderSection-container {
+  display: grid;
+  grid-template: "1 2";
+  margin-left: 100px;
+}
+
+.ReminderSection-label {
+  font-size: 20px;
+  padding: 1.1em 1em;
+}
+
+.ReminderSection-link {
+  font-size: 20px;
+  color: #bd1e2c;
+  text-decoration: none;
+  text-transform: uppercase;
 }

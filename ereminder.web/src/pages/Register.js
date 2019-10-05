@@ -14,12 +14,14 @@ const Register = ({ history }) => (
       <Button onClick={() => history.push("/new-reminder")}>
         Registruj se
       </Button>
-      <span className="Register-span">
-        Već imate nalog? Uloguj se{" "}
-        <Link className="Register-span-link" to="/login">
-          ovde
-        </Link>
-      </span>
+      <div className="Register-allready">
+        <h2>
+          Već imate nalog? Uloguj se{" "}
+          <Link className="Register-span-link" to="/login">
+            ovde
+          </Link>
+        </h2>
+      </div>
     </div>
   </div>
 );
