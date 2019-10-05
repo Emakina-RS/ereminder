@@ -14,7 +14,7 @@ const config = require('./config/config');
 const corsUrls = global.globalConfig.corsUrls;
 
 schedule.frequentReminderJob();
-schedule.dailyReminderJob();
+//schedule.dailyReminderJob();
 
 var app = express()
     .use(bodyParser.urlencoded({ extended: true }))
