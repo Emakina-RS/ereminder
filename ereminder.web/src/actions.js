@@ -11,11 +11,11 @@ export const logIn = (email, password) => dispatch => {
     })
   })
     .then(response => response.json())
-    .then(data => {
-      if (data.token === undefined) {
+    .then(({ token }) => {
+      if (token === undefined) {
         dispatch({ type: "LOG_IN_FAILED" });
       } else {
-        dispatch({ type: "LOG_IN_SUCCESSFUL" });
+        dispatch({ type: "LOG_IN_SUCCESSFUL", token });
       }
     });
 };
