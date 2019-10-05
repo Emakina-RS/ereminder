@@ -2,15 +2,17 @@
 
 const jwt = require('jsonwebtoken');
 const AuthenticationHelper = require('../helpers/AuthenticationHelper');
+const models  = require('../models');
 
 exports.Authenticate = async function(request, response, next) {
     const { username, password } = request.body;
 
     if (username && password) {
-        let user = await getUser({ username });
+        let user = await models.User.findOne({ username });
 
         if (!user) {
             response.status(401).json({ msg: 'No such user found', user });
+            return;
         }
 
         if (user.password === password) {
@@ -23,15 +25,4 @@ exports.Authenticate = async function(request, response, next) {
             response.status(401).json({ msg: 'Password is incorrect' });
         }
     }
-}
-
-//TODO: remove this when we get repositories ready
-const getUser = async obj => {
-    var user = {
-        id: 1,
-        name: 'dejan',
-        password: 'ostojic'
-    }
-
-    return Promise.resolve(user);
 }

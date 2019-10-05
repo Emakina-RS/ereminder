@@ -2,6 +2,7 @@
 
 const passport = require('passport');
 const passportJWT = require('passport-jwt');
+const models  = require('../models');
 
 let JwtStrategy = passportJWT.Strategy;
 let jwtOptions = {
@@ -24,7 +25,7 @@ module.exports.JwtOptions = jwtOptions;
 
 function getPassportStrategy() {
     return new JwtStrategy(jwtOptions, function(jwt_payload, next) {
-        let user = getUser({ id: jwt_payload.id });
+        let user = models.User.findOne({ id: jwt_payload.id });
 
         if (user) {
             next(null, user);
@@ -33,15 +34,4 @@ function getPassportStrategy() {
             next(null, false);
         }
     });
-}
-
-//TODO: remove this when we get repositories ready
-const getUser = async obj => {
-    var user = {
-        id: 1,
-        name: 'dejan',
-        password: 'ostojic'
-    }
-
-    return Promise.resolve(user);
 }
