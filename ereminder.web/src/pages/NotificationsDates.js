@@ -43,7 +43,7 @@ const DateSelector = ({ selectorType, label }) => {
       <h3 className="DateSelector-label">{label}</h3>
       <div className={customClass}>
         {selectorType.map((option, index) => {
-          if (option == "date") {
+          if (option === "date") {
             return <Input type={option} />;
           } else {
             return (
