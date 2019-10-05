@@ -13,9 +13,14 @@
     "mysql": "^2.17.1",
     "mysql2": "^1.7.0",
     "path": "^0.12.7",
+    "jsonwebtoken": "^8.5.1",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
     "sequelize": "^5.19.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^1.19.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
