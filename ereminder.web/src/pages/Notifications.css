@@ -1,14 +1,20 @@
-.Notifications {
+.Notifications-grid {
+  display: grid;
+  grid-template-areas:
+    "1 2"
+    "3 4"
+    "5 .";
+  gap: 30px;
+  width: 80%;
   margin: auto;
-  width: 555px;
+  overflow: hidden;
 }
-
 .Notifications > h1 {
   text-transform: uppercase;
   font-weight: normal;
 }
 
-.NotificationSection {
+.Notificationsection-heading {
   align-items: center;
   background-color: #f5f3f4;
   display: flex;
@@ -16,19 +22,7 @@
   text-transform: uppercase;
 }
 
-.NotificationSection + .NotificationSection {
-  margin-top: 60px;
-}
-
-.NotificationSection-heading {
-  align-items: center;
-  background-color: #f5f3f4;
-  display: flex;
-  margin-bottom: 28px;
-  text-transform: uppercase;
-}
-
-.NotificationSection-logo-container {
+.Notificationsection-logo-container {
   align-items: center;
   background-color: #bc1e2d;
   display: flex;
@@ -37,6 +31,32 @@
   width: 60px;
 }
 
-.NotificationSection-Checkbox {
-  padding: 0 20px 0 38px;
+.Notificationsection-logo {
+  height: 30px;
+}
+
+.Notificationsection-logo > svg {
+  height: 30px;
+}
+
+.Notificationsection-Checkbox {
+  padding: 0 20px 0 40px;
+}
+
+.Notificationsection-container {
+  display: grid;
+  grid-template: "1 2";
+  margin-left: 100px;
+}
+
+.Notificationsection-label {
+  font-size: 1.25em;
+  padding: 1.1rem 1rem;
+}
+
+.Notificationsection-link {
+  font-size: 1.25em;
+  color: #bd1e2c;
+  text-decoration: none;
+  text-transform: uppercase;
 }

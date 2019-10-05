@@ -1,0 +1,56 @@
+.NotificationDates-grid {
+  display: grid;
+  grid-template-areas:
+    "1 2"
+    "3 4"
+    "5 .";
+  gap: 30px;
+  width: 80%;
+  margin: auto;
+  overflow: hidden;
+}
+.NotificationDates > h1 {
+  text-transform: uppercase;
+  font-weight: normal;
+}
+
+.NotificationDates > h2 {
+  font-style: italic;
+  color: #bd1e2c;
+  font-size: 1.25em;
+}
+
+.DateSelector h3 {
+  color: #333333;
+  font-size: 1.25em;
+}
+
+.DateSelector {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.DateSelector-picker-date-time {
+  display: grid;
+  grid-template-areas: "1 1";
+  gap: 5em;
+}
+
+.DateSelector .DateSelector-label {
+  font-size: 1.25em;
+  color: #333333;
+  display: block;
+}
+
+.DateSelector input {
+  display: block;
+  color: #bd1e2c;
+  margin-bottom: 1.5rem;
+  border-radius: 5px;
+  border-color: #333333;
+  box-sizing: border-box;
+  font-size: 1.25em;
+  padding: 1rem 1rem;
+  width: 100%;
+}

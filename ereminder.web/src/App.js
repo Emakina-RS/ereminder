@@ -10,10 +10,10 @@ import Navbar from "./components/Navbar";
 import Calendar from "./pages/Calendar";
 import ForgotPassword from "./pages/ForgotPassword";
 import Login from "./pages/Login";
-import NewReminder from "./pages/NewReminder";
 import Notifications from "./pages/Notifications";
+import NotificationsDates from "./pages/NotificationsDates";
+import NotificationsType from "./pages/NotificationsType";
 import Register from "./pages/Register";
-import Reminders from "./pages/Reminders";
 
 function App() {
   return (
@@ -25,11 +25,11 @@ function App() {
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/forgot-password" component={ForgotPassword} />
-            <Route path="/new-reminder" component={NewReminder} />
-            <Route path="/reminders" component={Reminders} />
+            <Route path="/notifications-date" component={NotificationsDates} />
             <Route path="/notifications" component={Notifications} />
+            <Route path="/notifications-type" component={NotificationsType} />
             <Route path="/calendar" component={Calendar} />
-            <Redirect to="/register" />
+            <Redirect to="/login" />
           </Switch>
         </div>
       </div>
