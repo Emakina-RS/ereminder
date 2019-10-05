@@ -9,7 +9,8 @@ exports.initializeDB = function(server) {
             server.on('listening', onListening);
         })
         .then(populateIntervals)
-        .then(populateTypes);
+        .then(populateTypes)
+        .then(populateDashboard);
 };
 
 function onError(error) {
@@ -73,4 +74,54 @@ async function populateTypes() {
           { 'value': 'nalazi', 'createdAt': date, 'updatedAt': date }
       ]);
     }
+}
+
+async function populateDashboard() {
+  let count = await models.Notification.count();
+
+  if (count === 0) {
+
+    models.NotificationType.findByPk(1).then((notificationType) => {
+      notificationType.setIntervals([1,2]).then((sc)=>{
+          console.log(sc);
+      });
+    });
+
+    models.NotificationType.findByPk(2).then((notificationType) => {
+      notificationType.setIntervals([3,4,5,6,7,8]).then((sc)=>{
+          console.log(sc);
+      });
+    });
+
+    models.NotificationType.findByPk(3).then((notificationType) => {
+      notificationType.setIntervals([3,4]).then((sc)=>{
+          console.log(sc);
+      });
+    });
+
+    models.NotificationType.findByPk(4).then((notificationType) => {
+      notificationType.setIntervals([8]).then((sc)=>{
+          console.log(sc);
+      });
+    });
+
+    models.NotificationType.findByPk(5).then((notificationType) => {
+      notificationType.setIntervals([9]).then((sc)=>{
+          console.log(sc);
+      });
+    });
+
+    addTestNotifications();
+
+  }
+}
+
+function addTestNotifications(){
+      models.Notification.bulkCreate([
+        { 'lastTimeSent':date, 'IntervalId': 1, 'NotificationTypeId': 1, 'UserId': 1 },
+        { 'lastTimeSent':date, 'IntervalId': 3, 'NotificationTypeId': 2, 'UserId': 1 },
+        { 'lastTimeSent':date, 'IntervalId': 3, 'NotificationTypeId': 3, 'UserId': 1 },
+        { 'lastTimeSent':date, 'IntervalId': 8, 'NotificationTypeId': 4, 'UserId': 1 },
+        { 'lastTimeSent':date, 'IntervalId': 9, 'NotificationTypeId': 5, 'UserId': 1 },
+    ]);
 }

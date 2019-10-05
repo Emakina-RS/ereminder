@@ -23,4 +23,7 @@ module.exports = function(app) {
         (req, res) => userValidator.returnValidationResults(req, res, accountController.SetInitConfiguration));
 
     app.post('/notification', authenticationHelper.EnsureAuthenticated(), notificationController.CreateNotification);
+
+    app.get('/notificationdashboard', authenticationHelper.EnsureAuthenticated(), notificationController.getNotificationDashboard);
+
 };

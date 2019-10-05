@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Notification.associate = function (models) {
-    models.Notification.belongsTo(models.NotificationType, {
+    models.Notification.hasMany(models.NotificationType, {
       foreignKey: {
         allowNull: false
       }
