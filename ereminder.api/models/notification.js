@@ -13,13 +13,24 @@ module.exports = (sequelize, DataTypes) => {
     models.Notification.belongsTo(models.User, {
       foreignKey: {
         allowNull: false
-      },
-      onDelete:"restrict"
+      }
     });
+  };
 
-    models.Notification.hasOne(models.Interval);
-    models.Notification.hasOne(models.NotificationType);
+  Notification.associate = function (models) {
+    models.Notification.belongsTo(models.NotificationType, {
+      foreignKey: {
+        allowNull: false
+      }
+    });
+  };
 
+  Notification.associate = function (models) {
+    models.Notification.belongsTo(models.Interval, {
+      foreignKey: {
+        allowNull: false
+      }
+    });
   };
 
   return Notification;

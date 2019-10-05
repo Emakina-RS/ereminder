@@ -10,12 +10,6 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   NotificationType.associate = function (models) {
-    models.NotificationType.belongsTo(models.Notification, {
-      onDelete: "restrict",
-      foreignKey: {
-        allowNull: false
-      }
-    });
     models.NotificationType.belongsToMany(models.Interval, {
       through: 'NotificationTypeInterval',
       as: 'intervals',
