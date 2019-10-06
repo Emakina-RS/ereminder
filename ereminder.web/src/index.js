@@ -6,6 +6,7 @@ import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from "redux-thunk";
 import App from "./App";
 import "./index.css";
+import configuration from "./reducers/configuration";
 import login from "./reducers/login";
 import register from "./reducers/register";
 import settings from "./reducers/settings";
@@ -31,6 +32,7 @@ const saveState = state => {
 
 const store = createStore(
   combineReducers({
+    configuration,
     login,
     register,
     settings,

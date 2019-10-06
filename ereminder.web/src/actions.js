@@ -27,6 +27,14 @@ const post = (path, payload, token) => {
   }).then(response => response.json());
 };
 
+export const getConfiguration = () => (dispatch, getState) =>
+  get("/initconfig", undefined, getState().token).then(configuration =>
+    dispatch({
+      type: "INITIAL_CONFIGURATION_RECEIVED",
+      configuration
+    })
+  );
+
 export const getInitialData = () => (dispatch, getState) => {
   const { token } = getState();
   console.log("Fetching data with token: " + token);
