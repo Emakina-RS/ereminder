@@ -1,11 +1,12 @@
 'use strict'
+
 const models = require('../models');
 const constants = require('../config/constants');
 const mailer = require('../core/mailer');
+const configurationService = require('../services/configurationService');
 
 require('../config/config');
 const mailSubjects = global.globalConfig.mailSubjects;
-
 const notificationEmailSubjects = getNotificationEmailSubjects();
 
 exports.updateNotifications = async function (notificationsArray, userId) {
@@ -55,22 +56,6 @@ exports.getNotificationDashboard = async function (userId) {
     let usersConfiguration = await getDashboardForUpdating(userId);
     return await notificationDashboard(usersConfiguration);
 };
-
-async function getConfigurationDashboard(userId) {
-    var query = {
-        where: {id: userId},
-        include: [
-          {model: models.InitialConfiguration, as: 'InitialConfiguration'}
-        ]
-      }
-
-    return await models.User.findOne(query).
-    then(function (user) {
-        return user.InitialConfiguration
-    });
-};
-
-exports.getConfigurationDashboard = getConfigurationDashboard;
 
 function getNotificationEmailSubjects() {
     let subjects = {}
@@ -172,32 +157,11 @@ async function deleteNotification(notificationId, userId) {
 }
 
 async function calculateNextNotificationTime(notificationTypeId, notificationIntervalId, userId, lastTimeSent) {
-    let initConfig = await getConfigurationDashboard(userId);
-    let configAttr;
-
-    switch(notificationTypeId) {
-        case 1:
-            configAttr = initConfig.lastTimeTookPills;
-            break;
-        case 2:
-            configAttr = initConfig.lastTimeGotPrescription;
-            break;
-        case 3:
-            configAttr = initConfig.lastTimeInPharmacy;
-            break;
-        case 4:
-            configAttr = initConfig.lastTimeGotReferral;
-            break;
-        case 5:
-            configAttr = initConfig.lastTimeExamination;
-            break;
-        default:
-            configAttr = null;
-    }
+    let configuration = await configurationService.GetConfiguration(userId);
+    let lastTimeConfiguration = configurationService.GetLastTimeConfiguration(notificationTypeId, configuration);
 
     if (lastTimeSent == null) {
-        // TODO: return initConfig attr (find attr by type) incremented by interval
-        return configAttr;
+        return lastTimeConfiguration;
     }
 }
 

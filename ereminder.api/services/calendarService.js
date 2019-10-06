@@ -4,6 +4,7 @@ const models = require('../models');
 const constants = require('../config/constants');
 const dateformat = require('dateformat');
 const moment = require('moment');
+const configurationService = require('./configurationService');
 require('moment-recur');
 
 exports.getCalendar = async function(userId, startDate, endDate) {
@@ -33,7 +34,7 @@ exports.getCalendar = async function(userId, startDate, endDate) {
             continue;
         }
 
-        let lastTimeInitConfiguration = getLastDateTimeFromConfiguration(notification.NotificationTypeId, initialConfiguration);
+        let lastTimeInitConfiguration = await configurationService.GetLastTimeConfiguration(notification.NotificationTypeId, initialConfiguration);
         let recurrence = moment(lastTimeInitConfiguration).recur().every(notification.intervalHours / 24).days();
 
         do {
@@ -63,25 +64,4 @@ function appendNotification(calendar, date, notificationTypeName, notificationTy
         "notificationTypeName": notificationTypeName,
         "notificationTypeId": notificationTypeId
     });
-}
-
-function getLastDateTimeFromConfiguration(notificationTypeId, initialConfiguration) {
-    let lastTimeInitConfiguration;
-
-    switch (notificationTypeId) {
-        case constants.NotificationType.Recepies:
-            lastTimeInitConfiguration = new Date(initialConfiguration.lastTimeGotPrescription);
-            break;
-        case constants.NotificationType.Pharmacy:
-            lastTimeInitConfiguration = new Date(initialConfiguration.lastTimeInPharmacy);
-            break;
-        case constants.NotificationType.Referral:
-            lastTimeInitConfiguration = new Date(initialConfiguration.lastTimeGoReferral);
-            break;
-        case constants.NotificationType.MedicalFindings:
-            lastTimeInitConfiguration = new Date(initialConfiguration.lastTimeExamination);
-            break;
-    }
-
-    return lastTimeInitConfiguration;
 }

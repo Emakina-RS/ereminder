@@ -10,7 +10,15 @@ module.exports = (sequelize, DataTypes) => {
     lastTimeInPharmacy: DataTypes.DATEONLY,
     lastTimeGotPrescription: DataTypes.DATEONLY,
     lastTimeGotReferral: DataTypes.DATEONLY,
-    lastTimeExamination: DataTypes.DATEONLY
+    lastTimeExamination: DataTypes.DATEONLY,
+    enableEmailNotification: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    enableCalendarNotification: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
   });
 
   InitialConfiguration.associate = function (models) {

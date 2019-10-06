@@ -4,6 +4,7 @@ const authenticationController = require('../controllers/AuthenticationControlle
 const accountController = require('../controllers/AccountController');
 const notificationController = require('../controllers/NotificationController');
 const calendarController = require('../controllers/CalendarController');
+const configurationController = require('../controllers/ConfigurationController');
 const authenticationHelper = require('../helpers/authenticationHelper');
 const userValidator = require('../validators/userValidator');
 
@@ -20,14 +21,15 @@ module.exports = function(app) {
     app.post('/forgotpassword', userValidator.validateForgotPassword,
         (req, res) => userValidator.returnValidationResults(req, res, accountController.ForgotPassword));
 
-    app.post('/initconfig', userValidator.validateConfigInitialization,
-        (req, res) => userValidator.returnValidationResults(req, res, accountController.SetInitConfiguration));
+    app.post('/configuration', userValidator.validateConfigInitialization,
+        (req, res) => userValidator.returnValidationResults(req, res, configurationController.CreateConfiguration));
 
-    app.get('/initconfig', authenticationHelper.EnsureAuthenticated(), notificationController.getConfigurationDashboard);
+    app.get('/configuration', authenticationHelper.EnsureAuthenticated(), configurationController.GetConfiguration);
+    app.patch('/configuration', authenticationHelper.EnsureAuthenticated(), configurationController.UpdateConfiguration);
 
     app.post('/notifications', authenticationHelper.EnsureAuthenticated(), notificationController.UpdateNotifications);
 
-    app.get('/notificationdashboard', authenticationHelper.EnsureAuthenticated(), notificationController.getNotificationDashboard);
+    app.get('/notificationdashboard', authenticationHelper.EnsureAuthenticated(), notificationController.GetNotificationDashboard);
 
     //TODO: add the input validation, for dates (startDate/endDate)
     app.get('/calendar', authenticationHelper.EnsureAuthenticated(), calendarController.GetCalendar);
