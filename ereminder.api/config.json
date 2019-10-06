@@ -4,12 +4,12 @@
         "apiPort": 8081,
         "corsUrls": [ "http://dev.ereminder.com/" ],
         "mailSettings": {
-            "smtp": "smtp.gmail.com",
+            "smtp": "",
             "port": 587,
-            "username": "dev@emakina.rs",
-            "password": "development",
+            "username": "",
+            "password": "",
             "enableSsl": false,
-            "fromEmail": "dev@emakina.rs"
+            "fromEmail": ""
         },
         "mailSubjects": {
             "resetPasswordSubject": "Zaboravili ste lozinku?"

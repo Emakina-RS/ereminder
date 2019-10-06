@@ -5,7 +5,7 @@ const passwordEncryptionHelper = require('../helpers/passwordEncryptionHelper');
 const mailer = require('../core/mailer');
 const ecryptionHelper = require('../helpers/encryptionHelper');
 
-const config = require('../config/config');
+require('../config/config');
 const siteUrls = global.globalConfig.siteUrls;
 const mailSubjects = global.globalConfig.mailSubjects;
 const userValidator = require('../validators/userValidator.js');
@@ -26,7 +26,7 @@ module.exports.sendForgotPasswordEmail = async function(email) {
      }
 
      let token = getResetPasswordToken(user);
-     let body = "<b>Reset your password:</b>" + appendQuery(siteUrls.resetPassword, 'q=' + token);
+     let body = "<b>Reset your password:</b>" + appendQuery(siteUrls.resetPassword, 'q=' + token);//TODO: implement proper email template
 
      await mailer.send(mailSubjects.resetPasswordSubject, body, email);
 }

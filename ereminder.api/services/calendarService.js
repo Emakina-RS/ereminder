@@ -10,11 +10,11 @@ exports.getCalendar = async function(userId, startDate, endDate) {
     let initialConfiguration = await models.InitialConfiguration.findOne({ UserId: userId });
 
     let notifications = await models.sequelize
-        .query("SELECT n.NotificationTypeId, nt.value as 'notificationType', i.displayName, i.valueInHours as 'intervalHours'  FROM notifications n " +
-                    "INNER JOIN users u ON n.UserId = u.Id " +
-                    "INNER JOIN notificationtypes nt ON n.NotificationTypeId = nt.Id " +
-                    "INNER JOIN intervals i ON n.IntervalId = i.Id " +
-                "WHERE u.Id = " + userId, {
+        .query(`SELECT n.NotificationTypeId, nt.value as 'notificationType', i.displayName, i.valueInHours as 'intervalHours'  FROM notifications n
+                    INNER JOIN users u ON n.UserId = u.Id
+                    INNER JOIN notificationtypes nt ON n.NotificationTypeId = nt.Id
+                    INNER JOIN intervals i ON n.IntervalId = i.Id
+                WHERE u.Id = ${userId}`, {
                     type: models.sequelize.QueryTypes.SELECT
                 }
         );
@@ -44,7 +44,7 @@ exports.getCalendar = async function(userId, startDate, endDate) {
             let newDate = loopDate.setDate(loopDate.getDate() + 1);
             loopDate = new Date(newDate);
         }
-        while(loopDate <= endDate);
+        while (loopDate <= endDate);
     };
 
     return calendar;

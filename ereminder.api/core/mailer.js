@@ -1,7 +1,7 @@
 'use strict';
 
 const nodemailer = require('nodemailer');
-const config = require('../config/config');
+require('../config/config');
 const mailSettings = global.globalConfig.mailSettings;
 
 exports.send = async function(subject, body, to) {
