@@ -172,3 +172,80 @@ ul {
   letter-spacing: 0.001em;
   padding: 0 2rem 0 1rem;
 }
+
+.Modal-overlay {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+}
+.Modal {
+  z-index: 1010;
+  position: fixed;
+  background-color: #ffffff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 555px;
+  height: 700px;
+}
+
+.Modal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Modal-container .item {
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
+  width: 80%;
+  padding: 1rem 0;
+  align-items: center;
+}
+
+.Modal-container .item img {
+  height: 50px;
+}
+
+.Modal-container .item:last-of-type {
+  margin-top: 2rem;
+  border-top: #c4c4c4 1px solid;
+  justify-content: center;
+}
+
+.Modal-container .item label {
+  text-transform: uppercase;
+  font-size: 1.25em;
+  font-weight: 400;
+  color: #bd1e2c;
+  padding-left: 2rem;
+}
+
+.Modal-container h2 {
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 1.85em;
+  padding: 2rem 0;
+}
+
+.Modal .close-button {
+  background: none;
+  color: inherit;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  font-size: 1.25em;
+  line-height: 1.437em;
+  letter-spacing: 0.001em;
+  font-weight: bold;
+  color: #bd1e2c;
+  text-decoration: none;
+  text-transform: uppercase;
+}

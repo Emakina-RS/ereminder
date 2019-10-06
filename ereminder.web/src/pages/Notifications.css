@@ -24,10 +24,10 @@
 
 .Notificationsection-logo-container {
   align-items: center;
+  justify-content: center;
   background-color: #bc1e2d;
   display: flex;
   height: 60px;
-  justify-content: center;
   width: 60px;
 }
 

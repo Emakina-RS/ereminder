@@ -34,7 +34,7 @@ const Notifications = () => (
       <Notificationsection
         icon={uputi}
         title="Uput"
-        options={["Svaki 6 meseci"]}
+        options={["Svakih 6 meseci"]}
       />
       <Notificationsection
         icon={nalazi}
