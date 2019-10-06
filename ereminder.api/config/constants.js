@@ -22,8 +22,18 @@ const NotificationType = {
     Medicine: 1,
     Recepies: 2,
     Pharmacy: 3,
-    Referral: 4
+    Referral: 4,
+    MedicalFindings:5
 }
+
+const NotificationTypeDictionary = {
+    1:"medicine",
+    2:"recepies",
+    3:"pharmacy",
+    4:"referral",
+    5:"medicalFindings"
+}
+
 
 const NotificationInterval = {
     TwelveHours: 1,
@@ -40,3 +50,5 @@ const NotificationInterval = {
 module.exports = Constants;
 module.exports.NotificationType = NotificationType;
 module.exports.NotificationInterval = NotificationInterval;
+module.exports.NotificationTypeDictionary = NotificationTypeDictionary;
+

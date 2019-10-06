@@ -88,16 +88,14 @@ async function getDashboardForUpdating(userID){
 async function notificationDashboard(usersConfiguration){
 
     let allConfiguration = await getAllConfiguration();
-    allConfiguration = allConfiguration.sort((a, b) => {
-        return a.id > b.id;
-    }).map(function(notificationType){
+    allConfiguration = allConfiguration.map(function(notificationType){
         return {
             intervals: notificationType.intervals.map((interval) => {
                 return { id: interval.id,
                         displayName: interval.displayName,
-                        valueInHours: interval.valueInHours,
                         checked: false
                     };}),
+            key: constants.NotificationTypeDictionary[notificationType.id],
             notificationTypeId: notificationType.id,
             notificationTypeValue: notificationType.value,
             checked: false
@@ -111,14 +109,14 @@ async function notificationDashboard(usersConfiguration){
         updateMatchingConfiguration(allConfiguration, config)
     });
 
-    return allConfiguration;
+    return arrayToObject(allConfiguration, "key");
 }
 
 async function getAllConfiguration(){
     return await models.NotificationType.findAll({
         include: [{
             model: models.Interval,
-            attributes : ['id', 'displayName', 'valueInHours'],
+            attributes : ['id', 'displayName'],
             as:'intervals',
             required: true
         }]
@@ -129,18 +127,24 @@ function updateMatchingConfiguration(array, config){
 
     array.forEach((item) => {
         if(item.notificationTypeId ===  config.NotificationTypeId) {
+            let checked = false;
             item.intervals.forEach((interval) => {
-                let checked = false;
                 if(interval.id === config.Interval.id){
                     interval.checked = true;
                     checked = true;
                 }
-                if(checked){
-                    item.checked = true;
-                    item.notificationId = config.id;
-                }
             });
+            if(checked){
+                item.checked = true;
+                item.notificationId = config.id;
+                item.intervalId = config.Interval.id;
+            }
         }
     })
 }
 
+const arrayToObject = (array, keyField) =>
+   array.reduce((obj, item) => {
+     obj[item[keyField]] = item
+     return obj
+   }, {})
