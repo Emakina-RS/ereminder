@@ -28,7 +28,7 @@ const post = (path, payload, token) => {
 };
 
 export const getConfiguration = () => (dispatch, getState) =>
-  get("/initconfig", undefined, getState().token).then(configuration =>
+  get("/configuration", undefined, getState().token).then(configuration =>
     dispatch({
       type: "INITIAL_CONFIGURATION_RECEIVED",
       configuration
