@@ -29,6 +29,6 @@ module.exports = function(app) {
 
     app.get('/notificationdashboard', authenticationHelper.EnsureAuthenticated(), notificationController.getNotificationDashboard);
 
-    //TODO: add the input validation, for dates (from/to)
+    //TODO: add the input validation, for dates (startDate/endDate)
     app.get('/calendar', authenticationHelper.EnsureAuthenticated(), calendarController.GetCalendar);
 };
