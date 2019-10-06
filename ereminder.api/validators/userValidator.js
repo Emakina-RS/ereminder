@@ -21,15 +21,19 @@ exports.validateRegister = [
 ];
 
 exports.validateResetPassword = [
-    body('token')
+    body('password')
         .exists()
-        .withMessage(constants.errorMessages.requiredField('token')),
-    body('currentPassword')
+        .withMessage(constants.errorMessages.requiredField('password')),
+    body('confirmPassword')
         .exists()
-        .withMessage(constants.errorMessages.requiredField('currentPassword')),
-    body('newPassword')
-        .exists()
-        .withMessage(constants.errorMessages.requiredField('newPassword'))
+        .withMessage(constants.errorMessages.requiredField('confirmPassword'))
+        .custom((value, {req}) => {
+            if (value !== req.body.password) {
+                throw new Error("Passwords don't match");
+            }
+            return value;
+        })
+        .withMessage(constants.errorMessages.unmatchedPassword)
 ];
 
 exports.validateForgotPassword = [

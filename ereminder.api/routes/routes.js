@@ -3,6 +3,7 @@
 const authenticationController = require('../controllers/AuthenticationController');
 const accountController = require('../controllers/AccountController');
 const notificationController = require('../controllers/NotificationController');
+const calendarController = require('../controllers/CalendarController');
 const authenticationHelper = require('../helpers/authenticationHelper');
 const userValidator = require('../validators/userValidator');
 
@@ -28,5 +29,6 @@ module.exports = function(app) {
 
     app.get('/notificationdashboard', authenticationHelper.EnsureAuthenticated(), notificationController.getNotificationDashboard);
 
-
+    //TODO: add the input validation, for dates (from/to)
+    app.get('/calendar', authenticationHelper.EnsureAuthenticated(), calendarController.GetCalendar);
 };

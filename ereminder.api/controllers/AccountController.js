@@ -37,13 +37,14 @@ exports.ForgotPassword = async function(req, res) {
 
 exports.ResetPassword = async function(req, res) {
     try {
-        await userService.resetPassword(req.body.token, req.body.currentPassword, req.body.newPassword);
+        await userService.resetPassword(req.body.token, req.body.password);
 
         res.status(200).json({
             message: util.format("Password has been successfully reset.")
         });
     }
     catch(e) {
+        //TODO: should not return always 500, in case of an invalid input return 400 (bad request).
         res.status(500).json({
             message: e.message
         });

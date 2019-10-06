@@ -23,7 +23,7 @@ module.exports.EnsureAuthenticated = function() {
 
 module.exports.JwtOptions = jwtOptions;
 
-module.exports.getUserIdFromRequest = function(req){
+module.exports.getUserIdFromRequest = function(req) {
     if (req.headers && req.headers.authorization) {
         var authorization = req.headers.authorization.split(' ')[1],
             decoded;

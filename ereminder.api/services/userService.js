@@ -31,14 +31,16 @@ module.exports.sendForgotPasswordEmail = async function(email) {
      await mailer.send(mailSubjects.resetPasswordSubject, body, email);
 }
 
-module.exports.resetPassword = async function(token, currentPassword, newPassword) {
+module.exports.resetPassword = async function(token, password) {
      let userId = getUserIdFromToken(token);
      let user = await models.User.findOne({ id: userId });
 
-     ensureCurrentPasswordIsValid(user, currentPassword);
+     if (!user) {
+          throw Error("Non-existing user");
+     }
 
-     let newPasswordHashed = await passwordEncryptionHelper.getEncryptedValue(newPassword);
-     await models.User.update( { password: newPasswordHashed }, { where: { id: userId} });
+     let passwordHashed = await passwordEncryptionHelper.getEncryptedValue(password);
+     await models.User.update( { password: passwordHashed }, { where: { id: userId} });
 }
 
 module.exports.setInitConfiguration = async function (body, userID) {
@@ -99,20 +101,11 @@ function getUserIdFromToken(token) {
      return tokenJson.id;
 }
 
-async function ensureCurrentPasswordIsValid(user, currentPassword) {
-     if (!user) {
-          throw Error("Non-existing user");
-     }
-
-     let validPassword = await passwordEncryptionHelper.compare(currentPassword, user.password);
-     if (!validPassword) {
-          throw Error("The user current password is invalid!");
-     }
-}
-
 function ensureTokenDateIsValid(date) {
      let tokenDate = new Date(date);
      let currentDate = new Date();
 
-     return tokenDate.getTime() < currentDate.getTime();
+     if (tokenDate.getTime() < currentDate.getTime()) {
+          throw new Error("Invalid token.");
+     }
 }
