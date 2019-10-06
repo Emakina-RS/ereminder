@@ -12,7 +12,12 @@
             "fromEmail": ""
         },
         "mailSubjects": {
-            "resetPasswordSubject": "Zaboravili ste lozinku?"
+            "resetPasswordSubject": "Zaboravili ste lozinku?",
+            "medicineEmailSubject": "Podsetnik za uzimanje lekova",
+            "recepieEmailSubject": "Podsetnik za recept",
+            "pharmacyEmailSubject": "Podsetnik za odlazak u apoteku",
+            "referralEmailSubject": "Podsetnik za odlazak po uput",
+            "medicalFindingsEmailSubject": "Podsetnik za nalaze"
         },
         "databaseConnection": {
             "dialect": "mysql",
