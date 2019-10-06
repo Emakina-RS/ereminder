@@ -5,6 +5,7 @@ const constants = require('../config/constants');
 const userValidator = require('../validators/userValidator.js');
 
 exports.CreateConfiguration = async function (body, userId) {
+    //TODO: implement this validation out of this service method (middleware)
     let configuration = {
          lastTimeTookPills: userValidator.convertToUCTDateTime(body.lastTimeTookPills),
          lastTimeInPharmacy: userValidator.convertToUCTDate(body.lastTimeInPharmacy),
@@ -50,7 +51,9 @@ exports.GetConfiguration = async function (userId) {
 };
 
 exports.UpdateConfiguration = async function(userId, configuration) {
-    throw new Error("Not implemented exception."); //TODO
+    await models.InitialConfiguration.update(configuration, {
+        where: { id: userId }
+    });
 }
 
 exports.GetLastTimeConfiguration = async function(notificationTypeId, initialConfiguration) {

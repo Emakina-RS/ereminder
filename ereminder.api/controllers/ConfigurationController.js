@@ -37,7 +37,7 @@ exports.UpdateConfiguration = async function(req, res) {
             return res.status(401).json({ error: 'Unauthorized' });
         }
 
-        await configurationService.UpdateConfiguration(req.body, currentUserId);
+        await configurationService.UpdateConfiguration(currentUserId, req.body);
         return res.status(200).json({ message: 'Configuration successfully updated.' });
     }
     catch (e) {
