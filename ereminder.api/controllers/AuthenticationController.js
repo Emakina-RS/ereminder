@@ -9,7 +9,7 @@ exports.Authenticate = async function(request, response) {
     const { username, password } = request.body;
 
     if (username && password) {
-        let user = await models.User.findOne({ username });
+        let user = await models.User.findOne({where: { email: username }});
 
         if (!user) {
             response.status(401).json({ msg: 'No such user found', user });
