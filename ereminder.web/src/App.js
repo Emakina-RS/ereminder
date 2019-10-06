@@ -7,6 +7,7 @@ import {
   Switch
 } from "react-router-dom";
 import "./App.css";
+import LoggedInRoot from "./components/LoggedInRoot";
 import Navbar from "./components/Navbar";
 import Calendar from "./pages/Calendar";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -26,6 +27,8 @@ const App = () => {
         <div className="App-content">
           {isLoggedIn ? (
             <Switch>
+              <Route exact path="/" component={LoggedInRoot} />
+              <Route path="/login" component={Login} />
               <Route path="/calendar" component={Calendar} />
               <Route path="/notifications" component={Notifications} />
               <Route
@@ -33,7 +36,7 @@ const App = () => {
                 component={NotificationsDates}
               />
               <Route path="/notifications-type" component={NotificationsType} />
-              <Redirect to="/calendar" />
+              <Redirect to="/" />
             </Switch>
           ) : (
             <Switch>

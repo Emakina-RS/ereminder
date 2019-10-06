@@ -7,12 +7,14 @@ import App from "./App";
 import "./index.css";
 import login from "./reducers/login";
 import register from "./reducers/register";
+import settings from "./reducers/settings";
 import token from "./reducers/token";
 
 const store = createStore(
   combineReducers({
     login,
     register,
+    settings,
     token
   }),
   applyMiddleware(thunk)

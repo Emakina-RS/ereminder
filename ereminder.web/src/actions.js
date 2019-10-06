@@ -27,6 +27,19 @@ const post = (path, payload, token) => {
   }).then(response => response.json());
 };
 
+export const getInitialData = () => (dispatch, getState) => {
+  const { token } = getState();
+  console.log("Fetching data with token: " + token);
+  dispatch({ type: "GET_INITIAL_DATA" });
+  setTimeout(() => {
+    if (Math.random() > 0.5) {
+      dispatch({ type: "GET_INITIAL_DATA_SUCCESSFUL", hasData: true });
+    } else {
+      dispatch({ type: "GET_INITIAL_DATA_SUCCESSFUL", hasData: false });
+    }
+  }, 1000);
+};
+
 export const logIn = (email, password) => dispatch => {
   dispatch({ type: "LOG_IN" });
   post("/authenticate", {

@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import { logIn } from "../actions";
 import Button from "../components/Button";
@@ -7,20 +7,33 @@ import Input from "../components/Input";
 import useInput from "../hooks/useInput";
 import "./Login.css";
 
-const Login = () => {
+const mapStateToProps = state => ({
+  isSubmitting: state.login.isSubmitting,
+  shouldRedirect: state.token !== ""
+});
+
+const mapDispatchToProps = {
+  logIn
+};
+
+const Login = ({
+  isSubmitting,
+  shouldRedirect,
+
+  logIn
+}) => {
   const email = useInput("email", "Unesite Vašu e-mail adresu");
   const password = useInput("password", "Unesite šifru");
-  const { isSubmitting, shouldRedirect } = useSelector(state => state.login);
-  const dispatch = useDispatch();
   if (shouldRedirect) {
-    return <Redirect to="/calendar" />;
+    console.log("redirecting...");
+    return <Redirect to="/whatever" />;
   }
   return (
     <div className="Login">
       <form
         onSubmit={event => {
           event.preventDefault();
-          dispatch(logIn(email.value, password.value));
+          logIn(email.value, password.value);
         }}
         className="Login-content"
       >
@@ -46,4 +59,7 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);
