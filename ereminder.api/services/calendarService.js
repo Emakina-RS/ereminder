@@ -78,7 +78,9 @@ function getLastDateTime(notificationTypeId, initialConfiguration) {
         case constants.NotificationType.Referral:
             lastTimeDateTime = new Date(initialConfiguration.lastTimeGoReferral);
             break;
-        //TODO: extend with medical findings
+        case constants.NotificationType.MedicalFindings:
+            lastTimeDateTime = new Date(initialConfiguration.lastTimeExamination);
+            break;
     }
 
     return lastTimeDateTime;

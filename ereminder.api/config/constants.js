@@ -23,7 +23,7 @@ const NotificationType = {
     Recepies: 2,
     Pharmacy: 3,
     Referral: 4,
-    MedicalFindings:5
+    MedicalFindings: 5
 }
 
 const NotificationTypeDictionary = {
