@@ -35,9 +35,12 @@ exports.getNotificationDashboard = async function (userId) {
     return await notificationDashboard(usersConfiguration);
 };
 
-exports.getConfigurationDashboard = async function (userId) {
-    return await models.InitialConfiguration.findOne({ UserId: userId });
+async function getConfigurationDashboard(userId) {
+    let config = await models.InitialConfiguration.findOne({ UserId: userId });
+    return config;
 };
+
+exports.getConfigurationDashboard = getConfigurationDashboard;
 
 async function getDashboardForUpdating(userID) {
     return await models.Notification.findAll({
@@ -90,7 +93,10 @@ async function getAllConfiguration() {
 }
 
 async function createNotification(notificationTypeId, notificationIntervalId, userId) {
+    let nextTimeToSend = await calculateNextNotificationTime(notificationTypeId, notificationIntervalId, userId, null);
+
     return await models.Notification.create({
+        nextTimeSent: nextTimeToSend,
         NotificationTypeId: notificationTypeId,
         IntervalId: notificationIntervalId,
         UserId: userId
@@ -100,20 +106,52 @@ async function createNotification(notificationTypeId, notificationIntervalId, us
 async function updateNotification(notificationId, notificationTypeId, notificationIntervalId) {
     return await models.Notification.findByPk(notificationId)
         .then(notification => {
-            notification.update({
-                NotificationTypeId: notificationTypeId,
-                IntervalId: notificationIntervalId
-            });
+            if (notification) {
+                notification.update({
+                    NotificationTypeId: notificationTypeId,
+                    IntervalId: notificationIntervalId
+                });
+            }
         });
 }
 
 async function deleteNotification(notificationId, userId) {
     return await models.Notification.findByPk(notificationId)
         .then(notification => {
-            if (notification.UserId == userId) {
+            if (notification && notification.UserId == userId) {
                 notification.destroy();
             }
         });
+}
+
+async function calculateNextNotificationTime(notificationTypeId, notificationIntervalId, userId, lastTimeSent) {
+    let initConfig = await getConfigurationDashboard(userId);
+    let configAttr;
+
+    switch(notificationTypeId) {
+        case 1:
+            configAttr = initConfig.lastTimeTookPills;
+            break;
+        case 2:
+            configAttr = initConfig.lastTimeGotPrescription;
+            break;
+        case 3:
+            configAttr = initConfig.lastTimeInPharmacy;
+            break;
+        case 4:
+            configAttr = initConfig.lastTimeGotReferral;
+            break;
+        case 5:
+            configAttr = initConfig.lastTimeExamination;
+            break;
+        default:
+            configAttr = null;
+    }
+
+    if (lastTimeSent == null) {
+        // TODO: return initConfig attr (find attr by type) incremented by interval
+        return configAttr;
+    }
 }
 
 function updateMatchingConfiguration(array, config) {
