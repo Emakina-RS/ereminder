@@ -108,7 +108,7 @@ async function notificationDashboard(usersConfiguration){
     }
 
     usersConfiguration.forEach((config) => {
-        updateMatchingConfiguration(allConfiguration, config.Interval.id,  config.NotificationTypeId)
+        updateMatchingConfiguration(allConfiguration, config)
     });
 
     return allConfiguration;
@@ -125,13 +125,19 @@ async function getAllConfiguration(){
     });
 }
 
-function updateMatchingConfiguration(array, intervalId, notificationTypeId){
+function updateMatchingConfiguration(array, config){
+
     array.forEach((item) => {
-        if(item.notificationTypeId === notificationTypeId) {
+        if(item.notificationTypeId ===  config.NotificationTypeId) {
             item.intervals.forEach((interval) => {
-                if(interval.id===intervalId){
+                let checked = false;
+                if(interval.id === config.Interval.id){
                     interval.checked = true;
+                    checked = true;
+                }
+                if(checked){
                     item.checked = true;
+                    item.notificationId = config.id;
                 }
             });
         }
