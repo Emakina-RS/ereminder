@@ -33,8 +33,8 @@ exports.getCalendar = async function(userId, startDate, endDate) {
             continue;
         }
 
-        let lastTimeDateTime = getLastDateTime(notification.NotificationTypeId, initialConfiguration);
-        let recurrence = moment(lastTimeDateTime).recur().every(notification.intervalHours / 24).days();
+        let lastTimeInitConfiguration = getLastDateTimeFromConfiguration(notification.NotificationTypeId, initialConfiguration);
+        let recurrence = moment(lastTimeInitConfiguration).recur().every(notification.intervalHours / 24).days();
 
         do {
             if (recurrence.matches(loopDate)) {
@@ -65,23 +65,23 @@ function appendNotification(calendar, date, notificationTypeName, notificationTy
     });
 }
 
-function getLastDateTime(notificationTypeId, initialConfiguration) {
-    let lastTimeDateTime;
+function getLastDateTimeFromConfiguration(notificationTypeId, initialConfiguration) {
+    let lastTimeInitConfiguration;
 
     switch (notificationTypeId) {
         case constants.NotificationType.Recepies:
-            lastTimeDateTime = new Date(initialConfiguration.lastTimeGotPrescription);
+            lastTimeInitConfiguration = new Date(initialConfiguration.lastTimeGotPrescription);
             break;
         case constants.NotificationType.Pharmacy:
-            lastTimeDateTime = new Date(initialConfiguration.lastTimeInPharmacy);
+            lastTimeInitConfiguration = new Date(initialConfiguration.lastTimeInPharmacy);
             break;
         case constants.NotificationType.Referral:
-            lastTimeDateTime = new Date(initialConfiguration.lastTimeGoReferral);
+            lastTimeInitConfiguration = new Date(initialConfiguration.lastTimeGoReferral);
             break;
         case constants.NotificationType.MedicalFindings:
-            lastTimeDateTime = new Date(initialConfiguration.lastTimeExamination);
+            lastTimeInitConfiguration = new Date(initialConfiguration.lastTimeExamination);
             break;
     }
 
-    return lastTimeDateTime;
+    return lastTimeInitConfiguration;
 }
