@@ -1,37 +1,11 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { register } from "../actions";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import useInput from "../hooks/useInput";
 import "./Register.css";
-
-const register = (email, password, confirmPassword) => dispatch => {
-  dispatch({
-    type: "REGISTER"
-  });
-  fetch("/register", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      email,
-      password,
-      confirmpassword: confirmPassword
-    })
-  })
-    .then(() =>
-      dispatch({
-        type: "REGISTER_SUCCESSFUL"
-      })
-    )
-    .catch(() =>
-      dispatch({
-        type: "REGISTER_FAILED"
-      })
-    );
-};
 
 const Register = () => {
   const email = useInput("email", "Unesite Vašu e-mail adresu");
