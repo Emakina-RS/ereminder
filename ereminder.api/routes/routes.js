@@ -25,7 +25,7 @@ module.exports = function(app) {
 
     app.get('/initconfig', authenticationHelper.EnsureAuthenticated(), notificationController.getConfigurationDashboard);
 
-    app.post('/notification', authenticationHelper.EnsureAuthenticated(), notificationController.CreateNotification);
+    app.post('/notifications', authenticationHelper.EnsureAuthenticated(), notificationController.UpdateNotifications);
 
     app.get('/notificationdashboard', authenticationHelper.EnsureAuthenticated(), notificationController.getNotificationDashboard);
 

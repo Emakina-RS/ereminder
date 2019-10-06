@@ -4,22 +4,51 @@ const constants = require('../config/constants');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const mailer = require('../core/mailer');
-const authenticationHelper = require('../helpers/authenticationHelper');
 
-exports.createNotification = async function (req) {
-    var currentUserId = authenticationHelper.getUserIdFromRequest(req);
-    return await create(req.body, currentUserId);
+exports.updateNotifications = async function (notificationsArray, userId) {
+    return await notificationsArray.forEach(notificationParams => {
+        let noteId = notificationParams.notificationId,
+            typeId = notificationParams.notificationTypeId,
+            intervalId = notificationParams.notificationIntervalId;
+
+        if (noteId) {
+            if (typeId && intervalId) {
+                return updateNotification(noteId, typeId, intervalId);
+            } else {
+                return deleteNotification(noteId, userId);
+            }
+        } else if (typeId && intervalId) {
+            return createNotification(typeId, intervalId, userId);
+        }
+    });
 }
 
-async function create(body, userId) {
-    return models.Notification.create({
-        // lastTimeSent: '2019-10-05 15:53:34',
-        IntervalId: constants.NotificationInterval[body.notificationInterval],
-        NotificationTypeId: constants.NotificationType[body.notificationType],
+async function createNotification(notificationTypeId, notificationIntervalId, userId) {
+    return await models.Notification.create({
+        NotificationTypeId: notificationTypeId,
+        IntervalId: notificationIntervalId,
         UserId: userId
-    })
-    .then(newNotification => { return newNotification; });
-};
+    });
+}
+
+async function updateNotification(notificationId, notificationTypeId, notificationIntervalId) {
+    return await models.Notification.findByPk(notificationId)
+        .then(notification => {
+            notification.update({
+                NotificationTypeId: notificationTypeId,
+                IntervalId: notificationIntervalId
+            });
+        });
+}
+
+async function deleteNotification(notificationId, userId) {
+    return await models.Notification.findByPk(notificationId)
+        .then(notification => {
+            if (notification.UserId == userId) {
+                notification.destroy();
+            }
+        });
+}
 
 exports.sendFrequentNotifications = function () {
     models.Notification.findAll({
@@ -55,9 +84,9 @@ exports.sendNonFrequentNotifications = function () {
     .catch(err => console.log(err));
 };
 
-exports.getAllNotifications = function (request, response) {
-    models.Notification.findAll().then(notifications => response.json(notifications));
-};
+// exports.getAllNotifications = function (request, response) {
+//     models.Notification.findAll().then(notifications => response.json(notifications));
+// };
 
 
 exports.getNotificationDashboard = async function (userID) {
