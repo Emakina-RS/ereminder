@@ -57,8 +57,17 @@ exports.getNotificationDashboard = async function (userId) {
 };
 
 async function getConfigurationDashboard(userId) {
-    let config = await models.InitialConfiguration.findOne({ UserId: userId });
-    return config;
+    var query = {
+        where: {id: userID},
+        include: [
+          {model: models.InitialConfiguration, as: 'InitialConfiguration'}
+        ]
+      }
+
+    return await models.User.findOne(query).
+    then(function (user) {
+        return user.InitialConfiguration
+    });
 };
 
 exports.getConfigurationDashboard = getConfigurationDashboard;
@@ -217,7 +226,7 @@ const arrayToObject = (array, keyField) =>
         return obj
     }, {});
 
-async function create(body, userId) {
+async function createCalendarEvent(body, userId) {
     return models.Notification.create({
         // lastTimeSent: '2019-10-05 15:53:34',
         IntervalId: constants.NotificationInterval[body.notificationInterval],

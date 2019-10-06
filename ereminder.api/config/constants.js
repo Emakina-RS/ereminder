@@ -47,6 +47,18 @@ const NotificationInterval = {
     TwelveMonths: 9
 }
 
+const NotificationIntervalRRULE = {
+    1: "RRULE:FREQ=HOURLY;INTERVAL=12",
+    2: "RRULE:FREQ=HOURLY;INTERVAL=24",
+    3: "RRULE:FREQ=MONTHLY",
+    4: "RRULE:FREQ=MONTHLY;INTERVAL=2",
+    5: "RRULE:FREQ=MONTHLY;INTERVAL=3",
+    6: "RRULE:FREQ=MONTHLY;INTERVAL=4",
+    7: "RRULE:FREQ=MONTHLY;INTERVAL=5",
+    8: "RRULE:FREQ=MONTHLY;INTERVAL=6",
+    9: "RRULE:FREQ=YEARLY"
+}
+
 module.exports = Constants;
 module.exports.NotificationType = NotificationType;
 module.exports.NotificationInterval = NotificationInterval;
