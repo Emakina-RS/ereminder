@@ -44,10 +44,8 @@ exports.GetConfiguration = async function (userId) {
         ]
       }
 
-    return await models.User.findOne(query).
-        then(function (user) {
-            return user.InitialConfiguration
-    });
+    var user = await models.User.findOne(query);
+    return user ? user.InitialConfiguration : null;
 };
 
 exports.UpdateConfiguration = async function(userId, configuration) {

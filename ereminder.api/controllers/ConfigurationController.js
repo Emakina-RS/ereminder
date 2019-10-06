@@ -21,9 +21,13 @@ exports.CreateConfiguration = async function(req, res) {
 exports.GetConfiguration = async function(req, res) {
     try {
         let currentUserId = authenticationHelper.getUserIdFromRequest(req);
-        let dashboard = await configurationService.GetConfiguration(currentUserId);
+        let configuration = await configurationService.GetConfiguration(currentUserId);
 
-        return res.status(200).json(dashboard);
+        if (!configuration) {
+            return res.status(404).json({ message: 'Record not found' });
+        }
+
+        return res.status(200).json(configuration);
     }
     catch(e) {
         return res.status(500).json({ error: 'Internal error' })
