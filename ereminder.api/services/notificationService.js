@@ -58,7 +58,7 @@ exports.getNotificationDashboard = async function (userId) {
 
 async function getConfigurationDashboard(userId) {
     var query = {
-        where: {id: userID},
+        where: {id: userId},
         include: [
           {model: models.InitialConfiguration, as: 'InitialConfiguration'}
         ]

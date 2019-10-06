@@ -13,6 +13,7 @@ exports.GetNotificationCalendarData = function(notification) {
         description : constants.NotificationsEmailDescription[notification.notificationTypeId],
         beginTime: beginTime,
         rrule = NotificationIntervalRRULE[notification.notificationTypeId]
+
     }
 
 }
