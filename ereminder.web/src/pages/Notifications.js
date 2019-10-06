@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import apoteka from "../assets/icon/apoteka.svg";
 import lekovi from "../assets/icon/lekovi.svg";
@@ -8,6 +9,10 @@ import uputi from "../assets/icon/uputi.svg";
 import Checkbox from "../components/Checkbox";
 import Radio from "../components/Radio";
 import "./Notifications.css";
+
+// const mapStateToProps = state => ({
+//   notificationDashbordData: state.notificationDashboard.notificationDashboard
+// });
 
 const Notifications = () => (
   <div className="Notifications">
@@ -67,4 +72,4 @@ const Notificationsection = ({ icon, title, options }) => (
   </div>
 );
 
-export default Notifications;
+export default connect(mapStateToProps)(Notifications);

@@ -35,6 +35,15 @@ export const getConfiguration = () => (dispatch, getState) =>
     })
   );
 
+export const getNotificationDashboard = () => (dispatch, getState) =>
+  get("/notificationdashboard", undefined, getState().token).then(
+    notificationDashboard =>
+      dispatch({
+        type: "NOTIFICATION_PAGE_RECEIVED",
+        notificationDashboard
+      })
+  );
+
 export const getInitialData = () => (dispatch, getState) => {
   const { token } = getState();
   console.log("Fetching data with token: " + token);
