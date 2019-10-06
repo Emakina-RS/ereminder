@@ -6,6 +6,7 @@ import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from "redux-thunk";
 import App from "./App";
 import "./index.css";
+import calendar from "./reducers/calendar";
 import configuration from "./reducers/configuration";
 import login from "./reducers/login";
 import register from "./reducers/register";
@@ -36,7 +37,8 @@ const store = createStore(
     login,
     register,
     settings,
-    token
+    token,
+    calendar
   }),
   loadState(),
   applyMiddleware(thunk)

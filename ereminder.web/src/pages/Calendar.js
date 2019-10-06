@@ -13,17 +13,30 @@ import {
 } from "date-fns";
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import dispansery from "../assets/icon/apoteka2.svg";
+import apoteka from "../assets/icon/apoteka2.svg";
 import edit from "../assets/icon/edit.svg";
 import info from "../assets/icon/info.svg";
 import { ReactComponent as LeftArrow } from "../assets/icon/left.svg";
-import medicament from "../assets/icon/lekovi2.svg";
-import report from "../assets/icon/nalazi2.svg";
-import perscription from "../assets/icon/recepti2.svg";
+import lekovi from "../assets/icon/lekovi2.svg";
+import nalazi from "../assets/icon/nalazi2.svg";
+import recepti from "../assets/icon/recepti2.svg";
 import { ReactComponent as RightArrow } from "../assets/icon/right.svg";
-import paper from "../assets/icon/uputi2.svg";
+import uputi from "../assets/icon/uputi2.svg";
 import "./Calendar.css";
+
+const mapStateToProps = state => ({
+  calendarData: state.calendar.data
+});
+
+const iconsRepresenter = {
+  recepti: recepti,
+  nalazi: nalazi,
+  apoteka: apoteka,
+  lekovi: lekovi,
+  uputi: uputi
+};
 
 const days = {
   0: "NED",
@@ -54,7 +67,7 @@ const months = {
 
 const dateAsMonthString = date => months[getMonth(date)];
 
-const Calendar = () => {
+const Calendar = ({ calendarData }) => {
   const [date, setDate] = useState(startOfDay(new Date()));
   const { isShowing, toggle } = useModal();
   const start = startOfWeek(startOfMonth(date), { weekStartsOn: 1 });
@@ -62,11 +75,12 @@ const Calendar = () => {
   const eachDayOfFirstWeek = eachDayOfInterval({ start, end: endOfFirstWeek });
   const end = endOfWeek(endOfMonth(date), { weekStartsOn: 1 });
   const eachDay = eachDayOfInterval({ start, end });
-  const legendItems = [
-    { type: dispansery, date: "03-10-2019" },
-    { type: paper, date: "03-10-2019" },
-    { type: medicament, date: "03-10-2019" }
-  ];
+  const eachDayNotificationIcon = getIconsFormNotificationType(
+    calendarData,
+    eachDay
+  );
+
+  const legendItems = eachDayNotificationIcon;
   return (
     <div className="Calendar">
       <div className="Calendar-nav">
@@ -128,6 +142,7 @@ const Calendar = () => {
         <div className="Calendar-days">
           {eachDay.map((day, index) => {
             const inMonth = day.getMonth() === date.getMonth();
+
             return (
               <div
                 className="day"
@@ -135,6 +150,12 @@ const Calendar = () => {
                 style={inMonth ? {} : { color: "#adadad" }}
               >
                 {format(day, "d")}
+                <div className="day-icon">
+                  {getIconForDay(
+                    eachDayNotificationIcon,
+                    format(day, "yyyy/MM/dd")
+                  )}
+                </div>
               </div>
             );
           })}
@@ -143,8 +164,8 @@ const Calendar = () => {
       <div className="Calendar-legend">
         <h3>{dateAsMonthString(date)}:</h3>
         <div className="Calendar-legend-list">
-          {legendItems.map((lType, index) => {
-            return <LegendItem key={index} lType={lType} />;
+          {legendItems.map((legendDay, index) => {
+            return <LegendItem key={index} legendDay={legendDay} />;
           })}
         </div>
       </div>
@@ -153,11 +174,13 @@ const Calendar = () => {
   );
 };
 
-const LegendItem = ({ lType }) => {
+const LegendItem = ({ legendDay }) => {
+  const date = Object.keys(legendDay)[0];
+  const icon = legendDay[Object.keys(legendDay)[0]][0];
   return (
     <div className="legend">
-      <img className="legend-item" src={lType.type} alt={lType.type} />
-      <label className="legend-label">{lType.date}</label>
+      <img className="legend-item" src={icon} alt={icon} />
+      <label className="legend-label">{date}</label>
     </div>
   );
 };
@@ -171,27 +194,27 @@ const Modal = ({ isShowing, hide }) =>
               <div className="Modal-container">
                 <h2>Legenda</h2>
                 <div className="item">
-                  <img src={medicament} alt={medicament} />
+                  <img src={lekovi} alt={lekovi} />
                   <label> = </label>
                   <label> Popij lek</label>
                 </div>
                 <div className="item">
-                  <img src={perscription} alt={perscription} />
+                  <img src={recepti} alt={recepti} />
                   <label> = </label>
                   <label>Podigni recepte</label>
                 </div>
                 <div className="item">
-                  <img src={dispansery} alt={dispansery} />
+                  <img src={apoteka} alt={apoteka} />
                   <label> = </label>
                   <label>Odlazak u apoteku</label>
                 </div>
                 <div className="item">
-                  <img src={paper} alt={paper} />
+                  <img src={uputi} alt={uputi} />
                   <label> = </label>
                   <label>Podigni upute</label>
                 </div>
                 <div className="item">
-                  <img src={report} alt={report} />
+                  <img src={nalazi} alt={nalazi} />
                   <label> = </label>
                   <label>Uradi analize</label>
                 </div>
@@ -217,4 +240,40 @@ const useModal = () => {
   return { isShowing, toggle };
 };
 
-export default Calendar;
+//------------------
+// Helpers
+//------------------
+const getIconsFormNotificationType = (calendarData, eachDay) => {
+  console.log(calendarData);
+  if (calendarData === null || calendarData === undefined) return [];
+  const notificationIconsByDay = eachDay.map(day => {
+    const date = format(day, "yyyy/MM/dd");
+    if (date in calendarData.reminders) {
+      const reminderIconsForDate = calendarData.reminders[date].map(
+        reminder => {
+          return iconsRepresenter[reminder.notificationTypeName];
+        }
+      );
+      return { [date]: reminderIconsForDate };
+    }
+  });
+  return notificationIconsByDay.filter(obj => {
+    if (obj) return true;
+    return false;
+  });
+};
+
+const getIconForDay = (list, calendarDay) => {
+  for (let c in list) {
+    if (calendarDay === Object.keys(list[c])[0]) {
+      const arr = list[c][calendarDay].map((icon, index) => {
+        return (
+          <img className="calendar-icon" src={icon} key={index} alt={icon} />
+        );
+      });
+      return arr;
+    }
+  }
+};
+
+export default connect(mapStateToProps)(Calendar);

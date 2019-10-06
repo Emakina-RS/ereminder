@@ -39,13 +39,8 @@ export const getInitialData = () => (dispatch, getState) => {
   const { token } = getState();
   console.log("Fetching data with token: " + token);
   dispatch({ type: "GET_INITIAL_DATA" });
-  setTimeout(() => {
-    if (Math.random() > 0.5) {
-      dispatch({ type: "GET_INITIAL_DATA_SUCCESSFUL", hasData: true });
-    } else {
-      dispatch({ type: "GET_INITIAL_DATA_SUCCESSFUL", hasData: false });
-    }
-  }, 1000);
+  dispatch({ type: "CALENDAR_DATA", data: mockJSON });
+  dispatch({ type: "GET_INITIAL_DATA_SUCCESSFUL", hasData: true });
 };
 
 export const logIn = (email, password) => dispatch => {
@@ -71,4 +66,46 @@ export const register = (email, password, confirmPassword) => dispatch => {
   })
     .then(() => dispatch({ type: "REGISTER_SUCCESSFUL" }))
     .catch(() => dispatch({ type: "REGISTER_FAILED" }));
+};
+
+const mockJSON = {
+  takeRecepieEveryHours: 12,
+  reminders: {
+    "2019/10/09": [
+      {
+        notificationTypeName: "recepti",
+        notificationTypeId: 2
+      },
+      {
+        notificationTypeName: "apoteka",
+        notificationTypeId: 3
+      }
+    ],
+    "2019/10/15": [
+      {
+        notificationTypeName: "recepti",
+        notificationTypeId: 2
+      }
+    ],
+    "2019/10/22": [
+      {
+        notificationTypeName: "recepti",
+        notificationTypeId: 2
+      },
+      {
+        notificationTypeName: "apoteka",
+        notificationTypeId: 3
+      },
+      {
+        notificationTypeName: "nalazi",
+        notificationTypeId: 4
+      }
+    ],
+    "2019/10/29": [
+      {
+        notificationTypeName: "recepti",
+        notificationTypeId: 2
+      }
+    ]
+  }
 };
