@@ -6,7 +6,8 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-    lastTimeSent: DataTypes.DATE
+    lastTimeSent: DataTypes.DATE,
+    nextTimeSent: DataTypes.DATE
   });
 
   Notification.associate = function (models) {
