@@ -14,8 +14,8 @@ exports.createNotification = async function (req) {
 async function create(body, userId) {
     return models.Notification.create({
         // lastTimeSent: '2019-10-05 15:53:34',
-        IntervalId: body.intervalId,
-        NotificationTypeId: body.notificationTypeId,
+        IntervalId: constants.NotificationInterval[body.notificationInterval],
+        NotificationTypeId: constants.NotificationType[body.notificationType],
         UserId: userId
     })
     .then(newNotification => { return newNotification; });
