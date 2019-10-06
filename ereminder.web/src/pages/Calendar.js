@@ -244,7 +244,6 @@ const useModal = () => {
 // Helpers
 //------------------
 const getIconsFormNotificationType = (calendarData, eachDay) => {
-  console.log(calendarData);
   if (calendarData === null || calendarData === undefined) return [];
   const notificationIconsByDay = eachDay.map(day => {
     const date = format(day, "yyyy/MM/dd");

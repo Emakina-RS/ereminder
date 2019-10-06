@@ -72,4 +72,4 @@ const Notificationsection = ({ icon, title, options }) => (
   </div>
 );
 
-export default connect(mapStateToProps)(Notifications);
+export default connect()(Notifications);

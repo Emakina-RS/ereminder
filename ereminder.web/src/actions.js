@@ -28,12 +28,13 @@ const post = (path, payload, token) => {
 };
 
 export const getConfiguration = () => (dispatch, getState) =>
-  get("/configuration", undefined, getState().token).then(configuration =>
+  get("/configuration", undefined, getState().token).then(configuration => {
+    dispatch({ type: "CALENDAR_DATA", data: mockJSON });
     dispatch({
       type: "INITIAL_CONFIGURATION_RECEIVED",
       configuration
-    })
-  );
+    });
+  });
 
 export const getNotificationDashboard = () => (dispatch, getState) =>
   get("/notificationdashboard", undefined, getState().token).then(
