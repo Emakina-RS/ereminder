@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import MaskedInput from "react-text-mask";
 import Input from "../components/Input";
 import "./NotificationsDates.css";
+
+const mapStateToProps = state => ({
+  configuration: state.configuration.configuration // TODO: Oops!
+});
 
 const LABEL = {
   LEK: "Datum i vreme kada sam poslednji put popio/la lekove",
@@ -12,16 +17,32 @@ const LABEL = {
   NALAZI: "Datum kada sam poslednji put radio/la nalaze"
 };
 
-const NotificationsDates = () => (
+const NotificationsDates = ({ configuration }) => (
   <div className="NotificationDates">
     <h1>Postavljanje osnovnih parametara</h1>
     <h2>Odaberi datum kada si poslednji put obavio/la određenu aktivnost?</h2>
     <div className="NotificationDates-grid">
       <DateSelector selectorType={["date", "time"]} label={LABEL.LEK} />
-      <DateSelector selectorType={["date"]} label={LABEL.RECEPTI} />
-      <DateSelector selectorType={["date"]} label={LABEL.APOTEKA} />
-      <DateSelector selectorType={["date"]} label={LABEL.UPUT} />
-      <DateSelector selectorType={["date"]} label={LABEL.NALAZI} />
+      <DateSelector
+        selectorType={["date"]}
+        label={LABEL.RECEPTI}
+        value={configuration.lastTimeGotPrescription}
+      />
+      <DateSelector
+        selectorType={["date"]}
+        label={LABEL.APOTEKA}
+        value={configuration.lastTimeInPharmacy}
+      />
+      <DateSelector
+        selectorType={["date"]}
+        label={LABEL.UPUT}
+        value={configuration.lastTimeGotReferral}
+      />
+      <DateSelector
+        selectorType={["date"]}
+        label={LABEL.NALAZI}
+        value={configuration.lastTimeExamination}
+      />
     </div>
     <Link className="NotificationDate-link" to="/calendar">
       Nastavi
@@ -29,7 +50,8 @@ const NotificationsDates = () => (
   </div>
 );
 
-const DateSelector = ({ selectorType, label }) => {
+const DateSelector = ({ selectorType, label, value }) => {
+  const [initialValue, setInitialValue] = useState(value);
   const customClass =
     selectorType.length !== 1
       ? " DateSelector-picker-date-time"
@@ -44,7 +66,13 @@ const DateSelector = ({ selectorType, label }) => {
       <div className={customClass}>
         {selectorType.map((option, index) => {
           if (option === "date") {
-            return <Input type={option} />;
+            return (
+              <Input
+                type={option}
+                onChange={event => setInitialValue(event.target.value)}
+                value={initialValue}
+              />
+            );
           } else {
             return (
               <MaskedInput
@@ -59,4 +87,5 @@ const DateSelector = ({ selectorType, label }) => {
     </div>
   );
 };
-export default NotificationsDates;
+
+export default connect(mapStateToProps)(NotificationsDates);
