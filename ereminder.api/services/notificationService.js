@@ -97,7 +97,7 @@ async function notificationDashboard(usersConfiguration){
                     };}),
             key: constants.NotificationTypeDictionary[notificationType.id],
             notificationTypeId: notificationType.id,
-            notificationTypeValue: notificationType.value,
+            notificationTypeDisplay: notificationType.value,
             checked: false
         }
     });
