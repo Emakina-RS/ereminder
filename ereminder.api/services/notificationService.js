@@ -3,6 +3,11 @@ const models = require('../models');
 const constants = require('../config/constants');
 const mailer = require('../core/mailer');
 
+require('../config/config');
+const mailSubjects = global.globalConfig.mailSubjects;
+
+const notificationEmailSubjects = getNotificationEmailSubjects();
+
 exports.updateNotifications = async function (notificationsArray, userId) {
     return await notificationsArray.forEach(notificationParams => {
         let noteId = notificationParams.notificationId,
@@ -22,12 +27,28 @@ exports.updateNotifications = async function (notificationsArray, userId) {
     });
 }
 
-exports.sendFrequentNotifications = function () {
-    //TODO
-};
+exports.sendEmailNotifications = async function () {
+    let sqlQuery = `SELECT n.id as 'Id', u.id as 'userId', u.email, n.lastTimeSent, n.nextTimeSent, i.valueInHours, n.NotificationTypeId FROM notifications n
+                        INNER JOIN intervals i ON n.IntervalId = i.Id
+                        INNER JOIN users u ON n.UserId = u.Id
+                        INNER JOIN notificationtypes nt ON n.NotificationTypeId = nt.Id
+                    WHERE n.nextTimeSent < NOW()`;
 
-exports.sendNonFrequentNotifications = function () {
-    //TODO
+    let notifications = await models.sequelize
+        .query(sqlQuery, {
+            type: models.sequelize.QueryTypes.SELECT
+        });
+
+    let currentDate = new Date();
+
+    for (let i = 0; i < notifications.length; i++) {
+        let notification = notifications[i];
+        let body = createEmailNotificationHtmlBody(notification);
+        let nextTimeSent = currentDate.setHours(currentDate.getHours() + notification.valueInHours);
+
+        await mailer.send(notificationEmailSubjects[notification.NotificationTypeId], body, notification.email);
+        await models.Notification.update( { lastTimeSent: new Date(), nextTimeSent: new Date(nextTimeSent) }, { where: { id: notification.Id} });
+    }
 };
 
 exports.getNotificationDashboard = async function (userId) {
@@ -41,6 +62,23 @@ async function getConfigurationDashboard(userId) {
 };
 
 exports.getConfigurationDashboard = getConfigurationDashboard;
+
+function getNotificationEmailSubjects() {
+    let subjects = {}
+
+    subjects[constants.NotificationType.Medicine] = mailSubjects.medicineEmailSubject;
+    subjects[constants.NotificationType.Recepies] = mailSubjects.recepieEmailSubject;
+    subjects[constants.NotificationType.Pharmacy] = mailSubjects.pharmacyEmailSubject;
+    subjects[constants.NotificationType.Referral] = mailSubjects.referralEmailSubject;
+    subjects[constants.NotificationType.MedicalFindings] = mailSubjects.medicalFindingsEmailSubject;
+
+    return subjects;
+}
+
+function createEmailNotificationHtmlBody(notification) {
+    //TODO: format the email template
+    return "Reminder text";
+}
 
 async function getDashboardForUpdating(userID) {
     return await models.Notification.findAll({
