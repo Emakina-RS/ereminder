@@ -1,12 +1,11 @@
 'use strict'
 
 const calendarService = require('../services/calendarService');
-const authenticationHelper = require('../helpers/authenticationHelper');
 
 exports.GetCalendar = async function(req, res) {
     try {
-        let useId = authenticationHelper.getUserIdFromRequest(req);
-        let calendarData = await calendarService.getCalendar(useId, new Date(req.body.startDate), new Date(req.body.endDate));
+        let user = await req.user;
+        let calendarData = await calendarService.getCalendar(user.id, new Date(req.body.startDate), new Date(req.body.endDate));
 
         res.status(200).json(calendarData);
     }

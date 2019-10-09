@@ -23,22 +23,6 @@ module.exports.EnsureAuthenticated = function() {
 
 module.exports.JwtOptions = jwtOptions;
 
-module.exports.getUserIdFromRequest = function(req) {
-    if (req.headers && req.headers.authorization) {
-        var authorization = req.headers.authorization.split(' ')[1],
-            decoded;
-        try {
-            decoded = jwt.verify(authorization, jwtOptions.secretOrKey);
-        } catch (e) {
-             return null;
-        }
-        return decoded.id;
-    }
-
-    return null;
-
-}
-
 function getPassportStrategy() {
 
     return new JwtStrategy(jwtOptions, function(jwt_payload, next) {
@@ -53,4 +37,3 @@ function getPassportStrategy() {
         }
     });
 }
-

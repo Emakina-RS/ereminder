@@ -1,6 +1,6 @@
 const constants = require('../config/constants');
 const { body, validationResult } = require('express-validator');
-const authenticationHelper = require('../helpers/AuthenticationHelper');
+const authenticationHelper = require('../helpers/authenticationHelper');
 const moment = require('moment');
 
 exports.validateRegister = [

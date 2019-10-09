@@ -5,9 +5,9 @@ const notificationService = require('../services/notificationService');
 
 exports.UpdateNotifications = async function(req, res) {
     try {
-        let currentUserId = authenticationHelper.getUserIdFromRequest(req);
+        let user = await req.user;
+        await notificationService.updateNotifications(req.body, user.id);
 
-        await notificationService.updateNotifications(req.body, currentUserId);
         return res.status(200).json({ message: 'Notifications updated.' });
     }
     catch(e) {
@@ -23,8 +23,8 @@ exports.UpdateNotification = function(request, response) {
 
 exports.GetNotificationDashboard = async function(req, res) {
     try {
-        let currentUserId = authenticationHelper.getUserIdFromRequest(req);
-        let dashboard = await notificationService.getNotificationDashboard(currentUserId);
+        let user = await req.user;
+        let dashboard = await notificationService.getNotificationDashboard(user.id);
 
         return res.status(200).json(dashboard);
     }

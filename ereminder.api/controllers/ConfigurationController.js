@@ -1,16 +1,12 @@
 'use strict'
 
-const authenticationHelper = require('../helpers/authenticationHelper');
 const configurationService = require('../services/configurationService');
 
 exports.CreateConfiguration = async function(req, res) {
     try {
-        var currentUserId = authenticationHelper.getUserIdFromRequest(req);
-        if(!currentUserId) {
-            return res.status(401).json({ error: 'Unauthorized' });
-        }
+        let user = await req.user;
+        await configurationService.CreateConfiguration(req.body, user.id);
 
-        await configurationService.CreateConfiguration(req.body, currentUserId);
         return res.status(200).json({ message: 'Configuration setup' });
     }
     catch (e) {
@@ -20,8 +16,8 @@ exports.CreateConfiguration = async function(req, res) {
 
 exports.GetConfiguration = async function(req, res) {
     try {
-        let currentUserId = authenticationHelper.getUserIdFromRequest(req);
-        let configuration = await configurationService.GetConfiguration(currentUserId);
+        let user = await req.user;
+        let configuration = await configurationService.GetConfiguration(user.id);
 
         if (!configuration) {
             return res.status(404).json({ message: 'Record not found' });
@@ -36,12 +32,9 @@ exports.GetConfiguration = async function(req, res) {
 
 exports.UpdateConfiguration = async function(req, res) {
     try {
-        var currentUserId = authenticationHelper.getUserIdFromRequest(req);
-        if(!currentUserId) {
-            return res.status(401).json({ error: 'Unauthorized' });
-        }
+        let user = await req.user;
+        await configurationService.UpdateConfiguration(user.id, req.body);
 
-        await configurationService.UpdateConfiguration(currentUserId, req.body);
         return res.status(200).json({ message: 'Configuration successfully updated.' });
     }
     catch (e) {

@@ -12,7 +12,7 @@ exports.Authenticate = async function(request, response) {
         let user = await models.User.findOne({where: { email: username }});
 
         if (!user) {
-            response.status(401).json({ msg: 'No such user found', user });
+            response.status(401).json({ msg: 'No such user found.', user });
             return;
         }
 
@@ -25,7 +25,7 @@ exports.Authenticate = async function(request, response) {
             response.json({ msg: 'ok', token: token });
         }
         else {
-            response.status(401).json({ msg: 'Password is incorrect' });
+            response.status(401).json({ msg: 'Username and password combination is invalid.' });
         }
     }
 }
