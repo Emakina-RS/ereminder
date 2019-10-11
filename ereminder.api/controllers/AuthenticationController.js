@@ -1,15 +1,15 @@
 'use strict'
 
 const jwt = require('jsonwebtoken');
-const models  = require('../models');
 const authenticationHelper = require('../helpers/authenticationHelper');
 const passwordEncryptionHelper = require('../helpers/passwordEncryptionHelper');
+const userService = require('../services/userService');
 
 exports.Authenticate = async function(request, response) {
     const { username, password } = request.body;
 
     if (username && password) {
-        let user = await models.User.findOne({where: { email: username }});
+        let user = await userService.getUserByEmail(username);
 
         if (!user) {
             response.status(401).json({ msg: 'No such user found.', user });

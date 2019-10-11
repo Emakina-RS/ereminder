@@ -12,6 +12,7 @@
             "fromEmail": ""
         },
         "mailSubjects": {
+            "confirmRegistrationSubject": "Potvrda registracije",
             "resetPasswordSubject": "Zaboravili ste lozinku?",
             "medicineEmailSubject": "Podsetnik za uzimanje lekova",
             "recepieEmailSubject": "Podsetnik za recept",
@@ -27,7 +28,8 @@
             "database": "ereminder"
         },
         "siteUrls": {
-            "resetPassword": "http://dev.ereminder.com/resetpassword"
+            "resetPassword": "http://dev.ereminder.com/resetpassword",
+            "confirmRegistration": "http://dev.ereminder.com/confirmregistration"
         }
     },
     "production": {

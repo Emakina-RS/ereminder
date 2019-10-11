@@ -6,10 +6,20 @@ const userService = require('../services/userService');
 exports.Register = async function(req, res) {
     try {
         await userService.register(req.body.email, req.body.password);
-        return res.status(200).json({ message: 'User created' });
+        return res.status(200).json({ message: 'Account confirmation email has been sent.' });
     }
     catch (e) {
-        return res.status(500).json({ error: 'Internal error' });
+        return res.status(500).json({ error: 'Internal Error' });
+    }
+}
+
+exports.RegisterConfirmation = async function(req, res) {
+    try {
+        await userService.registerConfirmation(req.body.token);
+        return res.status(200).json({ message: 'The account has been successfully confirmed.' });
+    }
+    catch (e) {
+        return res.status(500).json({ error: e });
     }
 }
 

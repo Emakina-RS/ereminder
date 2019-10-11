@@ -2,8 +2,8 @@
 
 const passport = require('passport');
 const passportJWT = require('passport-jwt');
-const models  = require('../models');
-const jwt = require('jsonwebtoken');
+const userService = require('../services/userService');
+
 let JwtStrategy = passportJWT.Strategy;
 let jwtOptions = {
     jwtFromRequest: passportJWT.ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -24,10 +24,8 @@ module.exports.EnsureAuthenticated = function() {
 module.exports.JwtOptions = jwtOptions;
 
 function getPassportStrategy() {
-
     return new JwtStrategy(jwtOptions, function(jwt_payload, next) {
-
-        let user = models.User.findOne({ id: jwt_payload.id });
+        let user = userService.getUserById(jwt_payload.id);
 
         if (user) {
             next(null, user);

@@ -20,6 +20,12 @@ exports.validateRegister = [
         .withMessage(constants.errorMessages.unmatchedPassword)
 ];
 
+exports.validateRegisterConfirmation = [
+    body('token')
+        .exists()
+        .withMessage(constants.errorMessages.requiredField('token'))
+];
+
 exports.validateResetPassword = [
     body('password')
         .exists()

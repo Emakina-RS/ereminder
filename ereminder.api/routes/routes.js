@@ -15,6 +15,9 @@ module.exports = function(app) {
     app.post('/register', userValidator.validateRegister,
         (req, res) => userValidator.returnValidationResults(req, res, accountController.Register));
 
+    app.post('/registerconfirmation', userValidator.validateRegisterConfirmation,
+        (req, res) => userValidator.returnValidationResults(req, res, accountController.RegisterConfirmation));
+
     app.post('/resetpassword', userValidator.validateResetPassword,
         (req, res) => userValidator.returnValidationResults(req, res, accountController.ResetPassword));
 
