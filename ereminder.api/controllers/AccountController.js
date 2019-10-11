@@ -5,7 +5,7 @@ const userService = require('../services/userService');
 
 exports.Register = async function(req, res) {
     try {
-        await userService.register(req.body);
+        await userService.register(req.body.email, req.body.password);
         return res.status(200).json({ message: 'User created' });
     }
     catch (e) {

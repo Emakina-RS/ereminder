@@ -1,6 +1,5 @@
 'use strict'
 
-const authenticationHelper = require('../helpers/authenticationHelper');
 const notificationService = require('../services/notificationService');
 
 exports.UpdateNotifications = async function(req, res) {

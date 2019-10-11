@@ -9,9 +9,9 @@ require('../config/config');
 const siteUrls = global.globalConfig.siteUrls;
 const mailSubjects = global.globalConfig.mailSubjects;
 
-exports.register = async function (body) {
-     let result =  await passwordEncryptionHelper.getEncryptedValue(body.password, (hash) => {
-          return createUser(hash, body);
+exports.register = async function (email, password) {
+     let result =  await passwordEncryptionHelper.getEncryptedValue(password, (passwordHash) => {
+          return createUser(email, passwordHash);
      });
 
      return result;
@@ -42,10 +42,10 @@ exports.resetPassword = async function(token, password) {
      await models.User.update( { password: passwordHashed }, { where: { id: userId} });
 }
 
-async function createUser(hash, body) {
+async function createUser(email, password) {
    return models.User.create({
-        email: body.email,
-        password: hash,
+        email: email,
+        password: password,
     })
     .then((newUser) => { return newUser; });
 }
