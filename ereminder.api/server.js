@@ -1,5 +1,6 @@
 "use strict";
 
+require("express-async-errors");
 const cors = require("cors");
 const util = require("util");
 const express = require("express");
@@ -8,7 +9,8 @@ const scheduler = require("./core/scheduler.js");
 const bodyParser = require("body-parser");
 const routes = require("./routes/routes");
 const authenticationHelper = require("./helpers/authenticationHelper");
-const logger = require("./helpers/logger");
+const error = require("./middleware/error");
+const logger = require("./startup/logger")();
 
 require("./config/config");
 const corsUrls = global.globalConfig.corsUrls;
@@ -18,17 +20,15 @@ var app = express()
   .use(bodyParser.json())
   .use(cors(corsUrls));
 
-require("./startup/logging");
-
 authenticationHelper(app);
 routes(app);
 
+app.use(error);
+
 var server = app.listen(global.globalConfig.apiPort, function() {
   var port = server.address().port;
-  console.log(
-    "Example app listening at http://%s:%s",
-    global.globalConfig.apiUrl,
-    port
+  logger.info(
+    `[Server] : Example app listening at ${global.globalConfig.apiUrl}:${port}`
   );
 });
 
@@ -36,11 +36,9 @@ dbIntializer.initializeDB(server);
 scheduler.initialize();
 
 process.on("uncaughtException", error => {
-  logger.LogError(
+  logger.error(
     util.format(
-      "There was an uncaught error: %s, stack trace: %s",
-      error.message,
-      error.stack
+      `[Server] : There was an uncaught error: ${error.message}, stack trace: ${error.stack}`
     )
   );
   process.exit(1);

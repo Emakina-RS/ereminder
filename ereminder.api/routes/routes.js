@@ -8,7 +8,7 @@ const calendarController = require("../controllers/CalendarController");
 const configurationController = require("../controllers/ConfigurationController");
 const authenticationHelper = require("../helpers/authenticationHelper");
 const userValidator = require("../validators/userValidator");
-const error = require("../middleware/error");
+//const error = require("../middleware/error");
 
 module.exports = function(app) {
   app.post("/authenticate", userValidator.validateLogin, (req, res) =>
@@ -94,5 +94,5 @@ module.exports = function(app) {
     calendarController.GetCalendar
   );
 
-  app.use(error);
+  // app.use(error);
 };
