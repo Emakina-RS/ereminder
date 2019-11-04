@@ -12,9 +12,9 @@ import {
   startOfWeek
 } from "date-fns";
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import Modal from "../components/Modal";
 import apoteka from "../assets/icon/apoteka2.svg";
 import edit from "../assets/icon/edit.svg";
 import info from "../assets/icon/info.svg";
@@ -169,7 +169,7 @@ const Calendar = ({ calendarData }) => {
           })}
         </div>
       </div>
-      <Modal isShowing={isShowing} hide={toggle} />
+      <Modal isShowing={isShowing} hide={toggle} content={modalContent()} />
     </div>
   );
 };
@@ -185,51 +185,38 @@ const LegendItem = ({ legendDay }) => {
   );
 };
 
-const Modal = ({ isShowing, hide }) =>
-  isShowing
-    ? ReactDOM.createPortal(
-        <React.Fragment>
-          <div className="Modal-overlay" onClick={hide}>
-            <div className="Modal">
-              <div className="Modal-container">
-                <h2>Legenda</h2>
-                <div className="item">
-                  <img src={lekovi} alt={lekovi} />
-                  <label> = </label>
-                  <label> Popij lek</label>
-                </div>
-                <div className="item">
-                  <img src={recepti} alt={recepti} />
-                  <label> = </label>
-                  <label>Podigni recepte</label>
-                </div>
-                <div className="item">
-                  <img src={apoteka} alt={apoteka} />
-                  <label> = </label>
-                  <label>Odlazak u apoteku</label>
-                </div>
-                <div className="item">
-                  <img src={uputi} alt={uputi} />
-                  <label> = </label>
-                  <label>Podigni upute</label>
-                </div>
-                <div className="item">
-                  <img src={nalazi} alt={nalazi} />
-                  <label> = </label>
-                  <label>Uradi analize</label>
-                </div>
-                <div className="item">
-                  <button className="close-button" onClick={hide}>
-                    ZATVORI
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </React.Fragment>,
-        document.body
-      )
-    : null;
+const modalContent = () => {
+  return (
+    <div>
+      <h2>Legenda</h2>
+      <div className="item">
+        <img src={lekovi} alt={lekovi} />
+        <label> = </label>
+        <label> Popij lek</label>
+      </div>
+      <div className="item">
+        <img src={recepti} alt={recepti} />
+        <label> = </label>
+        <label>Podigni recepte</label>
+      </div>
+      <div className="item">
+        <img src={apoteka} alt={apoteka} />
+        <label> = </label>
+        <label>Odlazak u apoteku</label>
+      </div>
+      <div className="item">
+        <img src={uputi} alt={uputi} />
+        <label> = </label>
+        <label>Podigni upute</label>
+      </div>
+      <div className="item">
+        <img src={nalazi} alt={nalazi} />
+        <label> = </label>
+        <label>Uradi analize</label>
+      </div>
+    </div>
+  );
+}
 
 const useModal = () => {
   const [isShowing, setIsShowing] = useState(false);
