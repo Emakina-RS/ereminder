@@ -4,12 +4,8 @@ const util = require("util");
 const passwordEncryptionHelper = require("../helpers/passwordEncryptionHelper");
 const mailer = require("../core/mailer");
 const ecryptionHelper = require("../helpers/encryptionHelper");
-<<<<<<< HEAD
 const logger = require("../startup/logger")();
-=======
-const logger = require("../startup/logger");
 const BadInputError = require("../errors/BadInputError");
->>>>>>> origin/master
 
 require("../config/config");
 const siteUrls = global.globalConfig.siteUrls;
@@ -28,9 +24,6 @@ exports.register = async function(email, password) {
   let body = getConfirmRegistrationEmailBody(user);
   await mailer.send(mailSubjects.confirmRegistrationSubject, body, email);
 
-  logger.info(
-    `[Service:UserService:Register] : User with email: ${user.email} already register.`
-  );
   return user;
 };
 
