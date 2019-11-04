@@ -78,6 +78,29 @@ export const register = (email, password, confirmPassword) => dispatch => {
     .catch(() => dispatch({ type: "REGISTER_FAILED" }));
 };
 
+export const forgotPassword = (email) => dispatch => {
+  dispatch({ type: "FORGOT_PASSWORD" });
+  post("/forgotpassword", {
+    email
+  })
+  .then((res) => {
+    if(res.errors && res.errors.length > 0) {
+      console.log("Invalid data.");
+      dispatch({ type: "FORGOT_PASSWORD_FAILURE" });
+    } else {
+      console.log("Forgot password email has been sent.");
+      dispatch({ type: "FORGOT_PASSWORD_SUCCESS" });
+    }
+  })
+  .catch(() => {
+    dispatch({ type: "FORGOT_PASSWORD_FAILURE" });
+  });
+};
+
+export const closeModal = () => dispatch => {
+  dispatch({ type: "CLOSE_MODAL" });
+};
+
 const mockJSON = {
   takeRecepieEveryHours: 12,
   reminders: {
