@@ -5,6 +5,7 @@ const passwordEncryptionHelper = require("../helpers/passwordEncryptionHelper");
 const mailer = require("../core/mailer");
 const ecryptionHelper = require("../helpers/encryptionHelper");
 const logger = require("../startup/logger");
+const BadInputError = require("../errors/BadInputError");
 
 require("../config/config");
 const siteUrls = global.globalConfig.siteUrls;
@@ -23,9 +24,6 @@ exports.register = async function(email, password) {
   let body = getConfirmRegistrationEmailBody(user);
   await mailer.send(mailSubjects.confirmRegistrationSubject, body, email);
 
-  logger.info(
-    `[Service:UserService:Register] : User with email: ${user.email} already register.`
-  );
   return user;
 };
 
@@ -34,12 +32,13 @@ exports.registerConfirmation = async function(token) {
   let user = await models.User.findOne({ id: userId });
 
   if (!user) {
-    throw Error("Non-existing user");
+    throw BadInputError("Non-existing user");
   }
 
   await models.User.update({ isVerified: true }, { where: { id: userId } });
+
   logger.info(
-    `[Service:UserService:RegisterConfirmation] : User with email: ${user.email} sucessfully confirm registration.`
+    `[Service:UserService:RegisterConfirmation] : User with id: ${userId} has sucessfully confirmed registration.`
   );
 };
 
@@ -52,8 +51,9 @@ exports.sendForgotPasswordEmail = async function(email) {
 
   let body = getResetPasswordEmailBody(user);
   await mailer.send(mailSubjects.resetPasswordSubject, body, email);
+
   logger.info(
-    `[Service:UserService:SendForgotPasswordEmail] : System send reset password mail to user with ${email}.`
+    `[Service:UserService:SendForgotPasswordEmail] : System send reset password mail to user with id: ${user.id}.`
   );
 };
 
@@ -62,7 +62,7 @@ exports.resetPassword = async function(token, password) {
   let user = await exports.getUserById(userId);
 
   if (!user) {
-    throw Error("Non-existing user");
+    throw BadInputError("Non-existing user");
   }
 
   let passwordHashed = await passwordEncryptionHelper.getEncryptedValue(
@@ -88,9 +88,6 @@ async function ensureUserDoesNotExist(email) {
   let user = await exports.getUserByEmail(email);
 
   if (user !== null) {
-    logger.info(
-      `[Service:UserService:EnsureUserDoesNotExist] User with ${email} already exists.`
-    );
     throw new Error("Invalid user data provided.");
   }
 }
@@ -128,7 +125,7 @@ function ensureTokenDateIsValid(date) {
   let currentDate = new Date();
 
   if (tokenDate.getTime() < currentDate.getTime()) {
-    throw new Error("Invalid token.");
+    throw new BadInputError("Invalid token.");
   }
 }
 
