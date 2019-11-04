@@ -7,7 +7,7 @@ const configurationService = require("../services/configurationService");
 require("../config/config");
 const mailSubjects = global.globalConfig.mailSubjects;
 const notificationEmailSubjects = getNotificationEmailSubjects();
-const logger = require("../startup/logger");
+const logger = require("../startup/logger")();
 
 exports.updateNotifications = async function(notificationsArray, userId) {
   return await notificationsArray.forEach(notificationParams => {

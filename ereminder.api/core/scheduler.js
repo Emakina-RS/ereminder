@@ -2,7 +2,7 @@
 
 const cron = require("node-cron");
 const notificationService = require("../services/notificationService");
-const logger = require("../startup/logger");
+const logger = require("../startup/logger")();
 
 exports.initialize = function() {
   cron.schedule("*/3 * * * *", function() {

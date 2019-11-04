@@ -4,7 +4,7 @@ const util = require("util");
 const passwordEncryptionHelper = require("../helpers/passwordEncryptionHelper");
 const mailer = require("../core/mailer");
 const ecryptionHelper = require("../helpers/encryptionHelper");
-const logger = require("../startup/logger");
+const logger = require("../startup/logger")();
 
 require("../config/config");
 const siteUrls = global.globalConfig.siteUrls;
