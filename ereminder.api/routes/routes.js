@@ -71,8 +71,13 @@ module.exports = function(app) {
   );
   app.patch(
     "/configuration",
-    authenticationHelper.EnsureAuthenticated(),
-    configurationController.UpdateConfiguration
+    userValidator.validateUpdateConfiguration,
+    (req, res) =>
+      userValidator.returnValidationResults(
+        req,
+        res,
+        configurationController.UpdateConfiguration
+      )
   );
 
   app.post(

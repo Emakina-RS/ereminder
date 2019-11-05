@@ -1,61 +1,61 @@
 {
-    "development": {
-        "apiUrl": "http://dev-api.ereminder.com/",
-        "apiPort": 8081,
-        "corsUrls": [ "http://dev.ereminder.com/" ],
-        "mailSettings": {
-            "smtp": "",
-            "port": 587,
-            "username": "",
-            "password": "",
-            "enableSsl": false,
-            "fromEmail": ""
-        },
-        "mailSubjects": {
-            "confirmRegistrationSubject": "Potvrda registracije",
-            "resetPasswordSubject": "Zaboravili ste lozinku?",
-            "medicineEmailSubject": "Podsetnik za uzimanje lekova",
-            "recepieEmailSubject": "Podsetnik za recept",
-            "pharmacyEmailSubject": "Podsetnik za odlazak u apoteku",
-            "referralEmailSubject": "Podsetnik za odlazak po uput",
-            "medicalFindingsEmailSubject": "Podsetnik za nalaze"
-        },
-        "databaseConnection": {
-            "dialect": "mysql",
-            "username": "ereminder",
-            "password": "d0@z%8$HFo0v",
-            "host": "127.0.0.1",
-            "database": "ereminder"
-        },
-        "siteUrls": {
-            "resetPassword": "http://dev.ereminder.com/resetpassword",
-            "confirmRegistration": "http://dev.ereminder.com/confirmregistration"
-        }
+  "development": {
+    "apiUrl": "http://dev-api.ereminder.com/",
+    "apiPort": 8081,
+    "corsUrls": ["http://dev.ereminder.com/"],
+    "mailSettings": {
+      "smtp": "",
+      "port": 587,
+      "username": "",
+      "password": "",
+      "enableSsl": false,
+      "fromEmail": ""
     },
-    "production": {
-        "apiUrl": "",
-        "apiPort": "",
-        "corsUrls": [ "" ],
-        "mailSettings": {
-            "smtp": "",
-            "port": 587,
-            "username": "",
-            "password": "",
-            "enableSsl": true,
-            "fromEmail": ""
-        },
-        "mailSubjects": {
-            "resetPasswordSubject": "Zaboravili ste lozinku?"
-        },
-        "databaseConnection": {
-            "dialect": "mysql",
-            "username": "ereminder",
-            "password": "",
-            "host": "",
-            "database": "ereminder"
-        },
-        "siteUrls": {
-            "resetPassword": ""
-        }
+    "mailSubjects": {
+      "confirmRegistrationSubject": "Potvrda registracije",
+      "resetPasswordSubject": "Zaboravili ste lozinku?",
+      "medicineEmailSubject": "Podsetnik za uzimanje lekova",
+      "recepieEmailSubject": "Podsetnik za recept",
+      "pharmacyEmailSubject": "Podsetnik za odlazak u apoteku",
+      "referralEmailSubject": "Podsetnik za odlazak po uput",
+      "medicalFindingsEmailSubject": "Podsetnik za nalaze"
+    },
+    "databaseConnection": {
+      "dialect": "mysql",
+      "username": "root",
+      "password": "root",
+      "host": "127.0.0.1",
+      "database": "ereminder"
+    },
+    "siteUrls": {
+      "resetPassword": "http://dev.ereminder.com/resetpassword",
+      "confirmRegistration": "http://dev.ereminder.com/confirmregistration"
     }
+  },
+  "production": {
+    "apiUrl": "",
+    "apiPort": "",
+    "corsUrls": [""],
+    "mailSettings": {
+      "smtp": "",
+      "port": 587,
+      "username": "",
+      "password": "",
+      "enableSsl": true,
+      "fromEmail": ""
+    },
+    "mailSubjects": {
+      "resetPasswordSubject": "Zaboravili ste lozinku?"
+    },
+    "databaseConnection": {
+      "dialect": "mysql",
+      "username": "ereminder",
+      "password": "",
+      "host": "",
+      "database": "ereminder"
+    },
+    "siteUrls": {
+      "resetPassword": ""
+    }
+  }
 }

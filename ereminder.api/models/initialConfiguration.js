@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 module.exports = (sequelize, DataTypes) => {
-  var InitialConfiguration = sequelize.define('InitialConfiguration', {
-     id: {
+  var InitialConfiguration = sequelize.define("InitialConfiguration", {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true
@@ -21,10 +21,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  InitialConfiguration.associate = function (models) {
+  InitialConfiguration.associate = function(models) {
     models.InitialConfiguration.belongsTo(models.User, {
       foreignKey: {
-        allowNull: true
+        unique: true
       }
     });
   };

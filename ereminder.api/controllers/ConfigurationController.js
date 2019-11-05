@@ -3,15 +3,13 @@
 const configurationService = require("../services/configurationService");
 
 exports.CreateConfiguration = async function(req, res) {
-  let user = await req.user;
-  await configurationService.CreateConfiguration(req.body, user.id);
+  await configurationService.CreateConfiguration(req.body, req.user.id);
 
   return res.status(200).json({ message: "Configuration setup" });
 };
 
 exports.GetConfiguration = async function(req, res) {
-  let user = await req.user;
-  let configuration = await configurationService.GetConfiguration(user.id);
+  let configuration = await configurationService.GetConfiguration(req.user.id);
 
   if (!configuration) {
     return res.status(404).json({ message: "Record not found" });
@@ -21,8 +19,7 @@ exports.GetConfiguration = async function(req, res) {
 };
 
 exports.UpdateConfiguration = async function(req, res) {
-  let user = await req.user;
-  await configurationService.UpdateConfiguration(user.id, req.body);
+  await configurationService.UpdateConfiguration(req.body, req.user.id);
 
   return res
     .status(200)
