@@ -13,6 +13,7 @@
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
+    "express-rate-limit": "^5.0.0",
     "express-sequelize": "0.0.4",
     "express-validator": "^6.2.0",
     "fs": "0.0.1-security",

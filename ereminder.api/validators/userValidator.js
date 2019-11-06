@@ -2,8 +2,10 @@ const constants = require("../config/constants");
 const { body, validationResult } = require("express-validator");
 const authenticationHelper = require("../helpers/authenticationHelper");
 const moment = require("moment");
+const rateLimiters = require("../middleware/rateLimiters");
 
 exports.validateRegister = [
+  rateLimiters.AccountCreationLimiter,
   body("email")
     .exists()
     .withMessage(constants.errorMessages.requiredField("Email"))

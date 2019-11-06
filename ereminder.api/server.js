@@ -11,6 +11,7 @@ const routes = require("./routes/routes");
 const authenticationHelper = require("./helpers/authenticationHelper");
 const error = require("./middleware/error");
 const logger = require("./startup/logger")();
+const rateLimiters = require("./middleware/rateLimiters");
 
 require("./config/config");
 const corsUrls = global.globalConfig.corsUrls;
@@ -24,6 +25,8 @@ authenticationHelper(app);
 routes(app);
 
 app.use(error);
+app.use(express.json({ limit: '10kb' }));
+app.use(rateLimiters.NumberOfRequestsLimiter);
 
 var server = app.listen(global.globalConfig.apiPort, function() {
   var port = server.address().port;
