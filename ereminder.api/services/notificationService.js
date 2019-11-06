@@ -15,23 +15,16 @@ exports.updateNotifications = async function(notifications, userId) {
   });
 };
 
-async function makeNotification(notification, userId) {
-  if (isCreateNotification(notification))
-    return await createNotification(notification, userId);
-
-  if (isUpdateNotification(notification))
-    return await updateNotification(notification);
-
-  if (isDeleteNotification(notification))
-    return await deleteNotification(notification);
+function getSqlQuery() {
+  return `SELECT n.id as 'Id', u.id as 'userId', u.email, n.lastTimeSent, n.nextTimeSent, i.valueInHours, n.NotificationTypeId FROM notifications n
+  INNER JOIN intervals i ON n.IntervalId = i.Id
+  INNER JOIN users u ON n.UserId = u.Id
+  INNER JOIN notificationtypes nt ON n.NotificationTypeId = nt.Id
+  WHERE n.nextTimeSent < NOW()`;
 }
 
 exports.sendEmailNotifications = async function() {
-  let sqlQuery = `SELECT n.id as 'Id', u.id as 'userId', u.email, n.lastTimeSent, n.nextTimeSent, i.valueInHours, n.NotificationTypeId FROM notifications n
-                        INNER JOIN intervals i ON n.IntervalId = i.Id
-                        INNER JOIN users u ON n.UserId = u.Id
-                        INNER JOIN notificationtypes nt ON n.NotificationTypeId = nt.Id
-                    WHERE n.nextTimeSent < NOW()`;
+  let sqlQuery = getSqlQuery();
 
   let notifications = await models.sequelize.query(sqlQuery, {
     type: models.sequelize.QueryTypes.SELECT
@@ -144,18 +137,65 @@ async function getAllConfiguration() {
   });
 }
 
+async function calculateNextNotificationTime(notificationTypeId, userId) {
+  let configuration = await configurationService.GetConfiguration(userId);
+
+  let initialDateConfiguration = await configurationService.GetLastTimeConfiguration(
+    parseInt(notificationTypeId),
+    configuration
+  );
+
+  //TODO: append interval to initialDateConfiguration and get the first one in the future
+
+  return lastTimeConfiguration;
+}
+
+function updateMatchingConfiguration(array, config) {
+  array.forEach(item => {
+    if (item.notificationTypeId === config.NotificationTypeId) {
+      let checked = false;
+      item.intervals.forEach(interval => {
+        if (interval.id === config.Interval.id) {
+          interval.checked = true;
+          checked = true;
+        }
+      });
+      if (checked) {
+        item.checked = true;
+        item.notificationId = config.id;
+        item.intervalId = config.Interval.id;
+      }
+    }
+  });
+}
+
+const arrayToObject = (array, keyField) =>
+  array.reduce((obj, item) => {
+    obj[item[keyField]] = item;
+    return obj;
+  }, {});
+
+async function makeNotification(notification, userId) {
+  if (isCreateNotification(notification))
+    return await createNotification(notification, userId);
+
+  if (isUpdateNotification(notification))
+    return await updateNotification(notification);
+
+  if (isDeleteNotification(notification))
+    return await deleteNotification(notification);
+}
+
 async function createNotification(notification, userId) {
   const { notificationTypeId, notificationIntervalId } = notification;
 
-  let nextTimeToSend = await calculateNextNotificationTime(
-    notificationTypeId,
-    notificationIntervalId,
-    userId,
-    null
-  );
+  // let nextTimeToSend = await calculateNextNotificationTime(
+  //   notificationTypeId,
+  //   userId
+  // );
 
   return await models.Notification.create({
-    nextTimeSent: nextTimeToSend,
+    // nextTimeSent: nextTimeToSend,
     NotificationTypeId: notificationTypeId,
     IntervalId: notificationIntervalId,
     UserId: userId
@@ -189,59 +229,6 @@ async function deleteNotification(notification) {
   );
 }
 
-async function calculateNextNotificationTime(
-  notificationTypeId,
-  notificationIntervalId,
-  userId,
-  lastTimeSent
-) {
-  let configuration = await configurationService.GetConfiguration(userId);
-  let lastTimeConfiguration = configurationService.GetLastTimeConfiguration(
-    notificationTypeId,
-    configuration
-  );
-
-  if (lastTimeSent == null) {
-    return lastTimeConfiguration;
-  }
-}
-
-function updateMatchingConfiguration(array, config) {
-  array.forEach(item => {
-    if (item.notificationTypeId === config.NotificationTypeId) {
-      let checked = false;
-      item.intervals.forEach(interval => {
-        if (interval.id === config.Interval.id) {
-          interval.checked = true;
-          checked = true;
-        }
-      });
-      if (checked) {
-        item.checked = true;
-        item.notificationId = config.id;
-        item.intervalId = config.Interval.id;
-      }
-    }
-  });
-}
-
-const arrayToObject = (array, keyField) =>
-  array.reduce((obj, item) => {
-    obj[item[keyField]] = item;
-    return obj;
-  }, {});
-
-async function createCalendarEvent(body, userId) {
-  return models.Notification.create({
-    // lastTimeSent: '2019-10-05 15:53:34',
-    IntervalId: constants.NotificationInterval[body.notificationInterval],
-    NotificationTypeId: constants.NotificationType[body.notificationType],
-    UserId: userId
-  }).then(newNotification => {
-    return newNotification;
-  });
-}
-
 function isCreateNotification(notification) {
   const {
     notificationId,
@@ -268,3 +255,14 @@ function isDeleteNotification(notification) {
   } = notification;
   return notificationId && !notificationTypeId && !notificationIntervalId;
 }
+
+// async function createCalendarEvent(body, userId) {
+//   return models.Notification.create({
+//     // lastTimeSent: '2019-10-05 15:53:34',
+//     IntervalId: constants.NotificationInterval[body.notificationInterval],
+//     NotificationTypeId: constants.NotificationType[body.notificationType],
+//     UserId: userId
+//   }).then(newNotification => {
+//     return newNotification;
+//   });
+// }

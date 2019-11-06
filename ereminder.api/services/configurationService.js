@@ -7,50 +7,43 @@ const dateTimeHelper = require("../helpers/dateTimeHelper");
 exports.CreateConfiguration = async function(body, userId) {
   let configuration = createDBConfiguration(body);
   configuration.UserId = userId;
-  return await createInitialConfiguration(configuration);
+  return await createConfiguration(configuration);
 };
 
 exports.UpdateConfiguration = async function(body, userId) {
   let configuration = createDBConfiguration(body);
-  return await updateInitialConfiguration(configuration, userId);
+  return await updateConfiguration(configuration, userId);
 };
 
 exports.GetConfiguration = async function(userId) {
-  return await models.InitialConfiguration.findOne({
+  return await models.Configuration.findOne({
     where: { UserId: userId }
   });
 };
 
 exports.GetLastTimeConfiguration = async function(
   notificationTypeId,
-  initialConfiguration
+  configuration
 ) {
-  let lastTimeInitConfiguration;
-
   switch (notificationTypeId) {
+    case constants.NotificationType.Medicine:
+      return new Date(configuration.lastTimeTookPills);
+      break;
     case constants.NotificationType.Recepies:
-      lastTimeInitConfiguration = new Date(
-        initialConfiguration.lastTimeGotPrescription
-      );
+      return new Date(configuration.lastTimeGotPrescription);
       break;
     case constants.NotificationType.Pharmacy:
-      lastTimeInitConfiguration = new Date(
-        initialConfiguration.lastTimeInPharmacy
-      );
+      return new Date(configuration.lastTimeInPharmacy);
       break;
     case constants.NotificationType.Referral:
-      lastTimeInitConfiguration = new Date(
-        initialConfiguration.lastTimeGoReferral
-      );
+      return new Date(configuration.lastTimeGoReferral);
       break;
     case constants.NotificationType.MedicalFindings:
-      lastTimeInitConfiguration = new Date(
-        initialConfiguration.lastTimeExamination
-      );
+      return new Date(configuration.lastTimeExamination);
       break;
+    default:
+      return null;
   }
-
-  return lastTimeInitConfiguration;
 };
 
 function createDBConfiguration(body) {
@@ -113,8 +106,8 @@ function tryAddNotificationToConfiguration(name, value, dbConfiguraton) {
   }
 }
 
-async function updateInitialConfiguration(configuration, userId) {
-  return await models.InitialConfiguration.update(configuration, {
+async function updateConfiguration(configuration, userId) {
+  return await models.Configuration.update(configuration, {
     where: { UserId: userId },
     returning: true
   }).then(newConfig => {
@@ -122,10 +115,8 @@ async function updateInitialConfiguration(configuration, userId) {
   });
 }
 
-async function createInitialConfiguration(configuration) {
-  return await models.InitialConfiguration.create(configuration).then(
-    newConfig => {
-      return newConfig;
-    }
-  );
+async function createConfiguration(configuration) {
+  return await models.Configuration.create(configuration).then(newConfig => {
+    return newConfig;
+  });
 }

@@ -1,16 +1,15 @@
-'use strict';
+"use strict";
 module.exports = (sequelize, DataTypes) => {
-  var Notification = sequelize.define('Notification', {
-     id: {
+  var Notification = sequelize.define("Notification", {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true
     },
-    lastTimeSent: DataTypes.DATE,
-    nextTimeSent: DataTypes.DATE
+    lastTimeSent: DataTypes.DATE
   });
 
-  Notification.associate = function (models) {
+  Notification.associate = function(models) {
     models.Notification.belongsTo(models.User, {
       foreignKey: {
         allowNull: false
@@ -18,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  Notification.associate = function (models) {
+  Notification.associate = function(models) {
     models.Notification.hasMany(models.NotificationType, {
       foreignKey: {
         allowNull: false
@@ -26,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  Notification.associate = function (models) {
+  Notification.associate = function(models) {
     models.Notification.belongsTo(models.Interval, {
       foreignKey: {
         allowNull: false
