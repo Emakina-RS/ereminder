@@ -8,24 +8,32 @@ import useInput from "../hooks/useInput";
 import "./Register.css";
 
 const Register = () => {
-  const email = useInput("email", "Unesite Vašu e-mail adresu");
-  const password = useInput("password", "Unesite šifru");
-  const confirmPassword = useInput("confirm-password", "Ponovite šifru");
+  let inputFields = [];
+  const email = inputFields[0] = useInput("email", "Unesite Vašu e-mail adresu", { required: true, email: true });
+  const password = inputFields[1] = useInput("password", "Unesite šifru", { required: true });
+  const confirmPassword = inputFields[2] = useInput("confirm-password", "Ponovite šifru", { required: true });
   const isFetching = useSelector(state => state.register.isFetching);
   const dispatch = useDispatch();
+
+
+  const formSubmitHandler = (event) => {
+    event.preventDefault();
+    let isFormValid = true;
+    for (let input of inputFields) {
+      isFormValid = input.valid && isFormValid;
+    }
+    if (isFormValid) {
+      dispatch(
+        register(email.value, password.value, confirmPassword.value)
+      );
+    }
+  };
 
   return (
     <div className="Register">
       <div className="Register-content">
         <h1>Registruj se</h1>
-        <form
-          onSubmit={event => {
-            event.preventDefault();
-            dispatch(
-              register(email.value, password.value, confirmPassword.value)
-            );
-          }}
-        >
+        <form onSubmit={formSubmitHandler}>
           <Input type="email" {...email} />
           <Input type="password" {...password} />
           <Input type="password" {...confirmPassword} />

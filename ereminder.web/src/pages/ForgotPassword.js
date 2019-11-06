@@ -9,7 +9,9 @@ import { forgotPassword, closeModal } from "../actions"
 import "./ForgotPassword.css";
 
 const ForgotPassword = () => {
-  const email = useInput("email", "Unesite Vašu e-mail adresu");
+  let inputFields = [];
+  const email = inputFields[0] = useInput("email", "Unesite Vašu e-mail adresu", { required: true, email: true });
+
   let {showModal, isSubmitting} = useSelector(state => state.forgotPassword);
   const dispatch = useDispatch();
 
@@ -17,16 +19,22 @@ const ForgotPassword = () => {
     dispatch(closeModal());
   };
 
+  const formSubmitHandler = (event) => {
+    event.preventDefault();
+    let isFormValid = true;
+    for (let input of inputFields) {
+      isFormValid = input.valid && isFormValid;
+    }
+    if (isFormValid) {
+      dispatch(forgotPassword(email.value));
+    }
+  };
+
   return (
     <div className="ForgotPassword">
       <div className="ForgotPassword-content">
         <h1>Zaboravili ste šifru</h1>
-        <form
-          onSubmit={event => {
-            event.preventDefault();
-            dispatch(forgotPassword(email.value));
-          }}
-        >
+        <form onSubmit={formSubmitHandler}>
           <Input type="email" {...email} />
           <Button disabled={isSubmitting}>Restartuj šifru</Button>
           <div className="ForgotPassword-allready">
@@ -42,7 +50,6 @@ const ForgotPassword = () => {
     </div>
   );
 };
-
 
 const modalContent = () => {
   return (

@@ -19,22 +19,31 @@ const mapDispatchToProps = {
 const Login = ({
   isSubmitting,
   shouldRedirect,
-
   logIn
 }) => {
-  const email = useInput("email", "Unesite Vašu e-mail adresu");
-  const password = useInput("password", "Unesite šifru");
+  let inputFields = [];
+  const email = inputFields[0] = useInput("email", "Unesite Vašu e-mail adresu", { required: true, email: true });
+  const password = inputFields[1] = useInput("password", "Unesite šifru", { required: true });
   if (shouldRedirect) {
     console.log("redirecting...");
-    return <Redirect to="/whatever" />;
+    return <Redirect to="/notifications-date" />;
   }
+
+  const formSubmitHandler = (event) => {
+    event.preventDefault();
+    let isFormValid = true;
+    for (let input of inputFields) {
+      isFormValid = input.valid && isFormValid;
+    }
+    if (isFormValid) {
+      logIn(email.value, password.value);
+    }
+  };
+
   return (
     <div className="Login">
       <form
-        onSubmit={event => {
-          event.preventDefault();
-          logIn(email.value, password.value);
-        }}
+        onSubmit={formSubmitHandler}
         className="Login-content"
       >
         <h1>Uloguj se</h1>
