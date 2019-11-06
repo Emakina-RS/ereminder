@@ -2,6 +2,7 @@
   "development": {
     "apiUrl": "http://dev-api.ereminder.com/",
     "apiPort": 8081,
+    "logUrl": "f:\\Work\\Emakina\\Hackaton\\ereminder\\ereminder.web\\src\\assets\\images\\logo.png",
     "corsUrls": ["http://dev.ereminder.com/"],
     "mailSettings": {
       "smtp": "",

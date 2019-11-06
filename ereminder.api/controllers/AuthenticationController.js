@@ -12,7 +12,7 @@ exports.Authenticate = async function(request, response) {
     let user = await userService.getUserByEmail(username);
 
     if (!user) {
-      response.status(401).json({ msg: "No such user found.", user });
+      response.status(401).json({ message: "No such user found.", user });
       return;
     }
 
@@ -28,11 +28,11 @@ exports.Authenticate = async function(request, response) {
         authenticationHelper.JwtOptions.secretOrKey
       );
 
-      response.json({ msg: "ok", token: token });
+      response.json({ message: "ok", token: token });
     } else {
       response
         .status(401)
-        .json({ msg: "Username and password combination is invalid." });
+        .json({ message: "Username and password combination is invalid." });
     }
   }
 };
