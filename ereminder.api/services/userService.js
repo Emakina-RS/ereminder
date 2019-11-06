@@ -6,10 +6,10 @@ const mailer = require("../core/mailer");
 const ecryptionHelper = require("../helpers/encryptionHelper");
 const logger = require("../startup/logger")();
 const BadInputError = require("../errors/BadInputError");
+const constants = require("../config/constants");
 
 require("../config/config");
 const siteUrls = global.globalConfig.siteUrls;
-const mailSubjects = global.globalConfig.mailSubjects;
 
 exports.register = async function(email, password) {
   await ensureUserDoesNotExist(email);
@@ -21,8 +21,13 @@ exports.register = async function(email, password) {
     }
   );
 
-  let body = getConfirmRegistrationEmailBody(user);
-  await mailer.send(mailSubjects.confirmRegistrationSubject, body, email);
+  let emailProperties = {
+    logoUrl: global.globalConfig.logoUrl,
+    siteUrl: siteUrls.root,
+    confirmRegistrationUrl: getUrlWithToken(user, siteUrls.confirmRegistration)
+  }
+
+  await mailer.send(constants.emailTemplates.confirmRegistration, emailProperties, email);
 
   return user;
 };
@@ -49,8 +54,13 @@ exports.sendForgotPasswordEmail = async function(email) {
     return false;
   }
 
-  let body = getResetPasswordEmailBody(user);
-  await mailer.send(mailSubjects.resetPasswordSubject, body, email);
+  let emailProperties = {
+    logoUrl: global.globalConfig.logoUrl,
+    siteUrl: siteUrls.root,
+    resetPasswordUrl: getUrlWithToken(user, siteUrls.resetPassword)
+  }
+
+  await mailer.send(constants.emailTemplates.resetPassword, emailProperties, email);
 
   logger.info(
     `[Service:UserService:SendForgotPasswordEmail] : System send reset password mail to user with id: ${user.id}.`
@@ -129,22 +139,7 @@ function ensureTokenDateIsValid(date) {
   }
 }
 
-function getConfirmRegistrationEmailBody(user) {
+function getUrlWithToken(user, baseUrl) {
   let token = getUserToken(user);
-
-  //TODO: implement proper email template
-  return (
-    "<b>Confirm your registration: </b>" +
-    appendQuery(siteUrls.confirmRegistration, "q=" + token)
-  );
-}
-
-function getResetPasswordEmailBody(user) {
-  let token = getUserToken(user);
-
-  //TODO: implement proper email template
-  return (
-    "<b>Reset your password: </b>" +
-    appendQuery(siteUrls.resetPassword, "q=" + token)
-  );
+  return appendQuery(baseUrl, "q=" + token);
 }

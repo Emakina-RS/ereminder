@@ -2,7 +2,7 @@
   "development": {
     "apiUrl": "http://dev-api.ereminder.com/",
     "apiPort": 8081,
-    "logUrl": "http://dev.ereminder.com/assets/images/logo.png",
+    "logoUrl": "http://dev.ereminder.com/assets/images/logo.png",
     "corsUrls": ["http://dev.ereminder.com/"],
     "mailSettings": {
       "smtp": "",
@@ -10,7 +10,7 @@
       "username": "",
       "password": "",
       "enableSsl": false,
-      "fromEmail": ""
+      "fromEmail": "Crvena Linija <noreply@crvenalinija.rs>"
     },
     "mailSubjects": {
       "confirmRegistrationSubject": "Potvrda registracije",
@@ -29,6 +29,7 @@
       "database": "ereminder"
     },
     "siteUrls": {
+      "root": "http://dev.ereminder.com/",
       "resetPassword": "http://dev.ereminder.com/resetpassword",
       "confirmRegistration": "http://dev.ereminder.com/confirmregistration"
     }
@@ -36,7 +37,7 @@
   "production": {
     "apiUrl": "",
     "apiPort": "",
-    "logUrl": "",
+    "logoUrl": "",
     "corsUrls": [""],
     "mailSettings": {
       "smtp": "",
