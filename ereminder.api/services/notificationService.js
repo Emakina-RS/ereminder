@@ -8,6 +8,8 @@ require("../config/config");
 const mailSubjects = global.globalConfig.mailSubjects;
 const notificationEmailSubjects = getNotificationEmailSubjects();
 const logger = require("../startup/logger")();
+const moment = require("moment");
+require("moment-recur");
 
 exports.updateNotifications = async function(notifications, userId) {
   return await notifications.forEach(async notification => {
@@ -15,49 +17,147 @@ exports.updateNotifications = async function(notifications, userId) {
   });
 };
 
-function getSqlQuery() {
-  return `SELECT n.id as 'Id', u.id as 'userId', u.email, n.lastTimeSent, n.nextTimeSent, i.valueInHours, n.NotificationTypeId FROM notifications n
-  INNER JOIN intervals i ON n.IntervalId = i.Id
-  INNER JOIN users u ON n.UserId = u.Id
-  INNER JOIN notificationtypes nt ON n.NotificationTypeId = nt.Id
-  WHERE n.nextTimeSent < NOW()`;
-}
-
 exports.sendEmailNotifications = async function() {
-  let sqlQuery = getSqlQuery();
-
-  let notifications = await models.sequelize.query(sqlQuery, {
-    type: models.sequelize.QueryTypes.SELECT
+  var notifications = await getNotificationsWithAdditionalAttributes();
+  notifications.forEach(async notification => {
+    switch (notification.NotificationTypeId) {
+      case constants.NotificationType.Medicine:
+        await tookPills(notification);
+        break;
+      case constants.NotificationType.Recepies:
+        await doRemind(notification, notification.lastTimeInPharmacy);
+        break;
+      case constants.NotificationType.Pharmacy:
+        await doRemind(notification, notification.lastTimeGotPrescription);
+        break;
+      case constants.NotificationType.Referral:
+        await doRemind(notification, notification.lastTimeGotReferral);
+        break;
+      case constants.NotificationType.MedicalFindings:
+        await doRemind(notification, notification.lastTimeExamination);
+        break;
+    }
   });
-
-  let currentDate = new Date();
-
-  for (let i = 0; i < notifications.length; i++) {
-    let notification = notifications[i];
-    let body = createEmailNotificationHtmlBody(notification);
-    let nextTimeSent = currentDate.setHours(
-      currentDate.getHours() + notification.valueInHours
-    );
-
-    await mailer.send(
-      notificationEmailSubjects[notification.NotificationTypeId],
-      body,
-      notification.email
-    );
-
-    logger.info(`Notification is sent to user with email: ${email}.`);
-
-    await models.Notification.update(
-      { lastTimeSent: new Date(), nextTimeSent: new Date(nextTimeSent) },
-      { where: { id: notification.Id } }
-    );
-  }
 };
 
 exports.getNotificationDashboard = async function(userId) {
   let usersConfiguration = await getDashboardForUpdating(userId);
   return await notificationDashboard(usersConfiguration);
 };
+
+async function tookPills(notification) {
+  let {
+    lastTimeTookPills,
+    valueInHours,
+    lastTimeSent,
+    Id,
+    userId,
+    email,
+    NotificationTypeId
+  } = notification;
+
+  if (lastTimeSent) {
+    let lastTime = createDateWithYearMonthDateHour(lastTimeSent);
+    let currentttime = createDateWithYearMonthDateHour(new Date());
+    if (lastTime.getTime() === currentttime.getTime()) return;
+  }
+
+  if (isTimeForMedicine(lastTimeTookPills, valueInHours)) {
+    await doNotification(NotificationTypeId, email, Id, userId);
+  }
+}
+
+async function doRemind(notification, configuredTime) {
+  let {
+    valueInHours,
+    lastTimeSent,
+    NotificationTypeId,
+    email,
+    Id,
+    userId
+  } = notification;
+
+  if (lastTimeSent) {
+    let lastTime = createDateWithYearMonthDate(lastTimeSent);
+    let currentttime = createDateWithYearMonthDate(new Date());
+    if (lastTime.getTime() === currentttime.getTime()) return;
+  }
+
+  if (isTimeForReminder(configuredTime, valueInHours)) {
+    await doNotification(NotificationTypeId, email, Id, userId);
+  }
+}
+
+async function getNotificationsWithAdditionalAttributes() {
+  let sqlQuery = `SELECT n.id as 'Id', u.id as 'userId', u.email, n.lastTimeSent, i.valueInHours, n.NotificationTypeId,
+  conf.lastTimeTookPills, conf.lastTimeInPharmacy, conf.lastTimeGotPrescription, conf.lastTimeGotReferral,  conf.lastTimeExamination,
+  nt.Id as 'notificationsId'  FROM notifications n
+  INNER JOIN intervals i ON n.IntervalId = i.Id
+  INNER JOIN users u ON n.UserId = u.Id
+  INNER JOIN notificationtypes nt ON n.NotificationTypeId = nt.Id
+  INNER JOIN configurations conf ON n.UserId = conf.UserId;`;
+
+  return await models.sequelize.query(sqlQuery, {
+    type: models.sequelize.QueryTypes.SELECT
+  });
+}
+
+function createDateWithYearMonthDateHour(datatime) {
+  return new Date(
+    datatime.getFullYear(),
+    datatime.getMonth(),
+    datatime.getDate(),
+    datatime.getHours()
+  );
+}
+
+function createDateWithYearMonthDate(datatime) {
+  return new Date(
+    datatime.getFullYear(),
+    datatime.getMonth(),
+    datatime.getDate()
+  );
+}
+
+function isTimeForMedicine(lastTimeTookPills, valueInHours) {
+  let currentDateInHours = new Date().getHours();
+  let cunfiguredDateHours = new Date(lastTimeTookPills).getHours();
+
+  let differenceInHours = Math.abs(currentDateInHours - cunfiguredDateHours);
+  let timeForMedicine = differenceInHours % valueInHours;
+
+  return timeForMedicine === 0 ? true : false;
+}
+
+function isTimeForReminder(configuredTime, valueInHours) {
+  let recurrence = moment(configuredTime)
+    .recur()
+    .every(valueInHours / 24)
+    .days();
+
+  if (recurrence.matches(moment(new Date()))) return true;
+  return false;
+}
+
+async function doNotification(
+  notificationTypeId,
+  email,
+  notificationId,
+  userId
+) {
+  let body = createEmailNotificationHtmlBody(notificationTypeId);
+
+  await mailer.send(notificationEmailSubjects[notificationTypeId], body, email);
+
+  logger.info(
+    `[NotificationService] Notification is sent to user. /n Notification Id: ${notificationId}, Notification Type : ${notificationTypeId}, User Id: ${userId}. `
+  );
+
+  await models.Notification.update(
+    { lastTimeSent: new Date() },
+    { where: { id: notificationId } }
+  );
+}
 
 function getNotificationEmailSubjects() {
   let subjects = {};
@@ -76,9 +176,19 @@ function getNotificationEmailSubjects() {
   return subjects;
 }
 
-function createEmailNotificationHtmlBody(notification) {
-  //TODO: format the email template
-  return "Reminder text";
+function createEmailNotificationHtmlBody(notificationTypeId) {
+  switch (notificationTypeId) {
+    case 1:
+      return "Poštovani obaveštavamo Vas da je vreme da popijete lekove.";
+    case 2:
+      return "Poštovani obaveštavamo Vas da je vreme da podignete recepte.";
+    case 3:
+      return "Poštovani obaveštavamo Vas da je vreme da posetite apoteku.";
+    case 4:
+      return "Poštovani obaveštavamo Vas da je vreme da podignete uput.";
+    case 5:
+      return "Poštovani obaveštavamo Vas da je vreme da uradite nalaze.";
+  }
 }
 
 async function getDashboardForUpdating(userID) {
@@ -137,19 +247,6 @@ async function getAllConfiguration() {
   });
 }
 
-async function calculateNextNotificationTime(notificationTypeId, userId) {
-  let configuration = await configurationService.GetConfiguration(userId);
-
-  let initialDateConfiguration = await configurationService.GetLastTimeConfiguration(
-    parseInt(notificationTypeId),
-    configuration
-  );
-
-  //TODO: append interval to initialDateConfiguration and get the first one in the future
-
-  return lastTimeConfiguration;
-}
-
 function updateMatchingConfiguration(array, config) {
   array.forEach(item => {
     if (item.notificationTypeId === config.NotificationTypeId) {
@@ -189,13 +286,7 @@ async function makeNotification(notification, userId) {
 async function createNotification(notification, userId) {
   const { notificationTypeId, notificationIntervalId } = notification;
 
-  // let nextTimeToSend = await calculateNextNotificationTime(
-  //   notificationTypeId,
-  //   userId
-  // );
-
   return await models.Notification.create({
-    // nextTimeSent: nextTimeToSend,
     NotificationTypeId: notificationTypeId,
     IntervalId: notificationIntervalId,
     UserId: userId
@@ -255,14 +346,3 @@ function isDeleteNotification(notification) {
   } = notification;
   return notificationId && !notificationTypeId && !notificationIntervalId;
 }
-
-// async function createCalendarEvent(body, userId) {
-//   return models.Notification.create({
-//     // lastTimeSent: '2019-10-05 15:53:34',
-//     IntervalId: constants.NotificationInterval[body.notificationInterval],
-//     NotificationTypeId: constants.NotificationType[body.notificationType],
-//     UserId: userId
-//   }).then(newNotification => {
-//     return newNotification;
-//   });
-// }
