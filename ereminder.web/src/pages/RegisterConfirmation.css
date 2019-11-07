@@ -1,0 +1,23 @@
+.RegisterConfirmation {
+    background-image: url("../assets/images/background.png");
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .RegisterConfirmation-content {
+    width: 550px;
+  }
+  
+  .RegisterConfirmation h1, .react-simple-spinner-text {
+    color: white !important;
+    text-transform: uppercase;
+    font-weight: normal;
+    padding: 1rem 0;
+    letter-spacing: 0.1rem;
+  }
+
+.RegisterConfirmation-center {
+  margin-bottom: 30px;
+}

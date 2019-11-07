@@ -16,6 +16,7 @@ import Notifications from "./pages/Notifications";
 import NotificationsDates from "./pages/NotificationsDates";
 import NotificationsType from "./pages/NotificationsType";
 import Register from "./pages/Register";
+import RegisterConfirmation from "./pages/RegisterConfirmation";
 
 const App = () => {
   const token = useSelector(state => state.token);
@@ -42,6 +43,7 @@ const App = () => {
             <Switch>
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
+              <Route path="/registerConfirmation" component={RegisterConfirmation} />
               <Route path="/forgot-password" component={ForgotPassword} />
               <Redirect to="/login" />
             </Switch>

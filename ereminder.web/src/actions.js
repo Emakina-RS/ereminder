@@ -101,6 +101,23 @@ export const closeModal = () => dispatch => {
   dispatch({ type: "CLOSE_MODAL" });
 };
 
+export const registerConfirmation = (token) => dispatch => {
+
+  post("/registerConfirmation", {
+    token
+  })
+  .then((res) => {
+    if(res.errors && res.errors.length > 0) {
+      dispatch({ type: "IS_SUBMITTING_FAILURE" });
+    } else {
+      dispatch({ type: "IS_CONFIRMED" });
+    }
+  })
+  .catch(() => {
+    dispatch({ type: "IS_SUBMITTING_FAILURE"});
+  });
+};
+
 const mockJSON = {
   takeRecepieEveryHours: 12,
   reminders: {

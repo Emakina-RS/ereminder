@@ -13,6 +13,7 @@ import register from "./reducers/register";
 import settings from "./reducers/settings";
 import token from "./reducers/token";
 import forgotPassword from "./reducers/forgotPassword";
+import registerConfirmation from "./reducers/registerConfirmation";
 
 const loadState = () => {
   try {
@@ -40,7 +41,8 @@ const store = createStore(
     settings,
     token,
     calendar,
-    forgotPassword
+    forgotPassword,
+    registerConfirmation
   }),
   loadState(),
   applyMiddleware(thunk)
