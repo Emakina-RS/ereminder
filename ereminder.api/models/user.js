@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 module.exports = (sequelize, DataTypes) => {
-  var User = sequelize.define('User', {
+  var User = sequelize.define("User", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -27,17 +27,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  User.associate = function (models) {
-    models.User.hasOne(models.InitialConfiguration, {
+  User.associate = function(models) {
+    models.User.hasOne(models.Configuration, {
       foreignKey: {
         allowNull: false
       }
     });
 
     models.User.hasMany(models.Notification, {
-      as: 'notifications'
+      as: "notifications"
     });
-};
+  };
 
   return User;
 };

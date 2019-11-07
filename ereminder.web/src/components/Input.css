@@ -1,0 +1,11 @@
+.Input-invalid {
+  border: 1px solid #ff0000;
+}
+
+.Input-validation-error {
+  color: #bd1e2c;
+  text-align: left;
+  margin-bottom: 5px;
+  font-size: 17px;
+  font-style: italic;
+}

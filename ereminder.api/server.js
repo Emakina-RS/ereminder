@@ -11,6 +11,8 @@ const routes = require("./routes/routes");
 const authenticationHelper = require("./helpers/authenticationHelper");
 const error = require("./middleware/error");
 const logger = require("./startup/logger")();
+const rateLimiters = require("./middleware/rateLimiters");
+const xss = require('xss-clean');
 
 require("./config/config");
 const corsUrls = global.globalConfig.corsUrls;
@@ -18,12 +20,14 @@ const corsUrls = global.globalConfig.corsUrls;
 var app = express()
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
-  .use(cors(corsUrls));
+  .use(cors(corsUrls))
+  .use(xss())
+  .use(error)
+  .use(express.json({ limit: '10kb' }))
+  .use(rateLimiters.NumberOfRequestsLimiter);
 
 authenticationHelper(app);
 routes(app);
-
-app.use(error);
 
 var server = app.listen(global.globalConfig.apiPort, function() {
   var port = server.address().port;

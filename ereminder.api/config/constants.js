@@ -5,7 +5,7 @@ const Constants = {
         dateTime:'DD-MM-YYYY HH:mm:ss',
         date:'DD-MM-YYYY'
     },
-    errorMessages:{
+    errorMessages: {
         requiredField: (fieldName) =>  `${fieldName} is required`,
         invalidDate:'',
         invalidDateTime:'',
@@ -15,6 +15,10 @@ const Constants = {
         missingEmail:'',
         missingPassword:'',
         unmatchedPassword:''
+    },
+    emailTemplates: {
+        confirmRegistration: 'confirmRegistration',
+        resetPassword: 'resetPassword'
     }
 }
 

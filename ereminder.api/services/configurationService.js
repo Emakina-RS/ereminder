@@ -1,76 +1,122 @@
-'use strict'
+"use strict";
 
-const models = require('../models');
-const constants = require('../config/constants');
-const userValidator = require('../validators/userValidator.js');
+const models = require("../models");
+const constants = require("../config/constants");
+const dateTimeHelper = require("../helpers/dateTimeHelper");
 
-exports.CreateConfiguration = async function (body, userId) {
-    //TODO: implement this validation out of this service method (middleware)
-    let configuration = {
-         lastTimeTookPills: userValidator.convertToUCTDateTime(body.lastTimeTookPills),
-         lastTimeInPharmacy: userValidator.convertToUCTDate(body.lastTimeInPharmacy),
-         lastTimeGotPrescription: userValidator.convertToUCTDate(body.lastTimeGotPrescription),
-         lastTimeGotReferral: userValidator.convertToUCTDate(body.lastTimeGotReferral),
-         lastTimeExamination: userValidator.convertToUCTDate(body.lastTimeExamination),
-    }
-
-    let userConfig = await models.InitialConfiguration.findAll({
-         include: [{
-              model: models.User,
-              where: { id: userId }
-         }]
-    });
-
-    if(userConfig.length) {
-         return await models.InitialConfiguration.update(configuration, {
-              where: { id: userConfig[0].id },
-              returning: true
-          })
-         .then((newConfig) => { return newConfig; });
-    }
-
-    configuration.UserId = userId;
-
-    return await models.InitialConfiguration
-        .create(configuration)
-        .then((newConfig) => { return newConfig; });
-}
-
-exports.GetConfiguration = async function (userId) {
-    var query = {
-        where: {id: userId},
-        include: [
-          {model: models.InitialConfiguration, as: 'InitialConfiguration'}
-        ]
-      }
-
-    var user = await models.User.findOne(query);
-    return user ? user.InitialConfiguration : null;
+exports.CreateConfiguration = async function(body, userId) {
+  let configuration = createDBConfiguration(body);
+  configuration.UserId = userId;
+  return await createConfiguration(configuration);
 };
 
-exports.UpdateConfiguration = async function(userId, configuration) {
-    await models.InitialConfiguration.update(configuration, {
-        where: { id: userId }
-    });
+exports.UpdateConfiguration = async function(body, userId) {
+  let configuration = createDBConfiguration(body);
+  return await updateConfiguration(configuration, userId);
+};
+
+exports.GetConfiguration = async function(userId) {
+  return await models.Configuration.findOne({
+    where: { UserId: userId }
+  });
+};
+
+exports.GetLastTimeConfiguration = async function(
+  notificationTypeId,
+  configuration
+) {
+  switch (notificationTypeId) {
+    case constants.NotificationType.Medicine:
+      return new Date(configuration.lastTimeTookPills);
+      break;
+    case constants.NotificationType.Recepies:
+      return new Date(configuration.lastTimeGotPrescription);
+      break;
+    case constants.NotificationType.Pharmacy:
+      return new Date(configuration.lastTimeInPharmacy);
+      break;
+    case constants.NotificationType.Referral:
+      return new Date(configuration.lastTimeGoReferral);
+      break;
+    case constants.NotificationType.MedicalFindings:
+      return new Date(configuration.lastTimeExamination);
+      break;
+    default:
+      return null;
+  }
+};
+
+function createDBConfiguration(body) {
+  var dbConfiguraton = {};
+
+  tryAddDateTimeToConfiguration(
+    "lastTimeTookPills",
+    body.lastTimeTookPills,
+    dbConfiguraton
+  );
+
+  tryAddDateTimeToConfiguration(
+    "lastTimeInPharmacy",
+    body.lastTimeInPharmacy,
+    dbConfiguraton
+  );
+
+  tryAddDateTimeToConfiguration(
+    "lastTimeGotPrescription",
+    body.lastTimeGotPrescription,
+    dbConfiguraton
+  );
+
+  tryAddDateTimeToConfiguration(
+    "lastTimeGotReferral",
+    body.lastTimeGotReferral,
+    dbConfiguraton
+  );
+
+  tryAddDateTimeToConfiguration(
+    "lastTimeExamination",
+    body.lastTimeExamination,
+    dbConfiguraton
+  );
+
+  tryAddNotificationToConfiguration(
+    "enableEmailNotification",
+    body.enableEmailNotification,
+    dbConfiguraton
+  );
+
+  tryAddNotificationToConfiguration(
+    "enableCalendarNotification",
+    body.enableCalendarNotification,
+    dbConfiguraton
+  );
+
+  return dbConfiguraton;
 }
 
-exports.GetLastTimeConfiguration = async function(notificationTypeId, initialConfiguration) {
-    let lastTimeInitConfiguration;
+function tryAddDateTimeToConfiguration(name, value, dbConfiguraton) {
+  if (value) {
+    dbConfiguraton[name] = dateTimeHelper.convertToUCTDateTime(value);
+  }
+}
 
-    switch (notificationTypeId) {
-        case constants.NotificationType.Recepies:
-            lastTimeInitConfiguration = new Date(initialConfiguration.lastTimeGotPrescription);
-            break;
-        case constants.NotificationType.Pharmacy:
-            lastTimeInitConfiguration = new Date(initialConfiguration.lastTimeInPharmacy);
-            break;
-        case constants.NotificationType.Referral:
-            lastTimeInitConfiguration = new Date(initialConfiguration.lastTimeGoReferral);
-            break;
-        case constants.NotificationType.MedicalFindings:
-            lastTimeInitConfiguration = new Date(initialConfiguration.lastTimeExamination);
-            break;
-    }
+function tryAddNotificationToConfiguration(name, value, dbConfiguraton) {
+  if (value !== undefined) {
+    dbConfiguraton[name] = value;
+  }
+}
 
-    return lastTimeInitConfiguration;
+async function updateConfiguration(configuration, userId) {
+  return await models.Configuration.update(configuration, {
+    where: { UserId: userId },
+    returning: true
+  }).then(newConfig => {
+    return newConfig;
+  });
+}
+
+async function createConfiguration(configuration) {
+  return await models.Configuration.create(configuration).then(newConfig => {
+    return newConfig;
+  });
 }

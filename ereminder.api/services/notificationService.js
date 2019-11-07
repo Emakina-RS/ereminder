@@ -9,29 +9,22 @@ const mailSubjects = global.globalConfig.mailSubjects;
 const notificationEmailSubjects = getNotificationEmailSubjects();
 const logger = require("../startup/logger")();
 
-exports.updateNotifications = async function(notificationsArray, userId) {
-  return await notificationsArray.forEach(notificationParams => {
-    let noteId = notificationParams.notificationId;
-    let typeId = notificationParams.notificationTypeId;
-    let intervalId = notificationParams.notificationIntervalId;
-
-    if (noteId) {
-      if (typeId && intervalId) {
-        return updateNotification(noteId, typeId, intervalId);
-      }
-      return deleteNotification(noteId, userId);
-    } else if (typeId && intervalId) {
-      return createNotification(typeId, intervalId, userId);
-    }
+exports.updateNotifications = async function(notifications, userId) {
+  return await notifications.forEach(async notification => {
+    await makeNotification(notification, userId);
   });
 };
 
+function getSqlQuery() {
+  return `SELECT n.id as 'Id', u.id as 'userId', u.email, n.lastTimeSent, n.nextTimeSent, i.valueInHours, n.NotificationTypeId FROM notifications n
+  INNER JOIN intervals i ON n.IntervalId = i.Id
+  INNER JOIN users u ON n.UserId = u.Id
+  INNER JOIN notificationtypes nt ON n.NotificationTypeId = nt.Id
+  WHERE n.nextTimeSent < NOW()`;
+}
+
 exports.sendEmailNotifications = async function() {
-  let sqlQuery = `SELECT n.id as 'Id', u.id as 'userId', u.email, n.lastTimeSent, n.nextTimeSent, i.valueInHours, n.NotificationTypeId FROM notifications n
-                        INNER JOIN intervals i ON n.IntervalId = i.Id
-                        INNER JOIN users u ON n.UserId = u.Id
-                        INNER JOIN notificationtypes nt ON n.NotificationTypeId = nt.Id
-                    WHERE n.nextTimeSent < NOW()`;
+  let sqlQuery = getSqlQuery();
 
   let notifications = await models.sequelize.query(sqlQuery, {
     type: models.sequelize.QueryTypes.SELECT
@@ -144,68 +137,17 @@ async function getAllConfiguration() {
   });
 }
 
-async function createNotification(
-  notificationTypeId,
-  notificationIntervalId,
-  userId
-) {
-  let nextTimeToSend = await calculateNextNotificationTime(
-    notificationTypeId,
-    notificationIntervalId,
-    userId,
-    null
-  );
-
-  return await models.Notification.create({
-    nextTimeSent: nextTimeToSend,
-    NotificationTypeId: notificationTypeId,
-    IntervalId: notificationIntervalId,
-    UserId: userId
-  });
-}
-
-async function updateNotification(
-  notificationId,
-  notificationTypeId,
-  notificationIntervalId
-) {
-  return await models.Notification.findByPk(notificationId).then(
-    notification => {
-      if (notification) {
-        notification.update({
-          NotificationTypeId: notificationTypeId,
-          IntervalId: notificationIntervalId
-        });
-      }
-    }
-  );
-}
-
-async function deleteNotification(notificationId, userId) {
-  return await models.Notification.findByPk(notificationId).then(
-    notification => {
-      if (notification && notification.UserId == userId) {
-        notification.destroy();
-      }
-    }
-  );
-}
-
-async function calculateNextNotificationTime(
-  notificationTypeId,
-  notificationIntervalId,
-  userId,
-  lastTimeSent
-) {
+async function calculateNextNotificationTime(notificationTypeId, userId) {
   let configuration = await configurationService.GetConfiguration(userId);
-  let lastTimeConfiguration = configurationService.GetLastTimeConfiguration(
-    notificationTypeId,
+
+  let initialDateConfiguration = await configurationService.GetLastTimeConfiguration(
+    parseInt(notificationTypeId),
     configuration
   );
 
-  if (lastTimeSent == null) {
-    return lastTimeConfiguration;
-  }
+  //TODO: append interval to initialDateConfiguration and get the first one in the future
+
+  return lastTimeConfiguration;
 }
 
 function updateMatchingConfiguration(array, config) {
@@ -233,13 +175,94 @@ const arrayToObject = (array, keyField) =>
     return obj;
   }, {});
 
-async function createCalendarEvent(body, userId) {
-  return models.Notification.create({
-    // lastTimeSent: '2019-10-05 15:53:34',
-    IntervalId: constants.NotificationInterval[body.notificationInterval],
-    NotificationTypeId: constants.NotificationType[body.notificationType],
+async function makeNotification(notification, userId) {
+  if (isCreateNotification(notification))
+    return await createNotification(notification, userId);
+
+  if (isUpdateNotification(notification))
+    return await updateNotification(notification);
+
+  if (isDeleteNotification(notification))
+    return await deleteNotification(notification);
+}
+
+async function createNotification(notification, userId) {
+  const { notificationTypeId, notificationIntervalId } = notification;
+
+  // let nextTimeToSend = await calculateNextNotificationTime(
+  //   notificationTypeId,
+  //   userId
+  // );
+
+  return await models.Notification.create({
+    // nextTimeSent: nextTimeToSend,
+    NotificationTypeId: notificationTypeId,
+    IntervalId: notificationIntervalId,
     UserId: userId
-  }).then(newNotification => {
-    return newNotification;
   });
 }
+
+async function updateNotification(notification) {
+  const {
+    notificationId,
+    notificationTypeId,
+    notificationIntervalId
+  } = notification;
+  return await models.Notification.findByPk(notificationId).then(
+    notification => {
+      if (notification) {
+        notification.update({
+          NotificationTypeId: notificationTypeId,
+          IntervalId: notificationIntervalId
+        });
+      }
+    }
+  );
+}
+
+async function deleteNotification(notification) {
+  const { notificationId } = notification;
+  return await models.Notification.findByPk(notificationId).then(
+    notification => {
+      if (notification) notification.destroy();
+    }
+  );
+}
+
+function isCreateNotification(notification) {
+  const {
+    notificationId,
+    notificationTypeId,
+    notificationIntervalId
+  } = notification;
+  return notificationTypeId && notificationIntervalId && !notificationId;
+}
+
+function isUpdateNotification(notification) {
+  const {
+    notificationId,
+    notificationTypeId,
+    notificationIntervalId
+  } = notification;
+  return notificationTypeId && notificationIntervalId && notificationId;
+}
+
+function isDeleteNotification(notification) {
+  const {
+    notificationId,
+    notificationTypeId,
+    notificationIntervalId
+  } = notification;
+  return notificationId && !notificationTypeId && !notificationIntervalId;
+}
+
+// async function createCalendarEvent(body, userId) {
+//   return models.Notification.create({
+//     // lastTimeSent: '2019-10-05 15:53:34',
+//     IntervalId: constants.NotificationInterval[body.notificationInterval],
+//     NotificationTypeId: constants.NotificationType[body.notificationType],
+//     UserId: userId
+//   }).then(newNotification => {
+//     return newNotification;
+//   });
+// }

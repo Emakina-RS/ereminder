@@ -10,6 +10,6 @@ exports.initialize = function() {
       `[Core:Scheduler] : Notifications scheduler is started. It will be running every 3 minutes.`
     );
 
-    notificationService.sendEmailNotifications();
+    //notificationService.sendEmailNotifications();
   });
 };

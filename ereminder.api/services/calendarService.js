@@ -8,7 +8,7 @@ const configurationService = require("./configurationService");
 require("moment-recur");
 
 exports.getCalendar = async function(userId, startDate, endDate) {
-  let initialConfiguration = await models.InitialConfiguration.findOne({
+  let Configuration = await models.Configuration.findOne({
     UserId: userId
   });
 
@@ -41,7 +41,7 @@ exports.getCalendar = async function(userId, startDate, endDate) {
 
     let lastTimeInitConfiguration = await configurationService.GetLastTimeConfiguration(
       notification.NotificationTypeId,
-      initialConfiguration
+      configuration
     );
     let recurrence = moment(lastTimeInitConfiguration)
       .recur()

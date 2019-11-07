@@ -3,8 +3,7 @@
 const notificationService = require("../services/notificationService");
 
 exports.UpdateNotifications = async function(req, res) {
-  let user = await req.user;
-  await notificationService.updateNotifications(req.body, user.id);
+  await notificationService.updateNotifications(req.body, req.user.id);
 
   return res.status(200).json({ message: "Notifications updated." });
 };
@@ -16,8 +15,9 @@ exports.UpdateNotification = function(request, response) {
 };
 
 exports.GetNotificationDashboard = async function(req, res) {
-  let user = await req.user;
-  let dashboard = await notificationService.getNotificationDashboard(user.id);
+  let dashboard = await notificationService.getNotificationDashboard(
+    req.user.id
+  );
 
   return res.status(200).json(dashboard);
 };

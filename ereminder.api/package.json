@@ -11,8 +11,10 @@
     "crypto": "^1.0.1",
     "dateformat": "^3.0.3",
     "debug": "^4.1.1",
+    "email-templates": "^6.0.3",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
+    "express-rate-limit": "^5.0.0",
     "express-sequelize": "0.0.4",
     "express-validator": "^6.2.0",
     "fs": "0.0.1-security",
@@ -29,9 +31,11 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "path": "^0.12.7",
+    "pug": "^2.0.4",
     "sequelize": "^5.19.2",
     "util": "^0.12.1",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "xss-clean": "^0.1.1"
   },
   "devDependencies": {
     "nodemon": "^1.19.3"
