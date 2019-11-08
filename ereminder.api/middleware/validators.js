@@ -15,6 +15,9 @@ exports.register = [
     .exists()
     .withMessage(constants.errorMessages.requiredField("Password"))
     .custom((value, { req }) => {
+      if (value.length < 6) {
+        throw new Error(constants.passwordError.tooShort);
+      }
       if (value !== req.body.confirmpassword) {
         throw new Error(constants.errorMessages.unmatchedPassword);
       }
@@ -73,6 +76,9 @@ exports.configInitialization = [
       if (!validateDateTime(value)) {
         throw new Error(constants.errorMessages.validateDate);
       }
+      if (isInputDateInFuture(value)) {
+        throw new Error(constants.errorDataTime.dataTimeInFuture);
+      }
       return true;
     }),
   body("lastTimeInPharmacy")
@@ -81,6 +87,9 @@ exports.configInitialization = [
     .custom((value, { req }) => {
       if (!validateDate(value)) {
         throw new Error(constants.errorMessages.invalidDate);
+      }
+      if (isInputDateInFuture(value)) {
+        throw new Error(constants.errorDataTime.dataTimeInFuture);
       }
       return true;
     }),
@@ -91,6 +100,9 @@ exports.configInitialization = [
       if (!validateDate(value)) {
         throw new Error(constants.errorMessages.validateDate);
       }
+      if (isInputDateInFuture(value)) {
+        throw new Error(constants.errorDataTime.dataTimeInFuture);
+      }
       return true;
     }),
   body("lastTimeGotReferral")
@@ -100,6 +112,9 @@ exports.configInitialization = [
       if (!validateDate(value)) {
         throw new Error(constants.errorMessages.validateDate);
       }
+      if (isInputDateInFuture(value)) {
+        throw new Error(constants.errorDataTime.dataTimeInFuture);
+      }
       return true;
     }),
   body("lastTimeExamination")
@@ -108,6 +123,9 @@ exports.configInitialization = [
     .custom((value, { req }) => {
       if (!validateDate(value)) {
         throw new Error(constants.errorMessages.validateDate);
+      }
+      if (isInputDateInFuture(value)) {
+        throw new Error(constants.errorDataTime.dataTimeInFuture);
       }
       return true;
     })
@@ -121,6 +139,9 @@ exports.updateConfiguration = [
       if (!validateDateTime(value)) {
         throw new Error(constants.errorMessages.validateDate);
       }
+      if (isInputDateInFuture(value)) {
+        throw new Error(constants.errorDataTime.dataTimeInFuture);
+      }
       return true;
     }),
   body("lastTimeInPharmacy")
@@ -128,6 +149,9 @@ exports.updateConfiguration = [
     .custom((value, { req }) => {
       if (!validateDate(value)) {
         throw new Error(constants.errorMessages.invalidDate);
+      }
+      if (isInputDateInFuture(value)) {
+        throw new Error(constants.errorDataTime.dataTimeInFuture);
       }
       return true;
     }),
@@ -137,6 +161,9 @@ exports.updateConfiguration = [
       if (!validateDate(value)) {
         throw new Error(constants.errorMessages.validateDate);
       }
+      if (isInputDateInFuture(value)) {
+        throw new Error(constants.errorDataTime.dataTimeInFuture);
+      }
       return true;
     }),
   body("lastTimeGotReferral")
@@ -144,6 +171,9 @@ exports.updateConfiguration = [
     .custom((value, { req }) => {
       if (!validateDate(value)) {
         throw new Error(constants.errorMessages.validateDate);
+      }
+      if (isInputDateInFuture(value)) {
+        throw new Error(constants.errorDataTime.dataTimeInFuture);
       }
       return true;
     }),
@@ -153,13 +183,16 @@ exports.updateConfiguration = [
       if (!validateDate(value)) {
         throw new Error(constants.errorMessages.validateDate);
       }
+      if (isInputDateInFuture(value)) {
+        throw new Error(constants.errorDataTime.dataTimeInFuture);
+      }
       return true;
     }),
   body("enableEmailNotification")
     .optional({ options: { nullable: true } })
     .custom((value, { req }) => {
       if (typeof value !== "boolean") {
-        throw new Error("This field is not a boolean value");
+        throw new Error(constants.invalidFieldValue.notBooleanField);
       }
       return true;
     }),
@@ -167,7 +200,49 @@ exports.updateConfiguration = [
     .optional({ options: { nullable: true } })
     .custom((value, { req }) => {
       if (typeof value !== "boolean") {
-        throw new Error("This field is not a boolean value");
+        throw new Error(constants.invalidFieldValue.notBooleanField);
+      }
+      return true;
+    })
+];
+
+exports.notifications = [
+  authentication.EnsureAuthenticated(),
+  body().isArray(),
+  body("*.notificationTypeId", constants.invalidFieldValue.notNumberField)
+    .isNumeric()
+    .optional({
+      options: { nullable: true }
+    }),
+  body("*.notificationIntervalId", constants.invalidFieldValue.notNumberField)
+    .isNumeric()
+    .optional({
+      options: { nullable: true }
+    }),
+  body("*.notificationId", constants.invalidFieldValue.notNumberField)
+    .isNumeric()
+    .optional({
+      options: { nullable: true }
+    })
+];
+
+exports.calendar = [
+  authentication.EnsureAuthenticated(),
+  body("startDate")
+    .exists()
+    .withMessage(constants.errorMessages.requiredField("startDate"))
+    .custom((value, { req }) => {
+      if (!validateDate(value)) {
+        throw new Error(constants.errorMessages.validateDate);
+      }
+      return true;
+    }),
+  body("endDate")
+    .exists()
+    .withMessage(constants.errorMessages.requiredField("endDate"))
+    .custom((value, { req }) => {
+      if (!validateDate(value)) {
+        throw new Error(constants.errorMessages.validateDate);
       }
       return true;
     })
@@ -187,4 +262,11 @@ function validateDateTime(dateTime) {
 
 function validateDate(date) {
   return moment(date, constants.stringFormats.date, true).isValid();
+}
+
+function isInputDateInFuture(date) {
+  let dateFromInput = new Date(date);
+  let currentDate = new Date();
+  if (currentDate < dateFromInput) return true;
+  return false;
 }

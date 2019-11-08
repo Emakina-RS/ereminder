@@ -70,10 +70,12 @@ module.exports = function(app) {
     )
   );
 
-  app.post(
-    "/notifications",
-    authentication.EnsureAuthenticated(),
-    notificationController.UpdateNotifications
+  app.post("/notifications", validators.notifications, (req, res) =>
+    validators.returnValidationResults(
+      req,
+      res,
+      notificationController.UpdateNotifications
+    )
   );
 
   app.get(
@@ -82,10 +84,7 @@ module.exports = function(app) {
     notificationController.GetNotificationDashboard
   );
 
-  //TODO: add the input validation, for dates (startDate/endDate)
-  app.get(
-    "/calendar",
-    authentication.EnsureAuthenticated(),
-    calendarController.GetCalendar
+  app.get("/calendar", validators.calendar, (req, res) =>
+    validators.returnValidationResults(req, res, calendarController.GetCalendar)
   );
 };
