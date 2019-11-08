@@ -7,57 +7,53 @@ const notificationController = require("../controllers/NotificationController");
 const calendarController = require("../controllers/CalendarController");
 const configurationController = require("../controllers/ConfigurationController");
 const authenticationHelper = require("../helpers/authenticationHelper");
-const userValidator = require("../validators/userValidator");
-//const error = require("../middleware/error");
+const validators = require("../middleware/validators");
 
 module.exports = function(app) {
-  app.post("/authenticate", userValidator.validateLogin, (req, res) =>
-    userValidator.returnValidationResults(
+  app.post("/authenticate", validators.validateLogin, (req, res) =>
+    validators.returnValidationResults(
       req,
       res,
       authenticationController.Authenticate
     )
   );
 
-  app.post("/register", userValidator.validateRegister, (req, res) =>
-    userValidator.returnValidationResults(req, res, accountController.Register)
+  app.post("/register", validators.validateRegister, (req, res) =>
+    validators.returnValidationResults(req, res, accountController.Register)
   );
 
   app.post(
     "/registerconfirmation",
-    userValidator.validateRegisterConfirmation,
+    validators.validateRegisterConfirmation,
     (req, res) =>
-      userValidator.returnValidationResults(
+      validators.returnValidationResults(
         req,
         res,
         accountController.RegisterConfirmation
       )
   );
 
-  app.post("/resetpassword", userValidator.validateResetPassword, (req, res) =>
-    userValidator.returnValidationResults(
+  app.post("/resetpassword", validators.validateResetPassword, (req, res) =>
+    validators.returnValidationResults(
       req,
       res,
       accountController.ResetPassword
     )
   );
 
-  app.post(
-    "/forgotpassword",
-    userValidator.validateForgotPassword,
-    (req, res) =>
-      userValidator.returnValidationResults(
-        req,
-        res,
-        accountController.ForgotPassword
-      )
+  app.post("/forgotpassword", validators.validateForgotPassword, (req, res) =>
+    validators.returnValidationResults(
+      req,
+      res,
+      accountController.ForgotPassword
+    )
   );
 
   app.post(
     "/configuration",
-    userValidator.validateConfigInitialization,
+    validators.validateConfigInitialization,
     (req, res) =>
-      userValidator.returnValidationResults(
+      validators.returnValidationResults(
         req,
         res,
         configurationController.CreateConfiguration
@@ -71,9 +67,9 @@ module.exports = function(app) {
   );
   app.patch(
     "/configuration",
-    userValidator.validateUpdateConfiguration,
+    validators.validateUpdateConfiguration,
     (req, res) =>
-      userValidator.returnValidationResults(
+      validators.returnValidationResults(
         req,
         res,
         configurationController.UpdateConfiguration
@@ -98,6 +94,4 @@ module.exports = function(app) {
     authenticationHelper.EnsureAuthenticated(),
     calendarController.GetCalendar
   );
-
-  // app.use(error);
 };

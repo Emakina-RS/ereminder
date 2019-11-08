@@ -2,9 +2,9 @@ const constants = require("../config/constants");
 const { body, validationResult } = require("express-validator");
 const authenticationHelper = require("../helpers/authenticationHelper");
 const moment = require("moment");
-const rateLimiters = require("../middleware/rateLimiters");
+const rateLimiters = require("./rateLimiters");
 
-exports.validateRegister = [
+exports.register = [
   rateLimiters.AccountCreationLimiter,
   body("email")
     .exists()
@@ -23,13 +23,13 @@ exports.validateRegister = [
     .withMessage(constants.errorMessages.unmatchedPassword)
 ];
 
-exports.validateRegisterConfirmation = [
+exports.registerConfirmation = [
   body("token")
     .exists()
     .withMessage(constants.errorMessages.requiredField("token"))
 ];
 
-exports.validateResetPassword = [
+exports.resetPassword = [
   body("password")
     .exists()
     .withMessage(constants.errorMessages.requiredField("password")),
@@ -45,7 +45,7 @@ exports.validateResetPassword = [
     .withMessage(constants.errorMessages.unmatchedPassword)
 ];
 
-exports.validateForgotPassword = [
+exports.forgotPassword = [
   body("email")
     .exists()
     .withMessage(constants.errorMessages.requiredField("Email"))
@@ -53,7 +53,7 @@ exports.validateForgotPassword = [
     .withMessage(constants.errorMessages.invalidEmail)
 ];
 
-exports.validateLogin = [
+exports.authenticate = [
   body("username")
     .exists()
     .withMessage(constants.errorMessages.requiredField("Email"))
@@ -64,7 +64,7 @@ exports.validateLogin = [
     .withMessage(constants.errorMessages.requiredField("Password"))
 ];
 
-exports.validateConfigInitialization = [
+exports.configInitialization = [
   authenticationHelper.EnsureAuthenticated(),
   body("lastTimeTookPills")
     .exists()
@@ -113,7 +113,7 @@ exports.validateConfigInitialization = [
     })
 ];
 
-exports.validateUpdateConfiguration = [
+exports.updateConfiguration = [
   authenticationHelper.EnsureAuthenticated(),
   body("lastTimeTookPills")
     .optional({ options: { nullable: true } })
