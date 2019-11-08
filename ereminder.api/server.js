@@ -20,7 +20,9 @@ const corsUrls = global.globalConfig.corsUrls;
 var app = express()
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
-  .use(cors(corsUrls))
+  .use(cors({
+    origin: corsUrls
+  }))
   .use(xss())
   .use(error)
   .use(express.json({ limit: "10kb" }))

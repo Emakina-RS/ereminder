@@ -3,7 +3,7 @@
     "apiUrl": "http://dev-api.ereminder.com/",
     "apiPort": 8081,
     "logoUrl": "http://dev.ereminder.com/assets/images/logo.png",
-    "corsUrls": ["http://dev.ereminder.com/"],
+    "corsUrls": ["http://dev.ereminder.com:8080"],
     "mailSettings": {
       "smtp": "",
       "port": 587,

@@ -3,24 +3,28 @@ const defaultHeaders = {
   "Content-Type": "application/json"
 };
 
-const get = (path, payload, token) => {
+const get = (relativePath, payload, token) => {
   let headers = defaultHeaders;
+
   if (token) {
     headers.Authorization = "Bearer " + token;
   }
-  return fetch(path, {
+
+  return fetch(getFullApiUrl(relativePath), {
     method: "GET",
     headers,
     body: JSON.stringify(payload)
   }).then(response => response.json());
 };
 
-const post = (path, payload, token) => {
+const post = (relativePath, payload, token) => {
   let headers = defaultHeaders;
+
   if (token) {
     headers.Authorization = "Bearer " + token;
   }
-  return fetch(path, {
+
+  return fetch(getFullApiUrl(relativePath), {
     method: "POST",
     headers,
     body: JSON.stringify(payload)
@@ -117,6 +121,10 @@ export const registerConfirmation = (token) => dispatch => {
     dispatch({ type: "IS_SUBMITTING_FAILURE"});
   });
 };
+
+function getFullApiUrl(relativePath) {
+  return process.env.REACT_APP_API_URL + relativePath;
+}
 
 const mockJSON = {
   takeRecepieEveryHours: 12,
