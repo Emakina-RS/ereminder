@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "date-fns": "^2.4.1",
+    "env-cmd": "^10.0.1",
     "lodash": "^4.17.15",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
@@ -16,8 +17,8 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "env-cmd -f .env.development react-scripts start",
+    "build": "env-cmd -f .env.production react-scripts build",
     "storybook": "start-storybook -p 9009 -s public"
   },
   "eslintConfig": {
