@@ -26,6 +26,9 @@ const Constants = {
   invalidFieldValue: {
     notBooleanField: "This value must be a boolean value.",
     notNumberField: "This value must be a number value."
+  },
+  passwordError: {
+    tooShort: "Password is too short."
   }
 };
 

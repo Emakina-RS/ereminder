@@ -28,6 +28,7 @@
       "host": "127.0.0.1",
       "database": "ereminder"
     },
+    "jwtExpiryTimeInSeconds": 3600,
     "siteUrls": {
       "root": "http://dev.ereminder.com/",
       "resetPassword": "http://dev.ereminder.com/resetpassword",
@@ -57,6 +58,7 @@
       "host": "",
       "database": "ereminder"
     },
+    "jwtExpiryTimeInSeconds": 3600,
     "siteUrls": {
       "resetPassword": ""
     }

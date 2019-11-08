@@ -5,6 +5,8 @@ const authentication = require("../middleware/authentication");
 const passwordEncryptionHelper = require("../helpers/passwordEncryptionHelper");
 const userService = require("../services/userService");
 
+const jwtExpiryTime = global.globalConfig.jwtExpiryTimeInSeconds;
+
 exports.Authenticate = async function(request, response) {
   const { username, password } = request.body;
 
@@ -23,7 +25,9 @@ exports.Authenticate = async function(request, response) {
 
     if (validPassword) {
       let payload = { id: user.id };
-      let token = jwt.sign(payload, authentication.JwtOptions.secretOrKey);
+      let token = jwt.sign(payload, authentication.JwtOptions.secretOrKey, {
+        expiresIn: jwtExpiryTime
+      });
 
       response.json({ message: "ok", token: token });
     } else {

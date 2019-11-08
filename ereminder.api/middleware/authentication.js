@@ -24,8 +24,18 @@ module.exports.EnsureAuthenticated = function() {
 module.exports.JwtOptions = jwtOptions;
 
 function getPassportStrategy() {
-  return new JwtStrategy(jwtOptions, async function(jwt_payload, next) {
-    let user = await userService.getUserById(jwt_payload.id);
+  return new JwtStrategy(jwtOptions, async function(jwtPayload, next) {
+    if (!jwtPayload.exp) {
+      return next(null, false);
+    }
+
+    var expirationDate = new Date(jwtPayload.exp * 1000);
+    var currentDate = new Date();
+    if (expirationDate < currentDate) {
+      return next(null, false);
+    }
+
+    let user = await userService.getUserById(jwtPayload.id);
 
     if (user) {
       next(null, user);
