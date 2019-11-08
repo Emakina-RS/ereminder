@@ -1,6 +1,6 @@
 const constants = require("../config/constants");
 const { body, validationResult } = require("express-validator");
-const authenticationHelper = require("../helpers/authenticationHelper");
+const authentication = require("./authentication");
 const moment = require("moment");
 const rateLimiters = require("./rateLimiters");
 
@@ -65,7 +65,7 @@ exports.authenticate = [
 ];
 
 exports.configInitialization = [
-  authenticationHelper.EnsureAuthenticated(),
+  authentication.EnsureAuthenticated(),
   body("lastTimeTookPills")
     .exists()
     .withMessage(constants.errorMessages.requiredField)
@@ -114,7 +114,7 @@ exports.configInitialization = [
 ];
 
 exports.updateConfiguration = [
-  authenticationHelper.EnsureAuthenticated(),
+  authentication.EnsureAuthenticated(),
   body("lastTimeTookPills")
     .optional({ options: { nullable: true } })
     .custom((value, { req }) => {

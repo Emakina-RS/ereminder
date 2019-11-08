@@ -6,11 +6,11 @@ const accountController = require("../controllers/AccountController");
 const notificationController = require("../controllers/NotificationController");
 const calendarController = require("../controllers/CalendarController");
 const configurationController = require("../controllers/ConfigurationController");
-const authenticationHelper = require("../helpers/authenticationHelper");
+const authentication = require("../middleware/authentication");
 const validators = require("../middleware/validators");
 
 module.exports = function(app) {
-  app.post("/authenticate", validators.validateLogin, (req, res) =>
+  app.post("/authenticate", validators.authenticate, (req, res) =>
     validators.returnValidationResults(
       req,
       res,
@@ -18,13 +18,13 @@ module.exports = function(app) {
     )
   );
 
-  app.post("/register", validators.validateRegister, (req, res) =>
+  app.post("/register", validators.register, (req, res) =>
     validators.returnValidationResults(req, res, accountController.Register)
   );
 
   app.post(
     "/registerconfirmation",
-    validators.validateRegisterConfirmation,
+    validators.registerConfirmation,
     (req, res) =>
       validators.returnValidationResults(
         req,
@@ -33,7 +33,7 @@ module.exports = function(app) {
       )
   );
 
-  app.post("/resetpassword", validators.validateResetPassword, (req, res) =>
+  app.post("/resetpassword", validators.resetPassword, (req, res) =>
     validators.returnValidationResults(
       req,
       res,
@@ -41,7 +41,7 @@ module.exports = function(app) {
     )
   );
 
-  app.post("/forgotpassword", validators.validateForgotPassword, (req, res) =>
+  app.post("/forgotpassword", validators.forgotPassword, (req, res) =>
     validators.returnValidationResults(
       req,
       res,
@@ -49,49 +49,43 @@ module.exports = function(app) {
     )
   );
 
-  app.post(
-    "/configuration",
-    validators.validateConfigInitialization,
-    (req, res) =>
-      validators.returnValidationResults(
-        req,
-        res,
-        configurationController.CreateConfiguration
-      )
+  app.post("/configuration", validators.configInitialization, (req, res) =>
+    validators.returnValidationResults(
+      req,
+      res,
+      configurationController.CreateConfiguration
+    )
   );
 
   app.get(
     "/configuration",
-    authenticationHelper.EnsureAuthenticated(),
+    authentication.EnsureAuthenticated(),
     configurationController.GetConfiguration
   );
-  app.patch(
-    "/configuration",
-    validators.validateUpdateConfiguration,
-    (req, res) =>
-      validators.returnValidationResults(
-        req,
-        res,
-        configurationController.UpdateConfiguration
-      )
+  app.patch("/configuration", validators.updateConfiguration, (req, res) =>
+    validators.returnValidationResults(
+      req,
+      res,
+      configurationController.UpdateConfiguration
+    )
   );
 
   app.post(
     "/notifications",
-    authenticationHelper.EnsureAuthenticated(),
+    authentication.EnsureAuthenticated(),
     notificationController.UpdateNotifications
   );
 
   app.get(
     "/notificationdashboard",
-    authenticationHelper.EnsureAuthenticated(),
+    authentication.EnsureAuthenticated(),
     notificationController.GetNotificationDashboard
   );
 
   //TODO: add the input validation, for dates (startDate/endDate)
   app.get(
     "/calendar",
-    authenticationHelper.EnsureAuthenticated(),
+    authentication.EnsureAuthenticated(),
     calendarController.GetCalendar
   );
 };

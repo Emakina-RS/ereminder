@@ -1,7 +1,7 @@
 "use strict";
 
 const jwt = require("jsonwebtoken");
-const authenticationHelper = require("../helpers/authenticationHelper");
+const authentication = require("../middleware/authentication");
 const passwordEncryptionHelper = require("../helpers/passwordEncryptionHelper");
 const userService = require("../services/userService");
 
@@ -23,10 +23,7 @@ exports.Authenticate = async function(request, response) {
 
     if (validPassword) {
       let payload = { id: user.id };
-      let token = jwt.sign(
-        payload,
-        authenticationHelper.JwtOptions.secretOrKey
-      );
+      let token = jwt.sign(payload, authentication.JwtOptions.secretOrKey);
 
       response.json({ message: "ok", token: token });
     } else {

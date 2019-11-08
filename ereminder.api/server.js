@@ -8,11 +8,11 @@ const dbIntializer = require("./dbInitializer");
 const scheduler = require("./core/scheduler.js");
 const bodyParser = require("body-parser");
 const routes = require("./routes/routes");
-const authenticationHelper = require("./helpers/authenticationHelper");
+const authentication = require("./middleware/authentication");
 const error = require("./middleware/error");
 const logger = require("./startup/logger")();
 const rateLimiters = require("./middleware/rateLimiters");
-const xss = require('xss-clean');
+const xss = require("xss-clean");
 
 require("./config/config");
 const corsUrls = global.globalConfig.corsUrls;
@@ -23,10 +23,10 @@ var app = express()
   .use(cors(corsUrls))
   .use(xss())
   .use(error)
-  .use(express.json({ limit: '10kb' }))
+  .use(express.json({ limit: "10kb" }))
   .use(rateLimiters.NumberOfRequestsLimiter);
 
-authenticationHelper(app);
+authentication(app);
 routes(app);
 
 var server = app.listen(global.globalConfig.apiPort, function() {
