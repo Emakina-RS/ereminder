@@ -6,9 +6,7 @@ const accountController = require("../controllers/AccountController");
 const notificationController = require("../controllers/NotificationController");
 const calendarController = require("../controllers/CalendarController");
 const configurationController = require("../controllers/ConfigurationController");
-const authenticationHelper = require("../helpers/authenticationHelper");
 const googleRecaptchaHelper = require("../helpers/googleRecaptchaHelper");
-const userValidator = require("../validators/userValidator");
 const authentication = require("../middleware/authentication");
 const validators = require("../middleware/validators");
 
