@@ -32,6 +32,11 @@
       "root": "http://dev.ereminder.com/",
       "resetPassword": "http://dev.ereminder.com/resetpassword",
       "confirmRegistration": "http://dev.ereminder.com/confirmregistration"
+    },
+    "recaptcha": {
+      "url": "https://www.google.com/recaptcha/api/siteverify",
+      "secretKey": "6Lc7rcEUAAAAAAJT_Smlx_pRxbke4_CZAIKCVzgr",
+      "trustTrashold": 0.5
     }
   },
   "production": {

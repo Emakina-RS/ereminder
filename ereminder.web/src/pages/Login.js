@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
-import { logIn } from "../actions";
+import { logIn, verifyRecaptcha } from "../actions";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import useInput from "../hooks/useInput";
+import Recaptcha from 'react-google-invisible-recaptcha';
 import "./Login.css";
 
 const mapStateToProps = state => ({
@@ -22,34 +23,64 @@ const Login = ({
   logIn
 }) => {
   let inputFields = [];
+  let recaptcha = {};
+  const [recaptchaMessage, setRecaptchaMessage] = useState('');
   const email = inputFields[0] = useInput("email", "Unesite Vašu e-mail adresu", { required: true, email: true });
   const password = inputFields[1] = useInput("password", "Unesite šifru", { required: true });
+
   if (shouldRedirect) {
     console.log("redirecting...");
     return <Redirect to="/notifications-date" />;
   }
 
-  const formSubmitHandler = (event) => {
-    event.preventDefault();
+  const checkFormValidation = () => {
     let isFormValid = true;
     for (let input of inputFields) {
       isFormValid = input.valid && isFormValid;
     }
-    if (isFormValid) {
-      logIn(email.value, password.value);
+
+    return isFormValid;
+  };
+
+  let submitFormHandler = (event) => {
+    event.preventDefault();
+
+    if (checkFormValidation()) {
+      let parentObj = {
+        recaptchaInstance: recaptcha,
+        email: email.value,
+        password: password.value
+      };
+
+      recaptcha.execute()
+        .then((token)=> {
+          onTokenResolved(token, parentObj);
+        });
     }
+  };
+
+  const onTokenResolved = async (token, parentObj) => {
+    let response = await verifyRecaptcha(token);
+      if (response.success) {
+        logIn(parentObj.email, parentObj.password);
+      } else {
+        parentObj.recaptchaInstance.reset();
+      }
+
+      setRecaptchaMessage(response.message);
   };
 
   return (
     <div className="Login">
       <form
-        onSubmit={formSubmitHandler}
+        onSubmit={submitFormHandler}
         className="Login-content"
       >
         <h1>Uloguj se</h1>
         <Input type="email" {...email} />
         <Input type="password" {...password} />
         <Button disabled={isSubmitting}>Uloguj se</Button>
+        {recaptchaMessage}
         <div className="Login-allready">
           <h2>
             Nemate nalog? Registruj se{" "}
@@ -63,6 +94,11 @@ const Login = ({
             </Link>
           </h2>
         </div>
+
+        <Recaptcha 
+          ref = {ref => recaptcha = ref}
+          sitekey = '6Lc7rcEUAAAAAEB97C0InA-f6wr61LvpUHf4jcII'
+        />
       </form>
     </div>
   );

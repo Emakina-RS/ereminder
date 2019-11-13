@@ -118,6 +118,21 @@ export const registerConfirmation = (token) => dispatch => {
   });
 };
 
+export const verifyRecaptcha = async (token) => {
+
+  return (
+    post("/verifyRecaptcha", {
+      token
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch(() => {
+      return { "success": false,
+              "message": "Server unavailable"};
+    }));
+};
+
 const mockJSON = {
   takeRecepieEveryHours: 12,
   reminders: {
