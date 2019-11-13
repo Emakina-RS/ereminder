@@ -9,95 +9,86 @@ const configurationController = require("../controllers/ConfigurationController"
 const authenticationHelper = require("../helpers/authenticationHelper");
 const googleRecaptchaHelper = require("../helpers/googleRecaptchaHelper");
 const userValidator = require("../validators/userValidator");
-//const error = require("../middleware/error");
+const authentication = require("../middleware/authentication");
+const validators = require("../middleware/validators");
 
 module.exports = function(app) {
-  app.post("/authenticate", userValidator.validateLogin, (req, res) =>
-    userValidator.returnValidationResults(
+  app.post("/authenticate", validators.authenticate, (req, res) =>
+    validators.returnValidationResults(
       req,
       res,
       authenticationController.Authenticate
     )
   );
 
-  app.post("/register", userValidator.validateRegister, (req, res) =>
-    userValidator.returnValidationResults(req, res, accountController.Register)
+  app.post("/register", validators.register, (req, res) =>
+    validators.returnValidationResults(req, res, accountController.Register)
   );
 
   app.post(
     "/registerconfirmation",
-    userValidator.validateRegisterConfirmation,
+    validators.registerConfirmation,
     (req, res) =>
-      userValidator.returnValidationResults(
+      validators.returnValidationResults(
         req,
         res,
         accountController.RegisterConfirmation
       )
   );
 
-  app.post("/resetpassword", userValidator.validateResetPassword, (req, res) =>
-    userValidator.returnValidationResults(
+  app.post("/resetpassword", validators.resetPassword, (req, res) =>
+    validators.returnValidationResults(
       req,
       res,
       accountController.ResetPassword
     )
   );
 
-  app.post(
-    "/forgotpassword",
-    userValidator.validateForgotPassword,
-    (req, res) =>
-      userValidator.returnValidationResults(
-        req,
-        res,
-        accountController.ForgotPassword
-      )
+  app.post("/forgotpassword", validators.forgotPassword, (req, res) =>
+    validators.returnValidationResults(
+      req,
+      res,
+      accountController.ForgotPassword
+    )
   );
 
-  app.post(
-    "/configuration",
-    userValidator.validateConfigInitialization,
-    (req, res) =>
-      userValidator.returnValidationResults(
-        req,
-        res,
-        configurationController.CreateConfiguration
-      )
+  app.post("/configuration", validators.configInitialization, (req, res) =>
+    validators.returnValidationResults(
+      req,
+      res,
+      configurationController.CreateConfiguration
+    )
   );
 
   app.get(
     "/configuration",
-    authenticationHelper.EnsureAuthenticated(),
+    authentication.EnsureAuthenticated(),
     configurationController.GetConfiguration
   );
-  app.patch(
-    "/configuration",
-    userValidator.validateUpdateConfiguration,
-    (req, res) =>
-      userValidator.returnValidationResults(
-        req,
-        res,
-        configurationController.UpdateConfiguration
-      )
+  app.patch("/configuration", validators.updateConfiguration, (req, res) =>
+    validators.returnValidationResults(
+      req,
+      res,
+      configurationController.UpdateConfiguration
+    )
   );
 
-  app.post(
-    "/notifications",
-    authenticationHelper.EnsureAuthenticated(),
-    notificationController.UpdateNotifications
+  app.post("/notifications", validators.notifications, (req, res) =>
+    validators.returnValidationResults(
+      req,
+      res,
+      notificationController.UpdateNotifications
+    )
   );
 
   app.get(
     "/notificationdashboard",
-    authenticationHelper.EnsureAuthenticated(),
+    authentication.EnsureAuthenticated(),
     notificationController.GetNotificationDashboard
   );
 
-  //TODO: add the input validation, for dates (startDate/endDate)
-  app.get(
-    "/calendar",
-    authenticationHelper.EnsureAuthenticated(),
-    calendarController.GetCalendar
+  app.get("/calendar", validators.calendar, (req, res) =>
+    validators.returnValidationResults(req, res, calendarController.GetCalendar)
   );
 
   app.post(
@@ -110,4 +101,5 @@ module.exports = function(app) {
   );
 
   // app.use(error);
+
 };

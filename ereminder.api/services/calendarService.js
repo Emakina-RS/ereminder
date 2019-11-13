@@ -8,7 +8,7 @@ const configurationService = require("./configurationService");
 require("moment-recur");
 
 exports.getCalendar = async function(userId, startDate, endDate) {
-  let Configuration = await models.Configuration.findOne({
+  let configuration = await models.Configuration.findOne({
     UserId: userId
   });
 
