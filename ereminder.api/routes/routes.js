@@ -19,6 +19,14 @@ module.exports = function(app) {
     )
   );
 
+  app.post("/token", validators.refreshToken, (req, res) =>
+    validators.returnValidationResults(
+      req,
+      res,
+      authenticationController.RefreshToken
+    )
+  );
+
   app.post("/register", validators.register, (req, res) =>
     validators.returnValidationResults(req, res, accountController.Register)
   );

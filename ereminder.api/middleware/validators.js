@@ -67,6 +67,12 @@ exports.authenticate = [
     .withMessage(constants.errorMessages.requiredField("Password"))
 ];
 
+exports.refreshToken = [
+  body("refreshToken")
+    .exists()
+    .withMessage(constants.errorMessages.requiredField("refreshToken"))
+];
+
 exports.configInitialization = [
   authentication.EnsureAuthenticated(),
   body("lastTimeTookPills")
