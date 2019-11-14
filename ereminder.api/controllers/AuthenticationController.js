@@ -46,6 +46,8 @@ exports.RefreshToken = async function(request, response) {
     let payload = refreshTokens[refreshToken];
     let token = getTokenByPayload(payload);
 
+    delete refreshTokens[refreshToken];
+
     response
       .status(200)
       .json(token);
