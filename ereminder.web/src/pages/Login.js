@@ -30,7 +30,7 @@ const Login = ({
 
   if (shouldRedirect) {
     console.log("redirecting...");
-    return <Redirect to="/notifications-date" />;
+    return <Redirect to="/" />;
   }
 
   const checkFormValidation = () => {

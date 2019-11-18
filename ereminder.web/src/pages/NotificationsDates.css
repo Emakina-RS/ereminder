@@ -78,6 +78,10 @@
   background-size: 30px 30px;
 }
 
+.DateSelector .time::placeholder{
+  color: #bd1e2c;
+}
+
 .NotificationDate-link {
   padding-top: 1.25rem;
   font-size: 1.25em;

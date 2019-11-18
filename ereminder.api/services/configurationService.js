@@ -55,25 +55,25 @@ function createDBConfiguration(body) {
     dbConfiguraton
   );
 
-  tryAddDateTimeToConfiguration(
+  tryAddDateToConfiguration(
     "lastTimeInPharmacy",
     body.lastTimeInPharmacy,
     dbConfiguraton
   );
 
-  tryAddDateTimeToConfiguration(
+  tryAddDateToConfiguration(
     "lastTimeGotPrescription",
     body.lastTimeGotPrescription,
     dbConfiguraton
   );
 
-  tryAddDateTimeToConfiguration(
+  tryAddDateToConfiguration(
     "lastTimeGotReferral",
     body.lastTimeGotReferral,
     dbConfiguraton
   );
 
-  tryAddDateTimeToConfiguration(
+  tryAddDateToConfiguration(
     "lastTimeExamination",
     body.lastTimeExamination,
     dbConfiguraton
@@ -97,6 +97,12 @@ function createDBConfiguration(body) {
 function tryAddDateTimeToConfiguration(name, value, dbConfiguraton) {
   if (value) {
     dbConfiguraton[name] = dateTimeHelper.convertToUCTDateTime(value);
+  }
+}
+
+function tryAddDateToConfiguration(name, value, dbConfiguraton) {
+  if (value) {
+    dbConfiguraton[name] = dateTimeHelper.convertToUCTDate(value);
   }
 }
 

@@ -31,14 +31,46 @@ const post = (relativePath, payload, token) => {
   }).then(response => response.json());
 };
 
+const patch = (relativePath, payload, token) => {
+  let headers = defaultHeaders;
+
+  if (token) {
+    headers.Authorization = "Bearer " + token;
+  }
+
+  return fetch(getFullApiUrl(relativePath), {
+    method: "PATCH",
+    headers,
+    body: JSON.stringify(payload)
+  }).then(response => response.json());
+};
+
 export const getConfiguration = () => (dispatch, getState) =>
   get("/configuration", undefined, getState().token).then(configuration => {
     dispatch({ type: "CALENDAR_DATA", data: mockJSON });
     dispatch({
-      type: "INITIAL_CONFIGURATION_RECEIVED",
+      type: "CONFIGURATION_RECEIVED",
       configuration
     });
   });
+
+export const changeDate = (fieldValue, fieldName) => dispatch => {
+  dispatch({ type: "DATE_CHANGED", fieldValue, fieldName});
+};
+
+export const createOrUpdateConfiguration = (dates) => (dispatch, getState) => {
+  get("/configuration", undefined, getState().token).then(configuration => {
+    if(configuration.id) {
+      patch("/configuration", dates, getState().token)
+      .then(() => console.log("Configuration updated."))
+      .catch(() => console.log("Configuration update failed."));
+    } else {
+      post("/configuration", dates, getState().token)
+      .then(() => console.log("Configuration added."))
+      .catch(() => console.log("Configuration addition failed."));
+    }
+  });
+};
 
 export const getNotificationDashboard = () => (dispatch, getState) =>
   get("/notificationdashboard", undefined, getState().token).then(

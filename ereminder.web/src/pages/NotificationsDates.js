@@ -1,13 +1,18 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import MaskedInput from "react-text-mask";
+import moment from 'moment';
 import Input from "../components/Input";
+import { changeDate, createOrUpdateConfiguration } from "../actions";
 import "./NotificationsDates.css";
 
-const mapStateToProps = state => ({
-  configuration: state.configuration.configuration // TODO: Oops!
-});
+const dateFormat = {
+  inputDateTimeFormat: 'YYYY-MM-DD HH:mm',
+  outputDateTimeFormat: 'DD-MM-YYYY HH:mm:ss',
+  inputDateFormat: 'YYYY-MM-DD',
+  outputDateFormat: 'DD-MM-YYYY'
+};
 
 const LABEL = {
   LEK: "Datum i vreme kada sam poslednji put popio/la lekove",
@@ -17,68 +22,103 @@ const LABEL = {
   NALAZI: "Datum kada sam poslednji put radio/la nalaze"
 };
 
-const NotificationsDates = ({ configuration }) => (
-  <div className="NotificationDates">
-    <h1>Postavljanje osnovnih parametara</h1>
-    <h2>Odaberi datum kada si poslednji put obavio/la određenu aktivnost?</h2>
-    <div className="NotificationDates-grid">
-      <DateSelector selectorType={["date", "time"]} label={LABEL.LEK} />
-      <DateSelector
-        selectorType={["date"]}
-        label={LABEL.RECEPTI}
-        value={configuration.lastTimeGotPrescription}
-      />
-      <DateSelector
-        selectorType={["date"]}
-        label={LABEL.APOTEKA}
-        value={configuration.lastTimeInPharmacy}
-      />
-      <DateSelector
-        selectorType={["date"]}
-        label={LABEL.UPUT}
-        value={configuration.lastTimeGotReferral}
-      />
-      <DateSelector
-        selectorType={["date"]}
-        label={LABEL.NALAZI}
-        value={configuration.lastTimeExamination}
-      />
-    </div>
-    <Link className="NotificationDate-link" to="/calendar">
-      Nastavi
-    </Link>
-  </div>
-);
+const NotificationsDates = () => {
+  const dates = useSelector(state => state.configuration.dates);
+  const dispatch = useDispatch();
 
-const DateSelector = ({ selectorType, label, value }) => {
-  const [initialValue, setInitialValue] = useState(value);
+  const submitConfigurationHandler = () => {
+    const lastTimeTookPillsString = dates.lastTimeTookPills + ' ' + dates.lastTimeTookPillsTime;
+    const configuration = {
+      lastTimeTookPills: moment(lastTimeTookPillsString, dateFormat.inputDateTimeFormat).format(dateFormat.outputDateTimeFormat),
+      lastTimeInPharmacy: moment(dates.lastTimeInPharmacy, dateFormat.inputDateFormat).format(dateFormat.outputDateFormat),
+      lastTimeGotPrescription: moment(dates.lastTimeGotPrescription, dateFormat.inputDateFormat).format(dateFormat.outputDateFormat),
+      lastTimeGotReferral: moment(dates.lastTimeGotReferral, dateFormat.inputDateFormat).format(dateFormat.outputDateFormat),
+      lastTimeExamination: moment(dates.lastTimeExamination, dateFormat.inputDateFormat).format(dateFormat.outputDateFormat)
+    };
+    dispatch(createOrUpdateConfiguration(configuration));
+  };
+
+  return (
+    <div className="NotificationDates">
+      <h1>Postavljanje osnovnih parametara</h1>
+      <h2>Odaberi datum kada si poslednji put obavio/la određenu aktivnost?</h2>
+      <form>
+        <div className="NotificationDates-grid">
+          <DateSelector 
+            name="lastTimeTookPills"
+            selectorType={["date", "time"]} 
+            label={LABEL.LEK} 
+            value={[dates.lastTimeTookPills, dates.lastTimeTookPillsTime]}
+            />
+          <DateSelector
+            name="lastTimeGotPrescription"
+            selectorType={["date"]}
+            label={LABEL.RECEPTI}
+            value={[dates.lastTimeGotPrescription]}
+          />
+          <DateSelector
+            name="lastTimeInPharmacy"
+            selectorType={["date"]}
+            label={LABEL.APOTEKA}
+            value={[dates.lastTimeInPharmacy]}
+          />
+          <DateSelector
+            name="lastTimeGotReferral"
+            selectorType={["date"]}
+            label={LABEL.UPUT}
+            value={[dates.lastTimeGotReferral]}
+          />
+          <DateSelector
+            name="lastTimeExamination"
+            selectorType={["date"]}
+            label={LABEL.NALAZI}
+            value={[dates.lastTimeExamination]}
+          />
+        </div>
+        <Link onClick={submitConfigurationHandler} className="NotificationDate-link" to="/notifications">
+          Nastavi
+        </Link>
+      </form>
+    </div>
+  );
+};
+
+const DateSelector = ({ name, selectorType, label, value }) => {
   const customClass =
     selectorType.length !== 1
       ? " DateSelector-picker-date-time"
       : " DateSelector-picker";
 
-  if (selectorType.time === true) {
-  }
+  const dispatch = useDispatch();
+
+  const dateSelectionChangedHandler = (event) => {
+    dispatch(changeDate(event.target.value, event.target.name));
+  };
 
   return (
     <div className="DateSelector">
       <h3 className="DateSelector-label">{label}</h3>
       <div className={customClass}>
-        {selectorType.map((option, index) => {
+        {selectorType.map((option) => {
           if (option === "date") {
             return (
               <Input
+                name={name}
                 type={option}
-                onChange={event => setInitialValue(event.target.value)}
-                value={initialValue}
+                onChange={dateSelectionChangedHandler}
+                value={value[0]}
               />
             );
           } else {
             return (
               <MaskedInput
-                mask={[/[1-23]/, /\d/, "-", /[0-59]/, /\d/]}
+                name={name + 'Time'}
+                mask={[/[0-23]/, /\d/, ":", /[0-59]/, /\d/]}
                 className="time"
                 keepCharPositions={true}
+                onChange={dateSelectionChangedHandler}
+                placeholder="hh:mm"
+                value={value[1]}
               />
             );
           }
@@ -88,4 +128,4 @@ const DateSelector = ({ selectorType, label, value }) => {
   );
 };
 
-export default connect(mapStateToProps)(NotificationsDates);
+export default NotificationsDates;
