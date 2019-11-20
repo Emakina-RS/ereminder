@@ -3,9 +3,9 @@ import calendar from "../assets/icon/calendar1.svg";
 import mail from "../assets/icon/mail1.svg";
 import Button from "../components/Button";
 import Checkbox from "../components/Checkbox";
-import "./NotificationsType.css";
+import "./Notification.css";
 
-const NotificationsType = ({ history }) => (
+const Notification = ({ history }) => (
   <div className="NotificationsType">
     <div className="NotificationsType-content">
       <h1>Odaberi način podsećanja</h1>
@@ -33,4 +33,4 @@ export const NotificationSection = ({ icon, title }) => (
   </div>
 );
 
-export default NotificationsType;
+export default Notification;

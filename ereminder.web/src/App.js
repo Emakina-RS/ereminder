@@ -1,20 +1,15 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch
-} from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import "./App.css";
 import LoggedInRoot from "./components/LoggedInRoot";
 import Navbar from "./components/Navbar";
 import Calendar from "./pages/Calendar";
+import Configuration from "./pages/Configuration";
 import ForgotPassword from "./pages/ForgotPassword";
 import Login from "./pages/Login";
-import Notifications from "./pages/Notifications";
-import NotificationsDates from "./pages/NotificationsDates";
-import NotificationsType from "./pages/NotificationsType";
+import Notification from "./pages/Notification";
+import NotificationDashboard from "./pages/NotificationDashboard";
 import Register from "./pages/Register";
 import RegisterConfirmation from "./pages/RegisterConfirmation";
 
@@ -31,12 +26,12 @@ const App = () => {
               <Route exact path="/" component={LoggedInRoot} />
               <Route path="/login" component={Login} />
               <Route path="/calendar" component={Calendar} />
-              <Route path="/notifications" component={Notifications} />
+              <Route path="/notifications-dashboard" component={NotificationDashboard} />
               <Route
-                path="/notifications-date"
-                component={NotificationsDates}
+                path="/configuration"
+                component={Configuration}
               />
-              <Route path="/notifications-type" component={NotificationsType} />
+              <Route path="/notification" component={Notification} />
               <Redirect to="/" />
             </Switch>
           ) : (

@@ -8,13 +8,13 @@ import recepti from "../assets/icon/recepti.svg";
 import uputi from "../assets/icon/uputi.svg";
 import Checkbox from "../components/Checkbox";
 import Radio from "../components/Radio";
-import "./Notifications.css";
+import "./NotificationDashboard.css";
 
 // const mapStateToProps = state => ({
 //   notificationDashbordData: state.notificationDashboard.notificationDashboard
 // });
 
-const Notifications = () => (
+const NotificationDashboard = () => (
   <div className="Notifications">
     <h1>Želim podsetnik na:</h1>
     <div className="Notifications-grid">
@@ -72,4 +72,4 @@ const Notificationsection = ({ icon, title, options }) => (
   </div>
 );
 
-export default connect()(Notifications);
+export default connect()(NotificationDashboard);

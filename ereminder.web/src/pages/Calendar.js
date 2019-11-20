@@ -1,20 +1,7 @@
-import {
-  addMonths,
-  eachDayOfInterval,
-  endOfMonth,
-  endOfWeek,
-  format,
-  getDay,
-  getMonth,
-  getYear,
-  startOfDay,
-  startOfMonth,
-  startOfWeek
-} from "date-fns";
+import { addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, getDay, getMonth, getYear, startOfDay, startOfMonth, startOfWeek } from "date-fns";
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import Modal from "../components/Modal";
 import apoteka from "../assets/icon/apoteka2.svg";
 import edit from "../assets/icon/edit.svg";
 import info from "../assets/icon/info.svg";
@@ -24,6 +11,7 @@ import nalazi from "../assets/icon/nalazi2.svg";
 import recepti from "../assets/icon/recepti2.svg";
 import { ReactComponent as RightArrow } from "../assets/icon/right.svg";
 import uputi from "../assets/icon/uputi2.svg";
+import Modal from "../components/Modal";
 import "./Calendar.css";
 
 const mapStateToProps = state => ({
@@ -87,19 +75,19 @@ const Calendar = ({ calendarData }) => {
         <ul className="Calendar-nav-links">
           <li>
             <img src={edit} alt="edit" className="icon" />
-            <Link to="/notifications" className="">
+            <Link to="/notifications-dashboard" className="">
               Izmeni notifikacije
             </Link>
           </li>
           <li>
             <img src={edit} alt="edit" className="icon" />
-            <Link to="/notifications-date" className="">
+            <Link to="/configuration" className="">
               Izmeni pocetne datume
             </Link>
           </li>
           <li>
             <img src={edit} alt="edit" className="icon" />
-            <Link to="/notifications-type" className="">
+            <Link to="/notification" className="">
               Izmeni tip
             </Link>
           </li>

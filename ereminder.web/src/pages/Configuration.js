@@ -1,11 +1,11 @@
+import moment from 'moment';
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import MaskedInput from "react-text-mask";
-import moment from 'moment';
-import Input from "../components/Input";
 import { changeDate, createOrUpdateConfiguration } from "../actions";
-import "./NotificationsDates.css";
+import Input from "../components/Input";
+import "./Configuration.css";
 
 const dateFormat = {
   inputDateTimeFormat: 'YYYY-MM-DD HH:mm',
@@ -22,7 +22,7 @@ const LABEL = {
   NALAZI: "Datum kada sam poslednji put radio/la nalaze"
 };
 
-const NotificationsDates = () => {
+const Configuration = () => {
   const dates = useSelector(state => state.configuration.dates);
   const dispatch = useDispatch();
 
@@ -44,10 +44,10 @@ const NotificationsDates = () => {
       <h2>Odaberi datum kada si poslednji put obavio/la određenu aktivnost?</h2>
       <form>
         <div className="NotificationDates-grid">
-          <DateSelector 
+          <DateSelector
             name="lastTimeTookPills"
-            selectorType={["date", "time"]} 
-            label={LABEL.LEK} 
+            selectorType={["date", "time"]}
+            label={LABEL.LEK}
             value={[dates.lastTimeTookPills, dates.lastTimeTookPillsTime]}
             />
           <DateSelector
@@ -75,7 +75,7 @@ const NotificationsDates = () => {
             value={[dates.lastTimeExamination]}
           />
         </div>
-        <Link onClick={submitConfigurationHandler} className="NotificationDate-link" to="/notifications">
+        <Link onClick={submitConfigurationHandler} className="NotificationDate-link" to="/calendar">
           Nastavi
         </Link>
       </form>
@@ -128,4 +128,4 @@ const DateSelector = ({ name, selectorType, label, value }) => {
   );
 };
 
-export default NotificationsDates;
+export default Configuration;
