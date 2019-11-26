@@ -50,6 +50,42 @@
   content: " |";
   color: white;
 }
+
 .Navbar-links li:last-child a {
   padding-right: 0;
+}
+
+@media screen and (max-width: 1200px) {
+	.Navbar-content {
+		width: calc(100% - 40px);
+		padding: 10px 20px;
+	}
+}
+@media screen and (max-width: 767px) {
+	.Navbar-content {
+		display: block;
+		text-align: right;
+		position: relative;
+	}
+	.Navbar-logo {
+		width: 120px;
+		height: auto;
+		position: absolute;
+		left: 20px;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	.Navbar-links li {
+		display: block;
+	}
+	.Navbar-links a {
+		font-size: 0.8em;
+		padding: 5px 0;
+	}
+	.Navbar-links li:not(:last-child) {
+		margin-bottom: 10px;
+	}
+	.Navbar-links li:not(:last-child)::after {
+		display: none;
+	}
 }

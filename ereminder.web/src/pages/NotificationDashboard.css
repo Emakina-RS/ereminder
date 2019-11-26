@@ -9,6 +9,7 @@
   margin: 0 auto;
   height: 70%;
 }
+
 .Notifications > h1 {
   text-transform: uppercase;
   font-weight: normal;
@@ -62,4 +63,32 @@
   color: #bd1e2c;
   text-decoration: none;
   text-transform: uppercase;
+}
+
+@media screen and (max-width: 1200px) {
+	.Notifications-grid {
+		width: calc(100% - 40px);
+		padding: 0 20px;
+		height: 80%;
+	}
+}
+
+@media screen and (max-width: 1200px) and (min-width: 768px) {
+	.Notificationsection-container {
+		margin-left: 60px;
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.Notifications-grid {
+		display: block;
+		height: auto;
+	}
+	.Notificationsection {
+		margin-bottom: 2.5rem;
+	}
+	.Notificationsection-container {
+		display: block;
+		margin-left: 50px;
+	}
 }
