@@ -13,6 +13,7 @@
 .Notifications > h1 {
   text-transform: uppercase;
   font-weight: normal;
+  padding: 1.25rem 0;
 }
 
 .Notificationsection-heading {

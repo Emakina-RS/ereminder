@@ -8,7 +8,6 @@
   width: 60%;
   margin: 0 auto;
   grid-template-columns: 1fr 1fr;
-  height: 50%;
 }
 .NotificationDates > h1 {
   text-transform: uppercase;
@@ -33,9 +32,6 @@
   display: flex;
   flex-direction: column;
   text-align: left;
-}
-
-.DateSelector input {
 }
 
 .DateSelector-picker-date-time {
@@ -83,9 +79,39 @@
 }
 
 .NotificationDate-link {
-  padding-top: 1.25rem;
+  padding-top: 3rem;
   font-size: 1.25em;
   color: #bd1e2c;
   text-decoration: none;
   text-transform: uppercase;
+  display: inline-block;
+}
+
+@media screen and (max-width: 1200px) {
+	.NotificationDates-grid {
+		width: 100%;
+	}
+	.NotificationDates {
+		padding: 0 20px;
+	}
+}
+@media screen and (max-width: 767px) {
+	.NotificationDates-grid {
+		display: block;
+	}
+	.DateSelector-picker-date-time {
+		display: block;
+	}
+	.DateSelector-picker-date-time > div {
+		margin-bottom: 2rem;
+	}
+	.NotificationDates > h1 {
+		padding: 0;
+	}
+	.NotificationDates > h2 {
+		padding: 0;
+	}
+	.NotificationDate-link {
+		padding-top: 2rem;
+	}
 }
