@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from "moment";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -8,10 +8,10 @@ import Input from "../components/Input";
 import "./Configuration.css";
 
 const dateFormat = {
-  inputDateTimeFormat: 'YYYY-MM-DD HH:mm',
-  outputDateTimeFormat: 'DD-MM-YYYY HH:mm:ss',
-  inputDateFormat: 'YYYY-MM-DD',
-  outputDateFormat: 'DD-MM-YYYY'
+  inputDateTimeFormat: "YYYY-MM-DD HH:mm",
+  outputDateTimeFormat: "DD-MM-YYYY HH:mm:ss",
+  inputDateFormat: "YYYY-MM-DD",
+  outputDateFormat: "DD-MM-YYYY"
 };
 
 const LABEL = {
@@ -27,13 +27,29 @@ const Configuration = () => {
   const dispatch = useDispatch();
 
   const submitConfigurationHandler = () => {
-    const lastTimeTookPillsString = dates.lastTimeTookPills + ' ' + dates.lastTimeTookPillsTime;
+    const lastTimeTookPillsString =
+      dates.lastTimeTookPills + " " + dates.lastTimeTookPillsTime;
     const configuration = {
-      lastTimeTookPills: moment(lastTimeTookPillsString, dateFormat.inputDateTimeFormat).format(dateFormat.outputDateTimeFormat),
-      lastTimeInPharmacy: moment(dates.lastTimeInPharmacy, dateFormat.inputDateFormat).format(dateFormat.outputDateFormat),
-      lastTimeGotPrescription: moment(dates.lastTimeGotPrescription, dateFormat.inputDateFormat).format(dateFormat.outputDateFormat),
-      lastTimeGotReferral: moment(dates.lastTimeGotReferral, dateFormat.inputDateFormat).format(dateFormat.outputDateFormat),
-      lastTimeExamination: moment(dates.lastTimeExamination, dateFormat.inputDateFormat).format(dateFormat.outputDateFormat)
+      lastTimeTookPills: moment(
+        lastTimeTookPillsString,
+        dateFormat.inputDateTimeFormat
+      ).format(dateFormat.outputDateTimeFormat),
+      lastTimeInPharmacy: moment(
+        dates.lastTimeInPharmacy,
+        dateFormat.inputDateFormat
+      ).format(dateFormat.outputDateFormat),
+      lastTimeGotPrescription: moment(
+        dates.lastTimeGotPrescription,
+        dateFormat.inputDateFormat
+      ).format(dateFormat.outputDateFormat),
+      lastTimeGotReferral: moment(
+        dates.lastTimeGotReferral,
+        dateFormat.inputDateFormat
+      ).format(dateFormat.outputDateFormat),
+      lastTimeExamination: moment(
+        dates.lastTimeExamination,
+        dateFormat.inputDateFormat
+      ).format(dateFormat.outputDateFormat)
     };
     dispatch(createOrUpdateConfiguration(configuration));
   };
@@ -46,36 +62,45 @@ const Configuration = () => {
         <div className="NotificationDates-grid">
           <DateSelector
             name="lastTimeTookPills"
+            key="lastTimeTookPills"
             selectorType={["date", "time"]}
             label={LABEL.LEK}
             value={[dates.lastTimeTookPills, dates.lastTimeTookPillsTime]}
-            />
+          />
           <DateSelector
             name="lastTimeGotPrescription"
+            key="lastTimeGotPrescription"
             selectorType={["date"]}
             label={LABEL.RECEPTI}
             value={[dates.lastTimeGotPrescription]}
           />
           <DateSelector
             name="lastTimeInPharmacy"
+            key="lastTimeInPharmacy"
             selectorType={["date"]}
             label={LABEL.APOTEKA}
             value={[dates.lastTimeInPharmacy]}
           />
           <DateSelector
             name="lastTimeGotReferral"
+            key="lastTimeGotReferral"
             selectorType={["date"]}
             label={LABEL.UPUT}
             value={[dates.lastTimeGotReferral]}
           />
           <DateSelector
             name="lastTimeExamination"
+            key="lastTimeExamination"
             selectorType={["date"]}
             label={LABEL.NALAZI}
             value={[dates.lastTimeExamination]}
           />
         </div>
-        <Link onClick={submitConfigurationHandler} className="NotificationDate-link" to="/calendar">
+        <Link
+          onClick={submitConfigurationHandler}
+          className="NotificationDate-link"
+          to="/calendar"
+        >
           Nastavi
         </Link>
       </form>
@@ -91,7 +116,7 @@ const DateSelector = ({ name, selectorType, label, value }) => {
 
   const dispatch = useDispatch();
 
-  const dateSelectionChangedHandler = (event) => {
+  const dateSelectionChangedHandler = event => {
     dispatch(changeDate(event.target.value, event.target.name));
   };
 
@@ -99,7 +124,7 @@ const DateSelector = ({ name, selectorType, label, value }) => {
     <div className="DateSelector">
       <h3 className="DateSelector-label">{label}</h3>
       <div className={customClass}>
-        {selectorType.map((option) => {
+        {selectorType.map(option => {
           if (option === "date") {
             return (
               <Input
@@ -112,7 +137,7 @@ const DateSelector = ({ name, selectorType, label, value }) => {
           } else {
             return (
               <MaskedInput
-                name={name + 'Time'}
+                name={name + "Time"}
                 mask={[/[0-23]/, /\d/, ":", /[0-59]/, /\d/]}
                 className="time"
                 keepCharPositions={true}
