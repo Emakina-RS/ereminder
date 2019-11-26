@@ -49,3 +49,22 @@
 .NotificationSection-Checkbox {
   padding: 0 20px 0 38px;
 }
+
+@media screen and (max-width: 1200px) {
+	.NotificationsType {
+		display: block;
+		height: auto;
+		padding: 0 20px;
+	}
+	.NotificationsType-content {
+		margin: 0 auto;
+	}
+}
+@media screen and (max-width: 767px) {
+	.NotificationsType-content {
+		width: 100%;
+	}
+	.NotificationsType h1 {
+		padding: 0;
+	  }
+}
