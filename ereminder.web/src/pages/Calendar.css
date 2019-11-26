@@ -226,3 +226,62 @@ ul {
 .day .day-icon .calendar-icon:first {
   padding-top: 0;
 }
+
+@media screen and (max-width: 1200px) {
+	.Calendar {
+		padding: 0 20px;
+		height: auto !important;
+	}
+	.Calendar-nav {
+		width: 100%;
+		height: auto;
+	}
+	.Calendar-header {
+		width: 100%;
+	}
+	.Calendar-day-of-week {
+		width: 100%;
+	}
+	.Calendar-days {
+		width: 100%;
+	}
+	.Calendar-legend {
+		width: 100%;
+	}
+	.Calendar-nav .icon {
+		width: 20px;
+		height: 20px;
+	}
+	.Calendar-nav-links a {
+		font-size: 0.8em;
+	}
+	.info-button {
+		font-size: 0.8em;
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.Calendar-day-of-week {
+		padding-bottom: 0;
+	}
+	.Calendar-nav-links {
+		display: block;
+		margin: 0;
+	}
+	.Calendar-nav-links li:not(:last-child) {
+		margin-bottom: 0.5rem;
+	}
+	.day {
+		font-size: 1em;
+		height: 40px;
+	}
+	.ch-month {
+		font-size: 1.2em;
+	}
+	.ch-right-arrow {
+		margin-right: 20px;
+	}
+	.ch-left-arrow {
+		margin-left: 20px;
+	}
+}

@@ -16,6 +16,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 555px;
+  height: 670px;
+  overflow-y: auto;
 }
 
 .Modal-container {
