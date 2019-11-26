@@ -77,6 +77,10 @@
 @media screen and (max-width: 1200px) and (min-width: 768px) {
 	.Notificationsection-container {
 		margin-left: 60px;
+		grid-template-rows: auto;
+	}
+	.Radio {
+		height: 40px;
 	}
 }
 
@@ -90,9 +94,12 @@
 	}
 	.Notificationsection-container {
 		display: block;
-		margin-left: 50px;
+		margin-left: 20px;
 	}
 	.Notifications > h1 {
 		padding: 0;
-	  }
+	}
+	.Notificationsection-Checkbox {
+		padding: 0 20px;
+	}
 }

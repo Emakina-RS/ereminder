@@ -47,7 +47,7 @@
 }
 
 .NotificationSection-Checkbox {
-  padding: 0 20px 0 38px;
+  padding: 0 20px 0 40px;
 }
 
 @media screen and (max-width: 1200px) {
@@ -66,5 +66,8 @@
 	}
 	.NotificationsType h1 {
 		padding: 0;
-	  }
+	}
+	.NotificationSection-Checkbox {
+		padding: 0 20px;
+	}
 }
