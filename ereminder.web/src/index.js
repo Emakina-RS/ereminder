@@ -2,18 +2,19 @@ import throttle from "lodash/throttle";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { applyMiddleware, combineReducers, createStore } from "redux";
+import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import thunk from "redux-thunk";
 import App from "./App";
 import "./index.css";
 import calendar from "./reducers/calendar";
 import configuration from "./reducers/configuration";
+import forgotPassword from "./reducers/forgotPassword";
 import login from "./reducers/login";
+import notificationDashboard from "./reducers/notificationDashboard";
 import register from "./reducers/register";
+import registerConfirmation from "./reducers/registerConfirmation";
 import settings from "./reducers/settings";
 import token from "./reducers/token";
-import forgotPassword from "./reducers/forgotPassword";
-import registerConfirmation from "./reducers/registerConfirmation";
 
 const loadState = () => {
   try {
@@ -33,6 +34,8 @@ const saveState = state => {
   }
 };
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const store = createStore(
   combineReducers({
     configuration,
@@ -42,10 +45,11 @@ const store = createStore(
     token,
     calendar,
     forgotPassword,
-    registerConfirmation
+    registerConfirmation,
+    notificationDashboard
   }),
-  loadState(),
-  applyMiddleware(thunk)
+  loadState(),composeEnhancers(
+  applyMiddleware(thunk))
 );
 
 store.subscribe(

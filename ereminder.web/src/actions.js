@@ -76,7 +76,7 @@ export const getNotificationDashboard = () => (dispatch, getState) =>
     notificationDashboard => {
       dispatch({
         type: "NOTIFICATION_PAGE_RECEIVED",
-        notificationDashboard
+        data: notificationDashboard
       });
     }
   );
