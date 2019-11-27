@@ -52,3 +52,23 @@
 .Login-span-link {
   color: white;
 }
+
+@media screen and (max-width: 767px) {
+	.Login {
+		padding: 0 20px;
+	}
+	.Login-content {
+		width: 100%;
+	}
+	.Login h1 {
+		padding: 0;
+	}
+	.Login-allready h2 {
+		font-size: 1em;
+		width: 47%;
+		text-align: left;
+	}
+	.Login-allready h2:nth-child(2) {
+		text-align: right;
+	}
+}
