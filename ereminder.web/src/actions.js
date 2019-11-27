@@ -47,7 +47,6 @@ const patch = (relativePath, payload, token) => {
 
 export const getConfiguration = () => (dispatch, getState) =>
   get("/configuration", undefined, getState().token).then(configuration => {
-    dispatch({ type: "CALENDAR_DATA", data: mockJSON });
     dispatch({
       type: "CONFIGURATION_RECEIVED",
       configuration
@@ -55,30 +54,31 @@ export const getConfiguration = () => (dispatch, getState) =>
   });
 
 export const changeDate = (fieldValue, fieldName) => dispatch => {
-  dispatch({ type: "DATE_CHANGED", fieldValue, fieldName});
+  dispatch({ type: "DATE_CHANGED", fieldValue, fieldName });
 };
 
-export const createOrUpdateConfiguration = (dates) => (dispatch, getState) => {
+export const createOrUpdateConfiguration = dates => (dispatch, getState) => {
   get("/configuration", undefined, getState().token).then(configuration => {
-    if(configuration.id) {
+    if (configuration.id) {
       patch("/configuration", dates, getState().token)
-      .then(() => console.log("Configuration updated."))
-      .catch(() => console.log("Configuration update failed."));
+        .then(() => console.log("Configuration updated."))
+        .catch(() => console.log("Configuration update failed."));
     } else {
       post("/configuration", dates, getState().token)
-      .then(() => console.log("Configuration added."))
-      .catch(() => console.log("Configuration addition failed."));
+        .then(() => console.log("Configuration added."))
+        .catch(() => console.log("Configuration addition failed."));
     }
   });
 };
 
 export const getNotificationDashboard = () => (dispatch, getState) =>
   get("/notificationdashboard", undefined, getState().token).then(
-    notificationDashboard =>
+    notificationDashboard => {
       dispatch({
         type: "NOTIFICATION_PAGE_RECEIVED",
         notificationDashboard
-      })
+      });
+    }
   );
 
 export const getInitialData = () => (dispatch, getState) => {
@@ -114,59 +114,55 @@ export const register = (email, password, confirmPassword) => dispatch => {
     .catch(() => dispatch({ type: "REGISTER_FAILED" }));
 };
 
-export const forgotPassword = (email) => dispatch => {
+export const forgotPassword = email => dispatch => {
   dispatch({ type: "FORGOT_PASSWORD" });
   post("/forgotpassword", {
     email
   })
-  .then((res) => {
-    if(res.errors && res.errors.length > 0) {
-      console.log("Invalid data.");
+    .then(res => {
+      if (res.errors && res.errors.length > 0) {
+        console.log("Invalid data.");
+        dispatch({ type: "FORGOT_PASSWORD_FAILURE" });
+      } else {
+        console.log("Forgot password email has been sent.");
+        dispatch({ type: "FORGOT_PASSWORD_SUCCESS" });
+      }
+    })
+    .catch(() => {
       dispatch({ type: "FORGOT_PASSWORD_FAILURE" });
-    } else {
-      console.log("Forgot password email has been sent.");
-      dispatch({ type: "FORGOT_PASSWORD_SUCCESS" });
-    }
-  })
-  .catch(() => {
-    dispatch({ type: "FORGOT_PASSWORD_FAILURE" });
-  });
+    });
 };
 
 export const closeModal = () => dispatch => {
   dispatch({ type: "CLOSE_MODAL" });
 };
 
-export const registerConfirmation = (token) => dispatch => {
-
+export const registerConfirmation = token => dispatch => {
   post("/registerConfirmation", {
     token
   })
-  .then((res) => {
-    if(res.errors && res.errors.length > 0) {
+    .then(res => {
+      if (res.errors && res.errors.length > 0) {
+        dispatch({ type: "IS_SUBMITTING_FAILURE" });
+      } else {
+        dispatch({ type: "IS_CONFIRMED" });
+      }
+    })
+    .catch(() => {
       dispatch({ type: "IS_SUBMITTING_FAILURE" });
-    } else {
-      dispatch({ type: "IS_CONFIRMED" });
-    }
-  })
-  .catch(() => {
-    dispatch({ type: "IS_SUBMITTING_FAILURE"});
-  });
+    });
 };
 
-export const verifyRecaptcha = async (token) => {
-
-  return (
-    post("/verifyRecaptcha", {
-      token
-    })
-    .then((res) => {
+export const verifyRecaptcha = async token => {
+  return post("/verifyRecaptcha", {
+    token
+  })
+    .then(res => {
       return res;
     })
     .catch(() => {
-      return { "success": false,
-              "message": "Server unavailable"};
-    }));
+      return { success: false, message: "Server unavailable" };
+    });
 };
 
 function getFullApiUrl(relativePath) {
