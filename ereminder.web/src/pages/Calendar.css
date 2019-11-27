@@ -284,4 +284,20 @@ ul {
 	.ch-left-arrow {
 		margin-left: 20px;
 	}
+	.Modal-container h2 {
+		padding: 0;
+	}
+	.Modal-container .item {
+		width: 100%;
+	}
+	.Modal-container .item img {
+		height: 35px;
+	}
+	.Modal-container .item label {
+		padding-left: 1rem;
+		font-size: 1em;
+	}
+	.Modal-container .item:last-of-type {
+		justify-content: flex-start;
+	}
 }
