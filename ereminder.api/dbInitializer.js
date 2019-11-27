@@ -109,11 +109,11 @@ async function populateTypes() {
 
   if (count === 0) {
     models.NotificationType.bulkCreate([
-      { value: "lek", createdAt: date, updatedAt: date },
-      { value: "recepti", createdAt: date, updatedAt: date },
-      { value: "apoteka", createdAt: date, updatedAt: date },
-      { value: "uput", createdAt: date, updatedAt: date },
-      { value: "nalazi", createdAt: date, updatedAt: date }
+      { value: "Lek", createdAt: date, updatedAt: date },
+      { value: "Recepti", createdAt: date, updatedAt: date },
+      { value: "Apoteka", createdAt: date, updatedAt: date },
+      { value: "Uput", createdAt: date, updatedAt: date },
+      { value: "Nalazi", createdAt: date, updatedAt: date }
     ]);
   }
 }
