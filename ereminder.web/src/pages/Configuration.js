@@ -1,9 +1,9 @@
 import moment from "moment";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import MaskedInput from "react-text-mask";
-import { changeDate, createOrUpdateConfiguration } from "../actions";
+import { changeDate, createOrUpdateConfiguration, getConfiguration } from "../actions";
 import Input from "../components/Input";
 import "./Configuration.css";
 
@@ -23,8 +23,15 @@ const LABEL = {
 };
 
 const Configuration = () => {
-  const dates = useSelector(state => state.configuration.dates);
+  const {dates,configurationReceived} = useSelector(state => state.configuration);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+
+    if (!configurationReceived) {
+      dispatch(getConfiguration());
+    }
+  }, [dispatch]);
 
   const submitConfigurationHandler = () => {
     const lastTimeTookPillsString =

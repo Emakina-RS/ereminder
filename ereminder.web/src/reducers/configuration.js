@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from "moment";
 
 const initialState = {
   dates: {
@@ -8,6 +8,9 @@ const initialState = {
     lastTimeGotPrescription: "",
     lastTimeGotReferral: "",
     lastTimeExamination: ""
+  }, activeNotifications: {
+    enableEmailNotification: false,
+    enableCalendarNotification: false
   },
   configurationReceived: false
 };
@@ -15,9 +18,11 @@ const initialState = {
 const configuration = (state = initialState, action) => {
   switch (action.type) {
     case "CONFIGURATION_RECEIVED":
-        var lastTimeTookPillsArray = [];
+      var lastTimeTookPillsArray = [];
       if (action.configuration.lastTimeTookPills) {
-        lastTimeTookPillsArray = moment(action.configuration.lastTimeTookPills).format('YYYY-MM-DD HH:mm').split(' ');
+        lastTimeTookPillsArray = moment(action.configuration.lastTimeTookPills)
+          .format("YYYY-MM-DD HH:mm")
+          .split(" ");
       }
       return {
         dates: {
@@ -28,10 +33,14 @@ const configuration = (state = initialState, action) => {
           lastTimeGotReferral: action.configuration.lastTimeGotReferral,
           lastTimeExamination: action.configuration.lastTimeExamination
         },
+        activeNotifications: {
+          enableEmailNotification: action.configuration.enableEmailNotification,
+          enableCalendarNotification: action.configuration.enableCalendarNotification
+        },
         configurationReceived: true
       };
     case "DATE_CHANGED":
-      const dates = {...state.dates};
+      const dates = { ...state.dates };
       dates[action.fieldName] = action.fieldValue;
       return {
         dates,

@@ -81,14 +81,6 @@ export const getNotificationDashboard = () => (dispatch, getState) =>
     }
   );
 
-export const getInitialData = () => (dispatch, getState) => {
-  const { token } = getState();
-  console.log("Fetching data with token: " + token);
-  dispatch({ type: "GET_INITIAL_DATA" });
-  dispatch({ type: "CALENDAR_DATA", data: mockJSON });
-  dispatch({ type: "GET_INITIAL_DATA_SUCCESSFUL", hasData: true });
-};
-
 export const logIn = (email, password) => dispatch => {
   dispatch({ type: "LOG_IN" });
   post("/authenticate", {
