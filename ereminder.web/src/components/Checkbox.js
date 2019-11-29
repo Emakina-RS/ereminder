@@ -2,6 +2,8 @@ import React from "react";
 import "./Checkbox.css";
 
 const Checkbox = props => {
+
+
   return (
     <div className="Checkbox">
       <label className="checkbox-lable">
@@ -10,6 +12,8 @@ const Checkbox = props => {
           className="checkbox"
           id={props.text}
           name={props.name}
+          checked={props.value}
+          onChange={props.onChange}
         />
         <span className="checkbox-text">{props.text}</span>
       </label>
