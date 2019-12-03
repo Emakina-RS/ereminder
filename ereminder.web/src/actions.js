@@ -81,6 +81,17 @@ export const getNotificationDashboard = () => (dispatch, getState) =>
     }
   );
 
+export const updateNotificationDashboard = (notificationConfig) => (dispatch, getState) =>
+  post("/notifications", notificationConfig, getState().token).then(
+    notificationDashboard => {
+      getNotificationDashboard()(dispatch, getState)
+      dispatch({
+        type: "NOTIFICATION_PAGE_UPDATED",
+        data: notificationDashboard
+      });
+    }
+  );
+
 export const logIn = (email, password) => dispatch => {
   dispatch({ type: "LOG_IN" });
   post("/authenticate", {

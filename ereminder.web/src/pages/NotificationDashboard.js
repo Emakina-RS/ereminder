@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getNotificationDashboard } from "../actions";
+import {
+  getNotificationDashboard,
+  updateNotificationDashboard,
+} from "../actions";
 import Apoteka from "../assets/icon/apoteka.svg";
 import Lek from "../assets/icon/lekovi.svg";
 import Nalazi from "../assets/icon/nalazi.svg";
@@ -35,7 +38,10 @@ const NotificationDashboard = () => {
               title={notSec.notificationTypeDisplay}
               options={notSec.intervals}
               notificationTypeId={notSec.notificationTypeId}
+              notificationId={notSec.notificationId}
               checked={notSec.checked}
+              data={data}
+              objectKey={key}
             />
           );
         })}
@@ -51,26 +57,68 @@ const NotificationDashboard = () => {
 const Notificationsection = ({
   icon,
   title,
+  objectKey,
+  data,
   options,
   notificationTypeId,
+  notificationId,
   checked
-}) => (
-  <div className="Notificationsection">
-    <div className="Notificationsection-heading">
-      <div className="Notificationsection-logo-container">
-        <img className="Notificationsection-logo" src={icon} alt={icon} />
+}) => {
+  const dispatch = useDispatch();
+
+  const handleNotificationSelect = ({notificationTypeId, data, notificationId}) => (event) => {
+    const checked = event.currentTarget.checked;
+    const checkedNotification = {
+      notificationTypeId: parseInt(notificationTypeId),
+      notificationIntervalId: options[0].id,
+      notificationId,
+    }
+    const emptyNotification = {
+      notificationId,
+    }
+    const updatedNotification = checked ? checkedNotification : emptyNotification
+    dispatch(updateNotificationDashboard([
+      updatedNotification
+    ]))
+  }
+  const handleOptionSelect = ({notificationTypeId, option, title}) => () => {
+    dispatch(updateNotificationDashboard([
+      {
+        notificationTypeId: parseInt(notificationTypeId),
+        notificationIntervalId: option.id,
+        notificationId,
+      }
+    ]))
+  }
+  return (
+    <div className="Notificationsection">
+      <div className="Notificationsection-heading">
+        <div className="Notificationsection-logo-container">
+          <img className="Notificationsection-logo" src={icon} alt={icon} />
+        </div>
+        <div className="Notificationsection-Checkbox">
+            <Checkbox
+              text={title}
+              name={title}
+              value={checked}
+              onChange={handleNotificationSelect({notificationTypeId, data, notificationId})}
+            />
+        </div>
       </div>
-      <div className="Notificationsection-Checkbox">
-          <Checkbox text={title} name={title} checked={checked}/>
+      <div className="Notificationsection-container">
+        {options.map((option, index) => (
+          <Radio
+            key={option.id}
+            text={option.displayName}
+            checked={option.checked}
+            name={title}
+            handleChange={handleOptionSelect({notificationTypeId, option, title})}
+          />
+        ))}
       </div>
     </div>
-    <div className="Notificationsection-container">
-      {options.map((option, index) => (
-        <Radio key={option.id} text={option.displayName} name={title} />
-      ))}
-    </div>
-  </div>
-);
+  );
+}
 
 const NOTIFICATIONS = {
   Lek: Lek,
