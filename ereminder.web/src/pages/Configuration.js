@@ -27,7 +27,6 @@ const Configuration = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-
     if (!configurationReceived) {
       dispatch(getConfiguration());
     }

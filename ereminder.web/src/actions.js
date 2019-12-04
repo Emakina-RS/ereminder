@@ -61,11 +61,11 @@ export const createOrUpdateConfiguration = dates => (dispatch, getState) => {
   get("/configuration", undefined, getState().token).then(configuration => {
     if (configuration.id) {
       patch("/configuration", dates, getState().token)
-        .then(() => console.log("Configuration updated."))
+        .then(() => {getConfiguration()(dispatch, getState)})
         .catch(() => console.log("Configuration update failed."));
     } else {
       post("/configuration", dates, getState().token)
-        .then(() => console.log("Configuration added."))
+        .then(() => {getConfiguration()(dispatch, getState)})
         .catch(() => console.log("Configuration addition failed."));
     }
   });
