@@ -208,8 +208,9 @@ ul {
 }
 
 .calendar-icon {
+  min-height: 15px;
   padding: 4px;
-  width: 20px;
+  width: 15px;
 }
 
 .day .day-icon {
@@ -254,7 +255,11 @@ ul {
 	}
 	.Calendar-nav-links a {
 		font-size: 0.8em;
-	}
+  }
+  .calendar-icon {
+    min-height: 10px;
+    width: 10px;
+  }
 	.info-button {
 		font-size: 0.8em;
 	}

@@ -238,7 +238,7 @@ exports.calendar = [
     .exists()
     .withMessage(constants.errorMessages.requiredField("startDate"))
     .custom((value, { req }) => {
-      if (!validateDate(value)) {
+      if (!validateCalendarDate(value)) {
         throw new Error(constants.errorMessages.validateDate);
       }
       return true;
@@ -247,7 +247,7 @@ exports.calendar = [
     .exists()
     .withMessage(constants.errorMessages.requiredField("endDate"))
     .custom((value, { req }) => {
-      if (!validateDate(value)) {
+      if (!validateCalendarDate(value)) {
         throw new Error(constants.errorMessages.validateDate);
       }
       return true;
@@ -268,6 +268,10 @@ function validateDateTime(dateTime) {
 
 function validateDate(date) {
   return moment(date, constants.stringFormats.date, true).isValid();
+}
+
+function validateCalendarDate(date) {
+  return moment(date, 'YYYY-MM-DD', true).isValid();
 }
 
 function isInputDateInFuture(date) {

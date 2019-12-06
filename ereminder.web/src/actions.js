@@ -71,6 +71,15 @@ export const createOrUpdateConfiguration = dates => (dispatch, getState) => {
   });
 };
 
+export const getCalendar = ({startDate, endDate}) => (dispatch, getState) => {
+  post(`/calendar`, {startDate, endDate}, getState().token).then(calendarData => {
+    dispatch({
+      type: "CALENDAR_DATA_RECEIVED",
+      data: calendarData
+    });
+  })
+}
+
 export const getNotificationDashboard = () => (dispatch, getState) =>
   get("/notificationdashboard", undefined, getState().token).then(
     notificationDashboard => {

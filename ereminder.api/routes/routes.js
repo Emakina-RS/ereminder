@@ -97,6 +97,10 @@ module.exports = function(app) {
     validators.returnValidationResults(req, res, calendarController.GetCalendar)
   );
 
+  app.post("/calendar", validators.calendar, (req, res) =>
+    validators.returnValidationResults(req, res, calendarController.GetCalendar)
+  );
+
   app.post(
     "/verifyRecaptcha",
     (req, res) =>

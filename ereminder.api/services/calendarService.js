@@ -13,10 +13,10 @@ exports.getCalendar = async function(userId, startDate, endDate) {
   });
 
   let notifications = await models.sequelize.query(
-    `SELECT n.NotificationTypeId, nt.value as 'notificationType', i.displayName, i.valueInHours as 'intervalHours'  FROM notifications n
-                    INNER JOIN users u ON n.UserId = u.Id
-                    INNER JOIN notificationtypes nt ON n.NotificationTypeId = nt.Id
-                    INNER JOIN intervals i ON n.IntervalId = i.Id
+    `SELECT n.NotificationTypeId, nt.value as 'notificationType', i.displayName, i.valueInHours as 'intervalHours'  FROM Notifications n
+                    INNER JOIN Users u ON n.UserId = u.Id
+                    INNER JOIN NotificationTypes nt ON n.NotificationTypeId = nt.Id
+                    INNER JOIN Intervals i ON n.IntervalId = i.Id
                 WHERE u.Id = ${userId}`,
     {
       type: models.sequelize.QueryTypes.SELECT

@@ -1,5 +1,17 @@
-import { addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, getDay, getMonth, getYear, startOfDay, startOfMonth, startOfWeek } from "date-fns";
-import React, { useState } from "react";
+import {
+  addMonths,
+  eachDayOfInterval,
+  endOfMonth,
+  endOfWeek,
+  format,
+  getDay,
+  getMonth,
+  getYear,
+  startOfDay,
+  startOfMonth,
+  startOfWeek
+} from "date-fns";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import apoteka from "../assets/icon/apoteka2.svg";
@@ -12,6 +24,9 @@ import recepti from "../assets/icon/recepti2.svg";
 import { ReactComponent as RightArrow } from "../assets/icon/right.svg";
 import uputi from "../assets/icon/uputi2.svg";
 import Modal from "../components/Modal";
+import {useDispatch} from 'react-redux';
+import { getCalendar } from './../actions';
+import moment from 'moment';
 import "./Calendar.css";
 
 const mapStateToProps = state => ({
@@ -56,12 +71,19 @@ const months = {
 const dateAsMonthString = date => months[getMonth(date)];
 
 const Calendar = ({ calendarData }) => {
+  const dispatch = useDispatch();
   const [date, setDate] = useState(startOfDay(new Date()));
   const { isShowing, toggle } = useModal();
   const start = startOfWeek(startOfMonth(date), { weekStartsOn: 1 });
   const endOfFirstWeek = endOfWeek(startOfMonth(date), { weekStartsOn: 1 });
   const eachDayOfFirstWeek = eachDayOfInterval({ start, end: endOfFirstWeek });
   const end = endOfWeek(endOfMonth(date), { weekStartsOn: 1 });
+  useEffect(() => {
+    dispatch(getCalendar({
+      startDate: moment(start).format('YYYY-MM-DD'),
+      endDate: moment(end).format('YYYY-MM-DD'),
+    }));
+  }, []);
   const eachDay = eachDayOfInterval({ start, end });
   const eachDayNotificationIcon = getIconsFormNotificationType(
     calendarData,
@@ -222,10 +244,10 @@ const getIconsFormNotificationType = (calendarData, eachDay) => {
   if (calendarData === null || calendarData === undefined) return [];
   const notificationIconsByDay = eachDay.map(day => {
     const date = format(day, "yyyy/MM/dd");
-    if (date in calendarData.reminders) {
+    if (calendarData.reminders && date in calendarData.reminders) {
       const reminderIconsForDate = calendarData.reminders[date].map(
         reminder => {
-          return iconsRepresenter[reminder.notificationTypeName];
+          return iconsRepresenter[reminder.notificationTypeName.toLowerCase()];
         }
       );
       return { [date]: reminderIconsForDate };
@@ -238,16 +260,15 @@ const getIconsFormNotificationType = (calendarData, eachDay) => {
 };
 
 const getIconForDay = (list, calendarDay) => {
-  for (let c in list) {
-    if (calendarDay === Object.keys(list[c])[0]) {
-      const arr = list[c][calendarDay].map((icon, index) => {
-        return (
-          <img className="calendar-icon" src={icon} key={index} alt={icon} />
-        );
-      });
-      return arr;
-    }
-  }
+    return list.map((c) => {
+      if (calendarDay === `${Object.keys(c)[0]}`) {
+        return c[calendarDay].map((icon, index) => {
+          return (
+            <img className="calendar-icon" src={icon} key={index} alt={icon} />
+          );
+        });
+      }
+    })
 };
 
 export default connect(mapStateToProps)(Calendar);
