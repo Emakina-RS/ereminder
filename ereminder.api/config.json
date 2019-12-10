@@ -12,15 +12,6 @@
       "enableSsl": false,
       "fromEmail": "Crvena Linija <noreply@crvenalinija.rs>"
     },
-    "mailSubjects": {
-      "confirmRegistrationSubject": "Potvrda registracije",
-      "resetPasswordSubject": "Zaboravili ste lozinku?",
-      "medicineEmailSubject": "Podsetnik za uzimanje lekova",
-      "recepieEmailSubject": "Podsetnik za recept",
-      "pharmacyEmailSubject": "Podsetnik za odlazak u apoteku",
-      "referralEmailSubject": "Podsetnik za odlazak po uput",
-      "medicalFindingsEmailSubject": "Podsetnik za nalaze"
-    },
     "databaseConnection": {
       "dialect": "mysql",
       "username": "ereminder",

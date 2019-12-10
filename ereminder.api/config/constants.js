@@ -18,7 +18,12 @@ const Constants = {
   },
   emailTemplates: {
     confirmRegistration: "confirmRegistration",
-    resetPassword: "resetPassword"
+    resetPassword: "resetPassword",
+    medicineEmail: "medicineEmail",
+    recepieEmail: "recepieEmail",
+    pharmacyEmail: "pharmacyEmail",
+    referralEmail: "referralEmail",
+    medicalFindingsEmail: "medicalFindingsEmail"
   },
   errorDataTime: {
     dataTimeInFuture: "Input date is in the future."

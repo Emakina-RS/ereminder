@@ -24,14 +24,15 @@ var app = express()
     origin: corsUrls
   }))
   .use(xss())
-  .use(error)
   .use(express.json({ limit: "10kb" }))
   .use(rateLimiters.NumberOfRequestsLimiter);
 
 authentication(app);
 routes(app);
 
-var server = app.listen(global.globalConfig.apiPort, function() {
+app.use(error);
+
+var server = app.listen(global.globalConfig.apiPort, function () {
   var port = server.address().port;
   logger.info(
     `[Server] : Example app listening at ${global.globalConfig.apiUrl}:${port}`

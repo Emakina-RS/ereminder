@@ -6,18 +6,19 @@ const mailer = require("../core/mailer");
 const configurationService = require("../services/configurationService");
 require("../config/config");
 const mailSubjects = global.globalConfig.mailSubjects;
-const notificationEmailSubjects = getNotificationEmailSubjects();
 const logger = require("../startup/logger")();
 const moment = require("moment");
 require("moment-recur");
 
-exports.updateNotifications = async function(notifications, userId) {
+const siteUrls = global.globalConfig.siteUrls;
+
+exports.updateNotifications = async function (notifications, userId) {
   return await notifications.forEach(async notification => {
     await makeNotification(notification, userId);
   });
 };
 
-exports.sendEmailNotifications = async function() {
+exports.sendEmailNotifications = async function () {
   var notifications = await getNotificationsWithAdditionalAttributes();
   notifications.forEach(async notification => {
     switch (notification.NotificationTypeId) {
@@ -40,7 +41,7 @@ exports.sendEmailNotifications = async function() {
   });
 };
 
-exports.getNotificationDashboard = async function(userId) {
+exports.getNotificationDashboard = async function (userId) {
   let usersConfiguration = await getDashboardForUpdating(userId);
   return await notificationDashboard(usersConfiguration);
 };
@@ -145,9 +146,12 @@ async function doNotification(
   notificationId,
   userId
 ) {
-  let body = createEmailNotificationHtmlBody(notificationTypeId);
+  let emailProperties = {
+    logoUrl: global.globalConfig.logoUrl,
+    siteUrl: siteUrls.root
+  }
 
-  await mailer.send(notificationEmailSubjects[notificationTypeId], body, email);
+  await mailer.send(getEmailNotificationHtmlBodyType(notificationTypeId), emailProperties, email);
 
   logger.info(
     `[NotificationService] Notification is sent to user. /n Notification Id: ${notificationId}, Notification Type : ${notificationTypeId}, User Id: ${userId}. `
@@ -159,35 +163,18 @@ async function doNotification(
   );
 }
 
-function getNotificationEmailSubjects() {
-  let subjects = {};
-
-  subjects[constants.NotificationType.Medicine] =
-    mailSubjects.medicineEmailSubject;
-  subjects[constants.NotificationType.Recepies] =
-    mailSubjects.recepieEmailSubject;
-  subjects[constants.NotificationType.Pharmacy] =
-    mailSubjects.pharmacyEmailSubject;
-  subjects[constants.NotificationType.Referral] =
-    mailSubjects.referralEmailSubject;
-  subjects[constants.NotificationType.MedicalFindings] =
-    mailSubjects.medicalFindingsEmailSubject;
-
-  return subjects;
-}
-
-function createEmailNotificationHtmlBody(notificationTypeId) {
+function getEmailNotificationHtmlBodyType(notificationTypeId) {
   switch (notificationTypeId) {
     case 1:
-      return "Poštovani obaveštavamo Vas da je vreme da popijete lekove.";
+      return constants.emailTemplates.medicineEmail;
     case 2:
-      return "Poštovani obaveštavamo Vas da je vreme da podignete recepte.";
+      return constants.emailTemplates.recepieEmail;
     case 3:
-      return "Poštovani obaveštavamo Vas da je vreme da posetite apoteku.";
+      return constants.emailTemplates.pharmacyEmail;
     case 4:
-      return "Poštovani obaveštavamo Vas da je vreme da podignete uput.";
+      return constants.emailTemplates.referralEmail;;
     case 5:
-      return "Poštovani obaveštavamo Vas da je vreme da uradite nalaze.";
+      return constants.emailTemplates.medicalFindingsEmail;;
   }
 }
 
@@ -207,7 +194,7 @@ async function getDashboardForUpdating(userID) {
 
 async function notificationDashboard(usersConfiguration) {
   let allConfiguration = await getAllConfiguration();
-  allConfiguration = allConfiguration.map(function(notificationType) {
+  allConfiguration = allConfiguration.map(function (notificationType) {
     return {
       intervals: notificationType.intervals.map(interval => {
         return {
