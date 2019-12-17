@@ -12,7 +12,6 @@ import {
   startOfWeek
 } from "date-fns";
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import apoteka from "../assets/icon/apoteka2.svg";
 import edit from "../assets/icon/edit.svg";
@@ -24,14 +23,12 @@ import recepti from "../assets/icon/recepti2.svg";
 import { ReactComponent as RightArrow } from "../assets/icon/right.svg";
 import uputi from "../assets/icon/uputi2.svg";
 import Modal from "../components/Modal";
-import {useDispatch} from 'react-redux';
-import { getCalendar } from './../actions';
+import {useDispatch,useSelector} from 'react-redux';
+import { getCalendar,calendarChangeMonth } from './../actions';
 import moment from 'moment';
 import "./Calendar.css";
 
-const mapStateToProps = state => ({
-  calendarData: state.calendar.data
-});
+
 
 const iconsRepresenter = {
   recepti: recepti,
@@ -70,20 +67,20 @@ const months = {
 
 const dateAsMonthString = date => months[getMonth(date)];
 
-const Calendar = ({ calendarData }) => {
+const Calendar = () => {
   const dispatch = useDispatch();
-  const [date, setDate] = useState(startOfDay(new Date()));
-  const { isShowing, toggle } = useModal();
-  const start = startOfWeek(startOfMonth(date), { weekStartsOn: 1 });
-  const endOfFirstWeek = endOfWeek(startOfMonth(date), { weekStartsOn: 1 });
-  const eachDayOfFirstWeek = eachDayOfInterval({ start, end: endOfFirstWeek });
-  const end = endOfWeek(endOfMonth(date), { weekStartsOn: 1 });
+  const { calendarData, date } = useSelector(state => state.calendar);
   useEffect(() => {
     dispatch(getCalendar({
       startDate: moment(start).format('YYYY-MM-DD'),
       endDate: moment(end).format('YYYY-MM-DD'),
     }));
-  }, []);
+  }, [date]);
+  const { isShowing, toggle } = useModal();
+  const start = startOfWeek(startOfMonth(date), { weekStartsOn: 1 });
+  const endOfFirstWeek = endOfWeek(startOfMonth(date), { weekStartsOn: 1 });
+  const eachDayOfFirstWeek = eachDayOfInterval({ start, end: endOfFirstWeek });
+  const end = endOfWeek(endOfMonth(date), { weekStartsOn: 1 });
   const eachDay = eachDayOfInterval({ start, end });
   const eachDayNotificationIcon = getIconsFormNotificationType(
     calendarData,
@@ -126,7 +123,7 @@ const Calendar = ({ calendarData }) => {
         <div className="ch-left-arrow">
           <LeftArrow
             style={{ height: "30px" }}
-            onClick={() => setDate(addMonths(date, -1))}
+            onClick={() => dispatch(calendarChangeMonth(addMonths(date, -1))) }
           />
         </div>
         <div className="ch-month">{`${dateAsMonthString(date)} ${getYear(
@@ -135,7 +132,7 @@ const Calendar = ({ calendarData }) => {
         <div className="ch-right-arrow">
           <RightArrow
             style={{ height: "30px" }}
-            onClick={() => setDate(addMonths(date, 1))}
+            onClick={() => dispatch(calendarChangeMonth(addMonths(date, 1))) }
           />
         </div>
       </div>
@@ -271,4 +268,4 @@ const getIconForDay = (list, calendarDay) => {
     })
 };
 
-export default connect(mapStateToProps)(Calendar);
+export default Calendar;

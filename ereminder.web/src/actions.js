@@ -71,6 +71,10 @@ export const createOrUpdateConfiguration = dates => (dispatch, getState) => {
   });
 };
 
+export const calendarChangeMonth = (month) => dispatch => {
+  dispatch({ type: "CALENDAR_CHANGE_MONTH", data: month });
+};
+
 export const getCalendar = ({startDate, endDate}) => (dispatch, getState) => {
   post(`/calendar`, {startDate, endDate}, getState().token).then(calendarData => {
     dispatch({
