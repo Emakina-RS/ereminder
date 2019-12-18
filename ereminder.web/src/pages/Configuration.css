@@ -58,6 +58,11 @@
   border-radius: 5px;
 }
 
+.DateSelector input[type="date"]::-webkit-inner-spin-button,    
+.DateSelector input[type="date"]::-webkit-clear-button { display: none; }
+.DateSelector input[type="date"]::-ms-clear { display: none; }
+.DateSelector input[type="date"]::-moz-clear { display: none; }
+
 .DateSelector [type="date"] {
   background: #fff url("../assets/icon/calendar.svg") 97% 50% no-repeat;
   background-size: 30px 30px;

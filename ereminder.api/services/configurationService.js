@@ -28,19 +28,14 @@ exports.GetLastTimeConfiguration = async function(
   switch (notificationTypeId) {
     case constants.NotificationType.Medicine:
       return new Date(configuration.lastTimeTookPills);
-      break;
     case constants.NotificationType.Recepies:
       return new Date(configuration.lastTimeGotPrescription);
-      break;
     case constants.NotificationType.Pharmacy:
       return new Date(configuration.lastTimeInPharmacy);
-      break;
     case constants.NotificationType.Referral:
       return new Date(configuration.lastTimeGoReferral);
-      break;
     case constants.NotificationType.MedicalFindings:
       return new Date(configuration.lastTimeExamination);
-      break;
     default:
       return null;
   }
