@@ -5,6 +5,7 @@ const login = (state = initialState, action) => {
     case "LOG_IN":
       return { isSubmitting: true };
     case "LOG_IN_FAILED":
+      return { isLoginFailed: true };
     case "LOG_OUT":
       return initialState;
     case "LOG_IN_SUCCESSFUL":

@@ -1,9 +1,10 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import { logIn, verifyRecaptcha } from "../actions";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import InvalidLoginMessage from "../components/InvalidLoginMessage";
 import useInput from "../hooks/useInput";
 import Recaptcha from 'react-google-invisible-recaptcha';
 import "./Login.css";
@@ -18,7 +19,6 @@ const mapDispatchToProps = {
 };
 
 const Login = ({
-  isSubmitting,
   shouldRedirect,
   logIn
 }) => {
@@ -53,7 +53,7 @@ const Login = ({
       };
 
       recaptcha.execute()
-        .then((token)=> {
+        .then((token) => {
           onTokenResolved(token, parentObj);
         });
     }
@@ -61,13 +61,13 @@ const Login = ({
 
   const onTokenResolved = async (token, parentObj) => {
     let response = await verifyRecaptcha(token);
-      if (response.success) {
-        logIn(parentObj.email, parentObj.password);
-      } else {
-        parentObj.recaptchaInstance.reset();
-      }
+    if (response.success) {
+      logIn(parentObj.email, parentObj.password);
+    } else {
+      parentObj.recaptchaInstance.reset();
+    }
 
-      setRecaptchaMessage(response.message);
+    setRecaptchaMessage(response.message);
   };
 
   return (
@@ -79,7 +79,8 @@ const Login = ({
         <h1>Uloguj se</h1>
         <Input type="email" {...email} />
         <Input type="password" {...password} />
-        <Button disabled={isSubmitting}>Uloguj se</Button>
+        <InvalidLoginMessage></InvalidLoginMessage>
+        <Button disabled={!checkFormValidation()}>Uloguj se</Button>
         {recaptchaMessage}
         <div className="Login-allready">
           <h2>
@@ -94,10 +95,9 @@ const Login = ({
             </Link>
           </h2>
         </div>
-
-        <Recaptcha 
-          ref = {ref => recaptcha = ref}
-          sitekey = '6Lc7rcEUAAAAAEB97C0InA-f6wr61LvpUHf4jcII'
+        <Recaptcha
+          ref={ref => recaptcha = ref}
+          sitekey='6Lc7rcEUAAAAAEB97C0InA-f6wr61LvpUHf4jcII'
         />
       </form>
     </div>
