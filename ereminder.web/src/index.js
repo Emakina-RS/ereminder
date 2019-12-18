@@ -15,20 +15,29 @@ import register from "./reducers/register";
 import registerConfirmation from "./reducers/registerConfirmation";
 import settings from "./reducers/settings";
 import token from "./reducers/token";
+import auth from "./reducers/auth";
 
 const loadState = () => {
   try {
     const serializedState = localStorage.getItem("state");
-    return serializedState !== null ? JSON.parse(serializedState) : undefined;
+    const serializedAuth = localStorage.getItem("auth");
+    return [JSON.parse(serializedState), JSON.parse(serializedAuth)];
   } catch (exception) {
     // ignore read errors
   }
 };
 
-const saveState = state => {
+const saveState = (state, authState) => {
   try {
     const serializedState = JSON.stringify(state);
+    if (authState) {
+      const arrivedTokenTime = new Date().getTime() / 1000;
+      authState.auth.arrivedTokenTime = arrivedTokenTime;
+    }
+
+    const serializedAuth = JSON.stringify(authState);
     localStorage.setItem("state", serializedState);
+    localStorage.setItem("auth", serializedAuth);
   } catch (exception) {
     // ignore write errors
   }
@@ -46,16 +55,17 @@ const store = createStore(
     calendar,
     forgotPassword,
     registerConfirmation,
-    notificationDashboard
+    notificationDashboard,
+    auth
   }),
-  loadState(),composeEnhancers(
-  applyMiddleware(thunk))
+  loadState(), composeEnhancers(
+    applyMiddleware(thunk))
 );
 
 store.subscribe(
   throttle(() => {
     const state = store.getState();
-    saveState({ token: state.token });
+    saveState({ token: state.token }, { auth: state.auth });
   }, 1000)
 );
 

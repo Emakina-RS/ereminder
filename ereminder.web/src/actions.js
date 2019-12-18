@@ -45,27 +45,60 @@ const patch = (relativePath, payload, token) => {
   }).then(response => response.json());
 };
 
-export const getConfiguration = () => (dispatch, getState) =>
+const fetchRefreshToken = async (auth, dispatch) => {
+  if (!auth) return;
+
+  const currentTime = (new Date().getTime() / 1000) + 300;
+
+  const diffTime = (auth.arrivedTokenTime + auth.expiresIn) - currentTime;
+  const isBetween5minutebeforeExpired = diffTime > 0 && diffTime < 300;
+  if (!isBetween5minutebeforeExpired) return;
+
+  const notTimeForExpire = !(auth.refreshToken && currentTime > auth.expiresIn);
+  if (notTimeForExpire) return;
+
+  let headers = defaultHeaders;
+  const payload = { refreshToken: auth.refreshToken };
+
+  const response = await fetch(getFullApiUrl("/token"), {
+    method: "POST",
+    headers,
+    body: JSON.stringify(payload)
+  });
+  let data = await response.json();
+  const { token, refreshToken, expiresIn } = data;
+
+  const authProps = { token: token, refreshToken: refreshToken, expiresIn: expiresIn };
+  dispatch({ type: "GOT_AUTH", auth: authProps });
+  dispatch({ type: "GOT_TOKEN", token });
+};
+
+export const getConfiguration = () => (dispatch, getState) => {
+  fetchRefreshToken(getState().auth, dispatch);
+
   get("/configuration", undefined, getState().token).then(configuration => {
     dispatch({
       type: "CONFIGURATION_RECEIVED",
       configuration
     });
   });
+};
 
 export const changeDate = (fieldValue, fieldName) => dispatch => {
   dispatch({ type: "DATE_CHANGED", fieldValue, fieldName });
 };
 
 export const createOrUpdateConfiguration = dates => (dispatch, getState) => {
+  fetchRefreshToken(getState().auth, dispatch);
+
   get("/configuration", undefined, getState().token).then(configuration => {
     if (configuration.id) {
       patch("/configuration", dates, getState().token)
-        .then(() => {getConfiguration()(dispatch, getState)})
+        .then(() => { getConfiguration()(dispatch, getState) })
         .catch(() => console.log("Configuration update failed."));
     } else {
       post("/configuration", dates, getState().token)
-        .then(() => {getConfiguration()(dispatch, getState)})
+        .then(() => { getConfiguration()(dispatch, getState) })
         .catch(() => console.log("Configuration addition failed."));
     }
   });
@@ -75,16 +108,20 @@ export const calendarChangeMonth = (month) => dispatch => {
   dispatch({ type: "CALENDAR_CHANGE_MONTH", data: month });
 };
 
-export const getCalendar = ({startDate, endDate}) => (dispatch, getState) => {
-  post(`/calendar`, {startDate, endDate}, getState().token).then(calendarData => {
+export const getCalendar = ({ startDate, endDate }) => (dispatch, getState) => {
+  fetchRefreshToken(getState().auth, dispatch);
+
+  post(`/calendar`, { startDate, endDate }, getState().token).then(calendarData => {
     dispatch({
       type: "CALENDAR_DATA_RECEIVED",
       data: calendarData
     });
   })
-}
+};
 
-export const getNotificationDashboard = () => (dispatch, getState) =>
+export const getNotificationDashboard = () => (dispatch, getState) => {
+  fetchRefreshToken(getState().auth, dispatch);
+
   get("/notificationdashboard", undefined, getState().token).then(
     notificationDashboard => {
       dispatch({
@@ -93,8 +130,11 @@ export const getNotificationDashboard = () => (dispatch, getState) =>
       });
     }
   );
+};
 
-export const updateNotificationDashboard = (notificationConfig) => (dispatch, getState) =>
+export const updateNotificationDashboard = (notificationConfig) => (dispatch, getState) => {
+  fetchRefreshToken(getState().auth, dispatch);
+
   post("/notifications", notificationConfig, getState().token).then(
     notificationDashboard => {
       getNotificationDashboard()(dispatch, getState)
@@ -104,17 +144,20 @@ export const updateNotificationDashboard = (notificationConfig) => (dispatch, ge
       });
     }
   );
+};
 
 export const logIn = (email, password) => dispatch => {
   dispatch({ type: "LOG_IN" });
   post("/authenticate", {
     username: email,
     password
-  }).then(({ token }) => {
+  }).then(({ token, refreshToken, expiresIn }) => {
     if (token === undefined) {
       dispatch({ type: "LOG_IN_FAILED" });
     } else {
       dispatch({ type: "LOG_IN_SUCCESSFUL", token });
+      const auth = { token: token, refreshToken: refreshToken, expiresIn: expiresIn };
+      dispatch({ type: "GOT_AUTH", auth });
     }
   });
 };
@@ -184,45 +227,3 @@ export const verifyRecaptcha = async token => {
 function getFullApiUrl(relativePath) {
   return process.env.REACT_APP_API_URL + relativePath;
 }
-
-const mockJSON = {
-  takeRecepieEveryHours: 12,
-  reminders: {
-    "2019/10/09": [
-      {
-        notificationTypeName: "recepti",
-        notificationTypeId: 2
-      },
-      {
-        notificationTypeName: "apoteka",
-        notificationTypeId: 3
-      }
-    ],
-    "2019/10/15": [
-      {
-        notificationTypeName: "recepti",
-        notificationTypeId: 2
-      }
-    ],
-    "2019/10/22": [
-      {
-        notificationTypeName: "recepti",
-        notificationTypeId: 2
-      },
-      {
-        notificationTypeName: "apoteka",
-        notificationTypeId: 3
-      },
-      {
-        notificationTypeName: "nalazi",
-        notificationTypeId: 4
-      }
-    ],
-    "2019/10/29": [
-      {
-        notificationTypeName: "recepti",
-        notificationTypeId: 2
-      }
-    ]
-  }
-};
