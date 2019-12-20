@@ -21,7 +21,9 @@ const loadState = () => {
   try {
     const serializedState = localStorage.getItem("state");
     const serializedAuth = localStorage.getItem("auth");
-    return [JSON.parse(serializedState), JSON.parse(serializedAuth)];
+    const token = JSON.parse(serializedState);
+    const auth = JSON.parse(serializedAuth);
+    return { ...token, ...auth };
   } catch (exception) {
     // ignore read errors
   }
