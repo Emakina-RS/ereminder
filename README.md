@@ -3,10 +3,10 @@ Hackathon 2019 - Code For a Cause 3
 
 ## Table of Contents
 
--[Introduction](#introduction)
--[Install](#install)
--[Contributing](#contributing)
--[License](#licanse)
+ - [Introduction](#introduction)
+ - [Install](#install)
+ - [Contributing](#contributing)
+ - [License](#licanse)
 
 ## Introduction
 

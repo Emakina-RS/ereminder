@@ -5,9 +5,9 @@ This project was bootstrapped with [Create React App][1].
 
 ## Table of Contents
 
--[Introduction](#introduction)
--[Install](#install)
--[Available Scripts](#availableScripts)
+ - [Introduction](#introduction)
+ - [Install](#install)
+ - [Available Scripts](#availableScripts)
 
 # Introduction
 
