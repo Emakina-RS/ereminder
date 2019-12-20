@@ -58,5 +58,32 @@
     "siteUrls": {
       "resetPassword": ""
     }
+  },
+  "test": {
+    "apiUrl": "http://test-api.ereminder.com/",
+    "apiPort": 8080,
+    "logoUrl": "http://test.ereminder.com/assets/images/logo.png",
+    "corsUrls": ["http://test.ereminder.com:8080"],
+    "mailSettings": {
+      "smtp": "",
+      "port": 587,
+      "username": "",
+      "password": "",
+      "enableSsl": false,
+      "fromEmail": ""
+    },
+    "databaseConnection": {
+      "dialect": "mysql",
+      "username": "ereminder",
+      "password": "YSb_3KEt_mdr",
+      "host": "127.0.0.1",
+      "database": "test-ereminder"
+    },
+    "jwtExpiryTimeInSeconds": 3600,
+    "siteUrls": {
+      "root": "http://test.ereminder.com/",
+      "resetPassword": "http://test.ereminder.com/resetpassword",
+      "confirmRegistration": "http://test.ereminder.com/confirmregistration"
+    }
   }
 }
