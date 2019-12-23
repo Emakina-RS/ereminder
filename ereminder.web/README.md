@@ -49,3 +49,63 @@ Runs the app in the development mode on http://localhost:3000.
 ### `npm run build`
 
 Builds the app for production to the `build` folder.
+
+### `npm run storybook`
+
+Runs [Storybook][2] on http://localhost:9009.
+
+[1]: https://github.com/facebook/create-react-app
+[2]: https://storybook.js.org
+
+## Deployment.  
+
+### `pre deployment steps`
+
+Before running scripts for code build. Check is appropriate variables are settled in `.env.development` file.
+HOST=ereminder.com
+PORT=8080
+REACT_APP_API_URL=http://ereminder.com:8081
+
+Check one again, does in API `config.json` in the production section of file corsUrls set to http://ereminder.com:8080",
+and also check is "apiUrl": "http://ereminder.com/", "apiPort": 8081 set to this params.
+
+Then move to next step.
+
+### `npm run build`
+
+Builds the app for production to the build folder.
+Successful build should create a build folder in `ereminde.web` folder structure.
+
+### `build folder`
+
+This folder is needed for deployment on a web server. `Build` folder should copy on the deployment server.
+
+### `Deploy the application to IIS`
+
+Open IIS. 
+
+Now, right-click on Sites and click on "Add web sites".
+
+Enter the site name, add any meaningful name in this textbox, in the physical path, enter the path where build folder path is copied and located.
+
+For example:
+-Site name: `web.ereminder`
+-Physical path: `Path to build folder`
+-IP adresss: `127.0.0.1`
+-Port: `8080`
+-Host name: `dev.ereminder.com`
+
+Click on ok Button 
+
+Now, right-click on `web.ereminder` and click on "Add Application". Fill the alias name and set the physical path.
+
+Enter the Alias and Physical path
+-Alias: `web.ereminder`
+-Physical path: `Path to build folder`
+
+Click on ok Button 
+
+### `Use the application`
+
+Now web application is deployed
+
