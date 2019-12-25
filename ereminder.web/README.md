@@ -8,6 +8,7 @@ This project was bootstrapped with [Create React App][1].
  - [Introduction](#introduction)
  - [Install](#install)
  - [Available Scripts](#availableScripts)
+ - [Deployment](#deployment)
 
 # Introduction
 
@@ -57,7 +58,7 @@ Runs [Storybook][2] on http://localhost:9009.
 [1]: https://github.com/facebook/create-react-app
 [2]: https://storybook.js.org
 
-## Deployment.  
+## Deployment  
 
 ### `pre deployment steps`
 
