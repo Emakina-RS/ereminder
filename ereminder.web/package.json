@@ -22,6 +22,7 @@
   "scripts": {
     "start": "env-cmd -f .env.development react-scripts start",
     "build": "env-cmd -f .env.production react-scripts build",
+    "build-test": "env-cmd -f .env.test react-scripts build",
     "storybook": "start-storybook -p 9009 -s public"
   },
   "eslintConfig": {
