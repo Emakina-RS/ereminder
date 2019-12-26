@@ -41,6 +41,14 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests as appropriate.
 
+## Required extensions for deployment
+
+Extensions which are needed for IIS (Internet Information Services) Manager are: 
+
+1) [a link](https://www.iis.net/downloads/microsoft/url-rewrite) Url Rewrite extension <br>
+2) [a link](https://www.iis.net/downloads/microsoft/application-request-routing) Application Request Routing extension <br>
+
+
 
 ## Deployment 
 
