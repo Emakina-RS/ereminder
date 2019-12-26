@@ -7,6 +7,7 @@ Hackathon 2019 - Code For a Cause 3
  - [Install](#install)
  - [Contributing](#contributing)
  - [Deployment](#deployment)
+ - [Starting application](#startingApplication)
  - [License](#licanse)
 
 
@@ -91,6 +92,20 @@ Wait until the process is finished, then use the command:
 After process is finished, use that whole build folder and save it on your PC or laptop, and remember the path where you put that build folder. <br>
 Then you need to configure frontend code in IIS (Internet Information Services) Manager. Configuration of frontend code are described in ereminder.web/Readme.md file. <br>
 Select the Sites section and choose option `Add Website`. Inside `Site name: ` type `web.ereminder`. `Physical path: ` should be `path to the build folder` and `IP address` should be selected and read from hosts file. 
+
+## Starting application 
+
+pm2 is Node.js process manager, and it is using to keep applications running. Installing pm2 with npm: 
+
+### `npm install -g pm2`
+
+Use following commands to manage our processes:
+ - `pm2 start server.js` - start our Node.js application <br>
+ - `pm2 stop` - stop a running process <br>
+ - `pm2 restart` - restart a running process <br>
+ - `pm2 list` - list all running processes <br>
+
+Official site for pm2: [link](https://pm2.keymetrics.io/)
 
 ### `Use the application`
 
