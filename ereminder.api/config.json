@@ -34,7 +34,7 @@
     }
   },
   "test": {
-	"apiHostname": "local.api-ereminder.emakina.rs",
+    "apiHostname": "local.api-ereminder.emakina.rs",
     "apiPort": 81,
     "logoUrl": "http://test-ereminder.emakina.rs/assets/images/logo.png",
     "corsUrls": [
