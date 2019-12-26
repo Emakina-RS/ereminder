@@ -43,10 +43,10 @@
     "mailSettings": {
       "smtp": "smtp.gmail.com",
       "port": 587,
-      "username": "dev@emakina.rs",
-      "password": "development",
+      "username": "",
+      "password": "",
       "enableSsl": false,
-      "fromEmail": "dev@emakina.rs"
+      "fromEmail": ""
     },
     "databaseConnection": {
       "dialect": "mysql",
