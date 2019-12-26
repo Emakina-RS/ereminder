@@ -45,8 +45,8 @@ Please make sure to update tests as appropriate.
 
 Extensions which are needed for IIS (Internet Information Services) Manager are: 
 
-1) [a link](https://www.iis.net/downloads/microsoft/url-rewrite) Url Rewrite extension <br>
-2) [a link](https://www.iis.net/downloads/microsoft/application-request-routing) Application Request Routing extension <br>
+1) [Url Rewrite extension](https://www.iis.net/downloads/microsoft/url-rewrite)  <br>
+2) [Application Request Routing extension](https://www.iis.net/downloads/microsoft/application-request-routing) <br>
 
 
 
