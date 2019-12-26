@@ -32,10 +32,14 @@ routes(app);
 
 app.use(error);
 
-var server = app.listen(global.globalConfig.apiPort, function () {
+var server = app.listen(global.globalConfig.apiPort, global.globalConfig.apiHostname, function () {
   var port = server.address().port;
+
+  console.log('server url: ' + server.address().address);
+
+
   logger.info(
-    `[Server] : Example app listening at ${global.globalConfig.apiUrl}:${port}`
+    `[Server] : Example app listening at ${global.globalConfig.apiHostname}:${port}`
   );
 });
 
