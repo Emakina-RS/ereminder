@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch, useSelector   } from "react-redux";
+import { passwordInputField } from "../actions"
 
 const useInput = (name, placeholder, validation) => {
   const [inputField, setInputField] = useState({
@@ -7,7 +9,8 @@ const useInput = (name, placeholder, validation) => {
     errorMsg: "",
     value: ""
   });
-
+  const data = useSelector(state => state.register);
+  const dispatch = useDispatch();
   /**
    * Checks existence and email validity
    * 
@@ -20,7 +23,7 @@ const useInput = (name, placeholder, validation) => {
       return { isValid: true };
     }
 
-    if (rules.required && value.trim() === "") {
+    if (rules.required && value.trim() === "" && !rules.checkPair) {
       return {
         isValid: false,
         errorMsg: "Ovo polje je obavezno"
@@ -33,6 +36,15 @@ const useInput = (name, placeholder, validation) => {
         isValid: false,
         errorMsg: "Nevalidna email adresa"
       };
+    }
+
+    if (rules.checkPair && value.trim() > 0) {
+      if(data.passwordFields["password"] !== data.passwordFields["confirm-password"]) {
+        return {
+          isValid: false,
+          errorMsg: "Šifre nisu iste!"
+        };
+      }
     }
 
     return { isValid: true };
@@ -56,6 +68,8 @@ const useInput = (name, placeholder, validation) => {
       ...inputField,
       value: event.target.value
     };
+    var name = event.target.name;
+    dispatch(passwordInputField({[name]:event.target.value}))
 
     setInputField(updatedInputField);
   };

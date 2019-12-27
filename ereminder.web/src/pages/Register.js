@@ -1,5 +1,5 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React,{useEffect} from "react";
+import { useDispatch, useSelector   } from "react-redux";
 import { Link } from "react-router-dom";
 import { register } from "../actions";
 import Button from "../components/Button";
@@ -11,13 +11,13 @@ const Register = () => {
   let inputFields = [];
   const email = inputFields[0] = useInput("email", "Unesite Vašu e-mail adresu", { required: true, email: true });
   const password = inputFields[1] = useInput("password", "Unesite šifru", { required: true });
-  const confirmPassword = inputFields[2] = useInput("confirm-password", "Ponovite šifru", { required: true });
+  const confirmPassword = inputFields[2] = useInput("confirm-password", "Ponovite šifru", { required: true, checkPair: true});
   const isFetching = useSelector(state => state.register.isFetching);
   const dispatch = useDispatch();
 
-
   const formSubmitHandler = (event) => {
     event.preventDefault();
+
     let isFormValid = true;
     for (let input of inputFields) {
       isFormValid = input.valid && isFormValid;

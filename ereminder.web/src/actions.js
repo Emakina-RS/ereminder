@@ -212,6 +212,10 @@ export const registerConfirmation = token => dispatch => {
     });
 };
 
+export const passwordInputField = (data) => dispatch => {
+  dispatch({ type: "PASSWORD_INPUT",  data});
+};
+
 export const verifyRecaptcha = async token => {
   return post("/verifyRecaptcha", {
     token

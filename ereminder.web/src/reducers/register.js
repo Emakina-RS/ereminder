@@ -1,5 +1,6 @@
 const initialState = {
-  isFetching: false
+  isFetching: false,
+  passwordFields: {}
 };
 
 const register = (state = initialState, action) => {
@@ -12,6 +13,11 @@ const register = (state = initialState, action) => {
     case "REGISTER_FAILED":
       return {
         isFetching: false
+      };
+    case "PASSWORD_INPUT":
+      return {
+        ...state,
+        passwordFields: {...state.passwordFields,...action.data,}
       };
     default:
       return state;
