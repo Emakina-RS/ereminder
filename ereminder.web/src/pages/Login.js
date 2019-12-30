@@ -97,7 +97,7 @@ const Login = ({
         </div>
         <Recaptcha
           ref={ref => recaptcha = ref}
-          sitekey={process.env.REACT_APP_SECRET_KEY}
+          sitekey={process.env.REACT_APP_SITE_KEY}
         />
       </form>
     </div>
