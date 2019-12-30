@@ -1,6 +1,6 @@
 {
   "development": {
-    "apiUrl": "http://dev-api.ereminder.com/",
+    "apiHostname": "dev-api.ereminder.com",
     "apiPort": 8081,
     "logoUrl": "http://dev.ereminder.com/assets/images/logo.png",
     "corsUrls": [
@@ -33,6 +33,40 @@
       "trustTrashold": 0.5
     }
   },
+  "test": {
+    "apiHostname": "local.api-ereminder.emakina.rs",
+    "apiPort": 81,
+    "logoUrl": "http://test-ereminder.emakina.rs/assets/images/logo.png",
+    "corsUrls": [
+      "http://test-ereminder.emakina.rs"
+    ],
+    "mailSettings": {
+      "smtp": "smtp.gmail.com",
+      "port": 587,
+      "username": "",
+      "password": "",
+      "enableSsl": false,
+      "fromEmail": ""
+    },
+    "databaseConnection": {
+      "dialect": "mysql",
+      "username": "ereminder",
+      "password": "YVrz=A8[s",
+      "host": "127.0.0.1",
+      "database": "ereminder"
+    },
+    "jwtExpiryTimeInSeconds": 3600,
+    "siteUrls": {
+      "root": "http://test-ereminder.emakina.rs/",
+      "resetPassword": "http://test-ereminder.emakina.rs/resetpassword",
+      "confirmRegistration": "http://test-ereminder.emakina.rs/confirmregistration"
+    },
+    "recaptcha": {
+      "url": "https://www.google.com/recaptcha/api/siteverify",
+      "secretKey": "6LdZFsoUAAAAAOYbWcWE_RT0EaJkm5ATYEkfZqOF",
+      "trustTrashold": 0.5
+    }
+  },
   "production": {
     "apiUrl": "",
     "apiPort": "",
@@ -61,40 +95,6 @@
     "jwtExpiryTimeInSeconds": 3600,
     "siteUrls": {
       "resetPassword": ""
-    }
-  },
-  "test": {
-    "apiUrl": "http://testapi-ereminder.emakina.rs/",
-    "apiPort": 8081,
-    "logoUrl": "http://test-ereminder.emakina.rs/assets/images/logo.png",
-    "corsUrls": [
-      "http://test-ereminder.emakina.rs:8080"
-    ],
-    "mailSettings": {
-      "smtp": "",
-      "port": 587,
-      "username": "",
-      "password": "",
-      "enableSsl": false,
-      "fromEmail": ""
-    },
-    "databaseConnection": {
-      "dialect": "mysql",
-      "username": "ereminder",
-      "password": "YSb_3KEt_mdr",
-      "host": "127.0.0.1",
-      "database": "test-ereminder"
-    },
-    "jwtExpiryTimeInSeconds": 3600,
-    "siteUrls": {
-      "root": "http://test-ereminder.emakina.rs/",
-      "resetPassword": "http://test-ereminder.emakina.rs/resetpassword",
-      "confirmRegistration": "http://test-ereminder.emakina.rs/confirmregistration"
-    },
-    "recaptcha": {
-      "url": "https://www.google.com/recaptcha/api/siteverify",
-      "secretKey": "6Lc7rcEUAAAAAAJT_Smlx_pRxbke4_CZAIKCVzgr",
-      "trustTrashold": 0.5
     }
   }
 }
