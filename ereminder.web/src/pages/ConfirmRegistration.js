@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import Spinner from 'reactjs-simple-spinner';
 import { registerConfirmation } from "../actions";
 import Button from "../components/Button";
-import "./RegisterConfirmation.css";
+import "./ConfirmRegistration.css";
 
 const RegisterConfirmation = () => {
   let {loading, message} = useSelector(state => state.registerConfirmation);

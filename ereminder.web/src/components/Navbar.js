@@ -13,11 +13,13 @@ const Navbar = ({ isLoggedIn }) => {
     : isOnLoginPage
     ? "Registruj se"
     : "Uloguj se";
+
   const dynamicLinkAction = isLoggedIn
     ? () => dispatch({ type: "LOG_OUT" })
     : isOnLoginPage
     ? () => history.push("/register")
     : () => history.push("/login");
+
   return (
     <div className="Navbar">
       <div className="Navbar-content">

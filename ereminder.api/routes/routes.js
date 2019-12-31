@@ -32,7 +32,7 @@ module.exports = function(app) {
   );
 
   app.post(
-    "/registerconfirmation",
+    "/confirmregistration",
     validators.registerConfirmation,
     (req, res) =>
       validators.returnValidationResults(

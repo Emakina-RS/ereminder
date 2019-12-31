@@ -3,6 +3,7 @@ import { useDispatch, useSelector   } from "react-redux";
 import { Link } from "react-router-dom";
 import { register } from "../actions";
 import Button from "../components/Button";
+import RegisterCheckMail from "../components/RegisterCheckMail";
 import Input from "../components/Input";
 import useInput from "../hooks/useInput";
 import "./Register.css";
@@ -34,6 +35,7 @@ const Register = () => {
       <div className="Register-content">
         <h1>Registruj se</h1>
         <form onSubmit={formSubmitHandler}>
+          <RegisterCheckMail />
           <Input type="email" {...email} />
           <Input type="password" {...password} />
           <Input type="password" {...confirmPassword} />

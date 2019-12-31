@@ -169,7 +169,7 @@ export const register = (email, password, confirmPassword) => dispatch => {
     password,
     confirmpassword: confirmPassword
   })
-    .then(() => dispatch({ type: "REGISTER_SUCCESSFUL" }))
+    .then(() => dispatch({ type: "REGISTER_SUCCESSFUL" , data:'Poslat Vam je mejl za potvrdu registracije!'}))
     .catch(() => dispatch({ type: "REGISTER_FAILED" }));
 };
 
@@ -197,7 +197,7 @@ export const closeModal = () => dispatch => {
 };
 
 export const registerConfirmation = token => dispatch => {
-  post("/registerConfirmation", {
+  post("/confirmregistration", {
     token
   })
     .then(res => {

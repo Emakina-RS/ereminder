@@ -4,15 +4,17 @@
     "apiPort": 8081,
     "logoUrl": "http://dev.ereminder.com/assets/images/logo.png",
     "corsUrls": [
-      "http://dev.ereminder.com:8080"
+      "http://dev.ereminder.com:8080",
+      "http://dev.ereminder.com:8081",
+      "http://dev.ereminder.com:8082"
     ],
-    "mailSettings": {
-      "smtp": "",
-      "port": 587,
-      "username": "",
-      "password": "",
-      "enableSsl": false,
-      "fromEmail": "Crvena Linija <noreply@crvenalinija.rs>"
+    "mailSettings": { 
+      "smtp": "smtp.gmail.com", 
+      "port": 587, 
+      "username": "dev@emakina.rs", 
+      "password": "development", 
+      "enableSsl": false, 
+      "fromEmail": "dev@emakina.rs" 
     },
     "databaseConnection": {
       "dialect": "mysql",

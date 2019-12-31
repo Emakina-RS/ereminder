@@ -7,7 +7,7 @@ Hackathon 2019 - Code For a Cause 3
  - [Install](#install)
  - [Contributing](#contributing)
  - [Deployment](#deployment)
- - [Starting application](#startingApplication)
+ - [Starting application](#starting_application)
  - [License](#licanse)
 
 
@@ -50,7 +50,6 @@ Extensions which are needed for IIS (Internet Information Services) Manager are:
 2) [Application Request Routing extension](https://www.iis.net/downloads/microsoft/application-request-routing) <br>
 
 
-
 ## Deployment 
 
 When deployment process is beginning, first open the terminal in ereminder.api and start server.js script using the command: 
@@ -74,14 +73,14 @@ Open IIS (Internet Information Services) Manager and follow the instructions: <b
 
 When the previous steps are finished, select dev.reverseproxy.ereminder and then select `URL Rewrite`. Inside `Inbound rules that are applied to the requested URL adress`, right-click and `Add Rule(s)`, than choose `Reverse Proxy`. Inside `Enter the server name or the IP address where HTTP requests will be forwarded` put inside: <br>
 `dev-api.ereminder.com` <br>
-Check the checkobx inside "Outbound Rules", and select To, which are drop-down manu, and select `dev-reverseproxy.ereminder.com`
+Check the checkobx inside "Outbound Rules", and select `To`, which are drop-down manu, and select `dev-reverseproxy.ereminder.com`
 
 After this steps are finished, open `.env.production`, `.env.development` or `.env.test`, and inside of REACT_APP_API_URL, put the domain from hosts file and PORT.<br>
 Than open the terminal in ereminder.web and type following command: 
 
 ### `npm run build`
 
-The best practice is if you have build folder or node_modules folder in your project, first delete it, and first install all modules using the command: 
+The best practice is if you have build folder or node_modules folder in your project, first delete it, and then install all modules using the command: 
 
 ### `npm install`
 
@@ -112,7 +111,6 @@ Official site for pm2: [link](https://pm2.keymetrics.io/)
 Now web application is deployed
 
 
-
 ## License
 
-[MIT License ©.](../LICENSE)
+[MIT License ©.](./LICENSE)
