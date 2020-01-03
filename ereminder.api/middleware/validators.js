@@ -275,8 +275,13 @@ function validateCalendarDate(date) {
 }
 
 function isInputDateInFuture(date) {
-  let dateFromInput = new Date(date);
+  //convert date -> dd-mm-yyyy to mm-dd-yyyy
+  let splitedDate = date.split("-");
+  let validDate = splitedDate[1] + "-" + splitedDate[0] + "-" + splitedDate[2];
+
+  let dateFromInput = new Date(validDate);
   let currentDate = new Date();
-  if (currentDate < dateFromInput) return true;
+
+  if (currentDate <= dateFromInput) return true;
   return false;
 }
