@@ -38,7 +38,7 @@ const useInput = (name, placeholder, validation) => {
       };
     }
 
-    if (rules.checkPair && value.trim() > 0) {
+    if (rules.checkPair) {
       if(data.passwordFields["password"] !== data.passwordFields["confirm-password"]) {
         return {
           isValid: false,

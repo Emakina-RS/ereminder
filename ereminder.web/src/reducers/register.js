@@ -25,7 +25,7 @@ const register = (state = initialState, action) => {
     case "PASSWORD_INPUT":
       return {
         ...state,
-        passwordFields: {...state.passwordFields,...action.data,}
+        passwordFields: { ...state.passwordFields, ...action.data }
       };
     default:
       return state;
