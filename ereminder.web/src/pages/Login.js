@@ -80,7 +80,7 @@ const Login = ({
         <Input type="email" {...email} />
         <Input type="password" {...password} />
         <InvalidLoginMessage></InvalidLoginMessage>
-        <Button disabled={!checkFormValidation()}>Uloguj se</Button>
+        <Button active={checkFormValidation()}>Uloguj se</Button>
         {recaptchaMessage}
         <div className="Login-allready">
           <h2>
