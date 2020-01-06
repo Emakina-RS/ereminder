@@ -45,7 +45,7 @@ async function populateIntervals() {
   var count = await models.Interval.count();
 
   if (count === 0) {
-    models.Interval.bulkCreate([
+    await models.Interval.bulkCreate([
       {
         displayName: "12h",
         valueInHours: 12,
@@ -100,7 +100,7 @@ async function populateIntervals() {
         createdAt: date,
         updatedAt: date
       }
-    ]);
+    ], {returning: true});
   }
 }
 
@@ -108,13 +108,13 @@ async function populateTypes() {
   var count = await models.NotificationType.count();
 
   if (count === 0) {
-    models.NotificationType.bulkCreate([
+    await models.NotificationType.bulkCreate([
       { value: "Lek", createdAt: date, updatedAt: date },
       { value: "Recepti", createdAt: date, updatedAt: date },
       { value: "Apoteka", createdAt: date, updatedAt: date },
       { value: "Uput", createdAt: date, updatedAt: date },
       { value: "Nalazi", createdAt: date, updatedAt: date }
-    ]);
+    ], { returning: true });
   }
 }
 
@@ -124,44 +124,27 @@ async function populateDashboard() {
   if (count === 0) {
     models.NotificationType.findByPk(1).then(notificationType => {
       notificationType.setIntervals([1, 2]).then(sc => {
-        console.log(sc);
       });
     });
 
     models.NotificationType.findByPk(2).then(notificationType => {
       notificationType.setIntervals([3, 4, 5, 6, 7, 8]).then(sc => {
-        console.log(sc);
       });
     });
 
     models.NotificationType.findByPk(3).then(notificationType => {
       notificationType.setIntervals([3, 4]).then(sc => {
-        console.log(sc);
       });
     });
 
     models.NotificationType.findByPk(4).then(notificationType => {
       notificationType.setIntervals([8]).then(sc => {
-        console.log(sc);
       });
     });
 
     models.NotificationType.findByPk(5).then(notificationType => {
       notificationType.setIntervals([9]).then(sc => {
-        console.log(sc);
       });
     });
-
-    //addTestNotifications();
   }
-}
-
-function addTestNotifications() {
-  models.Notification.bulkCreate([
-    { lastTimeSent: date, IntervalId: 1, NotificationTypeId: 1, UserId: 1 },
-    { lastTimeSent: date, IntervalId: 3, NotificationTypeId: 2, UserId: 1 },
-    { lastTimeSent: date, IntervalId: 3, NotificationTypeId: 3, UserId: 1 },
-    { lastTimeSent: date, IntervalId: 8, NotificationTypeId: 4, UserId: 1 },
-    { lastTimeSent: date, IntervalId: 9, NotificationTypeId: 5, UserId: 1 }
-  ]);
 }
