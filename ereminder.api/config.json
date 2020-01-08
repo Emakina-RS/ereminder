@@ -9,12 +9,12 @@
       "http://dev.ereminder.com:8082"
     ],
     "mailSettings": { 
-      "smtp": "", 
+      "smtp": "smtp.gmail.com", 
       "port": 587, 
-      "username": "", 
-      "password": "", 
+      "username": "dev@emakina.rs", 
+      "password": "development", 
       "enableSsl": false, 
-      "fromEmail": "" 
+      "fromEmail": "dev@emakina.rs" 
     },
     "databaseConnection": {
       "dialect": "mysql",

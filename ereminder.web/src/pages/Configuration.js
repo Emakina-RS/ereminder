@@ -123,7 +123,7 @@ const DateSelector = ({ name, selectorType, label, value }) => {
   const dispatch = useDispatch();
 
   const dateSelectionChangedHandler = event => {
-    // treba zavrsiti validaciju sata, da ne moze da se unese veci od 23:59
+    // data input field validation
     let now = new Date();
     now = now.setHours(0,0,0,0);
 
