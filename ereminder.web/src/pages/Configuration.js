@@ -135,6 +135,19 @@ const DateSelector = ({ name, selectorType, label, value }) => {
     } 
   };
 
+  const timeMask = value => {
+    // time input field validation
+    const chars = value.split('');
+    const hours = [
+        /[0-2]/,
+        chars[0] === '2' ? /[0-3]/ : /[0-9]/
+    ];
+
+    const minutes = [ /[0-5]/, /[0-9]/ ];
+
+    return hours.concat(':').concat(minutes);
+  };
+
   return (
     <div className="DateSelector">
       <h3 className="DateSelector-label">{label}</h3>
@@ -153,7 +166,7 @@ const DateSelector = ({ name, selectorType, label, value }) => {
             return (
               <MaskedInput
                 name={name + "Time"}
-                mask={[/[0-23]/, /\d/, ":", /[0-59]/, /\d/]}
+                mask={timeMask}
                 className="time"
                 keepCharPositions={true}
                 onChange={dateSelectionChangedHandler}
