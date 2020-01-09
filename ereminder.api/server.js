@@ -13,11 +13,15 @@ const error = require("./middleware/error");
 const logger = require("./startup/logger")();
 const rateLimiters = require("./middleware/rateLimiters");
 const xss = require("xss-clean");
+const history = require("connect-history-api-fallback");
 
 require("./config/config");
 const corsUrls = global.globalConfig.corsUrls;
 
 var app = express()
+  .use(history({
+    {from: "/*", to: "/"}
+  }))
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
   .use(cors({
