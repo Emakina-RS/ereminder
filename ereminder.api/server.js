@@ -19,9 +19,7 @@ require("./config/config");
 const corsUrls = global.globalConfig.corsUrls;
 
 var app = express()
-  .use(history({
-    {from: "/*", to: "/"}
-  }))
+  .use(history())
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
   .use(cors({
