@@ -132,7 +132,9 @@ const DateSelector = ({ name, selectorType, label, value }) => {
 
     if(inputDate <= now) {
       dispatch(changeDate(event.target.value, event.target.name));
-    } 
+    } else if (event.target.name === "lastTimeTookPillsTime") {
+      dispatch(changeDate(event.target.value, event.target.name));
+    }
   };
 
   const timeMask = value => {
