@@ -28,13 +28,6 @@ import { getCalendar,calendarChangeMonth, updateCalendar } from './../actions';
 import moment from 'moment';
 import "./Calendar.css";
 
-const dateFormat = {
-  inputDateTimeFormat: "YYYY-MM-DD HH:mm",
-  outputDateTimeFormat: "DD-MM-YYYY HH:mm:ss",
-  inputDateFormat: "YYYY-MM-DD",
-  outputDateFormat: "DD-MM-YYYY"
-};
-
 const iconsRepresenter = {
   recepti: recepti,
   nalazi: nalazi,
@@ -75,7 +68,10 @@ const dateAsMonthString = date => months[getMonth(date)];
 const Calendar = () => {
   const dispatch = useDispatch();
   const { calendarData, date } = useSelector(state => state.calendar);
-  const test = useSelector(state=> state.configuration.dates)
+  const test = useSelector(state=> state.configuration.dates);
+  
+  const deletePassword = useSelector(state => state.register);
+  delete deletePassword.passwordFields.password;
   
   useEffect(() => {
     dispatch(getCalendar({
@@ -90,7 +86,6 @@ const Calendar = () => {
       endDate: moment(end).format('YYYY-MM-DD'),
     }));
   },[test]);
-  
 
   const { isShowing, toggle } = useModal();
   const start = startOfWeek(startOfMonth(date), { weekStartsOn: 1 });
