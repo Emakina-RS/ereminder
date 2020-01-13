@@ -2,19 +2,19 @@
   "development": {
     "apiHostname": "dev-api.ereminder.com",
     "apiPort": 8081,
-    "logoUrl": "http://dev.ereminder.com/assets/images/logo.png",
+    "logoUrl": "http://dev.ereminder.com/logo.png",
     "corsUrls": [
       "http://dev.ereminder.com:8080",
       "http://dev.ereminder.com:8081",
       "http://dev.ereminder.com:8082"
     ],
-    "mailSettings": { 
-      "smtp": "", 
-      "port": 587, 
-      "username": "", 
-      "password": "", 
-      "enableSsl": false, 
-      "fromEmail": "" 
+    "mailSettings": {
+      "smtp": "",
+      "port": 587,
+      "username": "",
+      "password": "",
+      "enableSsl": false,
+      "fromEmail": ""
     },
     "databaseConnection": {
       "dialect": "mysql",
@@ -38,7 +38,7 @@
   "test": {
     "apiHostname": "local.api-ereminder.emakina.rs",
     "apiPort": 81,
-    "logoUrl": "http://test-ereminder.emakina.rs/assets/images/logo.png",
+    "logoUrl": "http://test-ereminder.emakina.rs/logo.png",
     "corsUrls": [
       "http://test-ereminder.emakina.rs"
     ],
@@ -83,9 +83,6 @@
       "password": "",
       "enableSsl": true,
       "fromEmail": ""
-    },
-    "mailSubjects": {
-      "resetPasswordSubject": "Zaboravili ste lozinku?"
     },
     "databaseConnection": {
       "dialect": "mysql",
