@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React,{ useEffect, useRef } from "react";
 import { useDispatch, useSelector   } from "react-redux";
 import { Link } from "react-router-dom";
 import { register } from "../actions";
@@ -15,6 +15,7 @@ const Register = () => {
   const confirmPassword = inputFields[2] = useInput("confirm-password", "Ponovite šifru", { required: true, checkPair: true});
   const isFetching = useSelector(state => state.register.isFetching);
   const dispatch = useDispatch();
+  let myForm = useRef();
 
   const formSubmitHandler = (event) => {
     event.preventDefault();
@@ -27,6 +28,10 @@ const Register = () => {
       dispatch(
         register(email.value, password.value, confirmPassword.value)
       );
+
+      myForm.current[0].outerHTML = "<input class='Input' type='email' name='email' placeholder='Unesite Vašu e-mail adresu' required='' value=''>";
+      myForm.current[1].outerHTML = "<input class='Input' type='password' name='password' placeholder='Unesite šifru' required='' value=''>";
+      myForm.current[2].outerHTML = "<input class='Input' type='password' name='confirm-password' placeholder='Ponovite šifru' required='' value=''>";
     }
   };
 
@@ -34,7 +39,7 @@ const Register = () => {
     <div className="Register">
       <div className="Register-content">
         <h1>Registruj se</h1>
-        <form onSubmit={formSubmitHandler} autoComplete="off">
+        <form onSubmit={formSubmitHandler} autoComplete="off" ref={myForm}>
           <RegisterCheckMail />
           <Input type="email" {...email} />
           <Input type="password" {...password} />

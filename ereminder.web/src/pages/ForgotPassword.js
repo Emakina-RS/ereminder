@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../components/Button";
@@ -11,6 +11,7 @@ import "./ForgotPassword.css";
 const ForgotPassword = () => {
   let inputFields = [];
   const email = inputFields[0] = useInput("email", "Unesite Vašu e-mail adresu", { required: true, email: true });
+  let myForm = useRef();
 
   let {showModal, isSubmitting} = useSelector(state => state.forgotPassword);
   const dispatch = useDispatch();
@@ -28,13 +29,16 @@ const ForgotPassword = () => {
     if (isFormValid) {
       dispatch(forgotPassword(email.value));
     }
+
+    //Set-ovanje myForm.current[0].value= "" ne radi iz razloga sto ne update-uje value u outerHTML
+    myForm.current[0].outerHTML = "<input class='Input' type='email' name='email' placeholder='Unesite Vašu e-mail adresu' required='' value=''>";
   };
 
   return (
     <div className="ForgotPassword">
       <div className="ForgotPassword-content">
         <h1>Zaboravili ste šifru</h1>
-        <form onSubmit={formSubmitHandler} autoComplete="off">
+        <form onSubmit={formSubmitHandler} ref={myForm} autoComplete="off">
           <Input type="email" {...email} />
           <Button disabled={isSubmitting}>Restartuj šifru</Button>
           <div className="ForgotPassword-allready">
