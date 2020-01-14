@@ -34,7 +34,7 @@ const Register = () => {
     <div className="Register">
       <div className="Register-content">
         <h1>Registruj se</h1>
-        <form onSubmit={formSubmitHandler}>
+        <form onSubmit={formSubmitHandler} autoComplete="off">
           <RegisterCheckMail />
           <Input type="email" {...email} />
           <Input type="password" {...password} />

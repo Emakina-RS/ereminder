@@ -34,7 +34,7 @@ const ForgotPassword = () => {
     <div className="ForgotPassword">
       <div className="ForgotPassword-content">
         <h1>Zaboravili ste šifru</h1>
-        <form onSubmit={formSubmitHandler}>
+        <form onSubmit={formSubmitHandler} autoComplete="off">
           <Input type="email" {...email} />
           <Button disabled={isSubmitting}>Restartuj šifru</Button>
           <div className="ForgotPassword-allready">

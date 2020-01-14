@@ -75,6 +75,7 @@ const Login = ({
       <form
         onSubmit={submitFormHandler}
         className="Login-content"
+        autoComplete="off"
       >
         <h1>Uloguj se</h1>
         <Input type="email" {...email} />
