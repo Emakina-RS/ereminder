@@ -16,10 +16,10 @@ const registerConfirmation = (state = initialState, action) => {
 
     switch (action.type) {
         case registrationStates.IS_CONFIRMED:
-            clientMessage = "Profil je uspešno potvrđen!";
+            clientMessage = "Profil je uspešno potvrđen! Sada se možete ulogovati na sajt.";
             break;
         case registrationStates.IS_SUBMITTING_FAILURE:
-            clientMessage = "Greška, profil nije uspešno potvrđen!";
+            clientMessage = "Greška, profil nije uspešno potvrđen! Molimo Vas pokušajte kasnije.";
             break;
         default:
             clientMessage = 'Obrada zahteva...';
