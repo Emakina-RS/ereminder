@@ -169,7 +169,16 @@ export const register = (email, password, confirmPassword) => dispatch => {
     password,
     confirmpassword: confirmPassword
   })
-    .then(() => dispatch({ type: "REGISTER_SUCCESSFUL" , data:'Poslat Vam je mejl za potvrdu registracije!'}))
+    .then(response => {
+      if (response.message === "Something failed.") {
+        dispatch({ type: "REGISTER_FAILED" });
+      } else {
+        dispatch({
+          type: "REGISTER_SUCCESSFUL",
+          data: "Poslat Vam je mejl za potvrdu registracije!"
+        });
+      }
+    })
     .catch(() => dispatch({ type: "REGISTER_FAILED" }));
 };
 
