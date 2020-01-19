@@ -270,13 +270,25 @@ async function makeNotification(notification, userId) {
     return await deleteNotification(notification);
 }
 
+/**
+ * This function creates a new notification
+ * @param {Object} notification 
+ * @param {Boolean} userId 
+ */
 async function createNotification(notification, userId) {
   const { notificationTypeId, notificationIntervalId } = notification;
 
-  return await models.Notification.create({
-    NotificationTypeId: notificationTypeId,
-    IntervalId: notificationIntervalId,
-    UserId: userId
+  //before creating we always check if the user already has an existing notification of that type
+  return await models.Notification.findOrCreate({
+    where: {
+      UserId: userId,
+      NotificationTypeId: notificationTypeId
+    },
+    defaults: {
+      UserId: userId,
+      NotificationTypeId: notificationTypeId,
+      IntervalId: notificationIntervalId
+    }
   });
 }
 
