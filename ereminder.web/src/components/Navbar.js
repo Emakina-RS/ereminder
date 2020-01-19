@@ -29,9 +29,9 @@ const Navbar = ({ isLoggedIn }) => {
         <div className="Navbar-links">
           <ul>
             <li>
-              <Link to="/reminders" className="a">
+              <a href="http://crvenalinija.org/" className="a">
                 Povratak na sajt
-              </Link>
+              </a>
             </li>
             <li>
               <Link onClick={dynamicLinkAction} className="a">
