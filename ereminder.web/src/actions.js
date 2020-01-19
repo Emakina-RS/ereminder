@@ -155,7 +155,7 @@ export const logIn = (email, password) => dispatch => {
     if (token === undefined) {
       dispatch({ type: "LOG_IN_FAILED" });
     } else {
-      dispatch({ type: "LOG_IN_SUCCESSFUL", token });
+      dispatch({ type: "LOG_IN_SUCCESSFUL", token, email });
       const auth = { token: token, refreshToken: refreshToken, expiresIn: expiresIn };
       dispatch({ type: "GOT_AUTH", auth });
     }

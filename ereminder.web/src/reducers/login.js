@@ -9,7 +9,10 @@ const login = (state = initialState, action) => {
     case "LOG_OUT":
       return initialState;
     case "LOG_IN_SUCCESSFUL":
-      return { shouldRedirect: true };
+      return {
+        username: action.email,
+        shouldRedirect: true
+      };
     default:
       return state;
   }

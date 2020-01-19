@@ -1,15 +1,16 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import logo from "../assets/icon/logo.svg";
 import "./Navbar.css";
 
 const Navbar = ({ isLoggedIn }) => {
+  const username = useSelector(state => state.login.username);
   const history = useHistory();
   const dispatch = useDispatch();
   const isOnLoginPage = history.location.pathname === "/login";
   const dynamicLinkText = isLoggedIn
-    ? "Izloguj se"
+    ? `Izloguj se (${username})`
     : isOnLoginPage
     ? "Registruj se"
     : "Uloguj se";
