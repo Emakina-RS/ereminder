@@ -63,7 +63,7 @@
 .DateSelector input[type="date"]::-ms-clear { display: none; }
 .DateSelector input[type="date"]::-moz-clear { display: none; }
 
-.DateSelector [type="date"] {
+.DateSelector .DayPickerInput input {
   background: #fff url("../assets/icon/calendar.svg") 97% 50% no-repeat;
   background-size: 30px 30px;
 }
@@ -91,6 +91,8 @@
   text-transform: uppercase;
   display: inline-block;
 }
+
+
 
 @media screen and (max-width: 1200px) {
 	.NotificationDates-grid {
