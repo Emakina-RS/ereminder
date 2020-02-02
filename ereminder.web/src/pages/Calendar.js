@@ -68,10 +68,7 @@ const dateAsMonthString = date => months[getMonth(date)];
 const Calendar = () => {
   const dispatch = useDispatch();
   const { calendarData, date } = useSelector(state => state.calendar);
-  const test = useSelector(state=> state.configuration.dates);
-  
-  const deletePassword = useSelector(state => state.register);
-  delete deletePassword.passwordFields.password;
+  const configurationDateChange = useSelector(state=> state.configuration.dates);
   
   useEffect(() => {
     dispatch(getCalendar({
@@ -85,7 +82,7 @@ const Calendar = () => {
       startDate: moment(start).format('YYYY-MM-DD'),
       endDate: moment(end).format('YYYY-MM-DD'),
     }));
-  },[test]);
+  },[configurationDateChange]);
 
   const { isShowing, toggle } = useModal();
   const start = startOfWeek(startOfMonth(date), { weekStartsOn: 1 });
@@ -97,6 +94,7 @@ const Calendar = () => {
     calendarData,
     eachDay
   );
+  const pills = takePills(calendarData)
 
   const legendItems = eachDayNotificationIcon;
   return (
@@ -182,6 +180,7 @@ const Calendar = () => {
       <div className="Calendar-legend">
         <h3>{dateAsMonthString(date)}:</h3>
         <div className="Calendar-legend-list">
+          {pills}
           {legendItems.map((legendDay, index) => {
             return <LegendItem key={index} legendDay={legendDay} />;
           })}
@@ -190,6 +189,18 @@ const Calendar = () => {
       <Modal isShowing={isShowing} hide={toggle} content={modalContent()} />
     </div>
   );
+};
+
+const takePills = calendarData => {
+    if (calendarData && calendarData.takeRecepieEveryHours !== null) {
+      return(
+      <div className="legend">
+        <img className="legend-item" src={lekovi} alt={lekovi} />
+        <label className="legend-label">{calendarData.takeRecepieEveryHours} h</label>
+      </div>)
+    } else {
+        return null;
+    }
 };
 
 const LegendItem = ({ legendDay }) => {
