@@ -31,7 +31,7 @@ const Navbar = ({ isLoggedIn }) => {
           <ul>
             <li>
               <a href="http://crvenalinija.org/" className="a">
-                Povratak na sajt
+                Povratak na Crvena linija
               </a>
             </li>
             <li>

@@ -18,7 +18,7 @@ exports.register = [
       if (value.length < 6) {
         throw new Error(constants.passwordError.tooShort);
       }
-      if (value !== req.body.confirmpassword) {
+      if (value !== req.body.confirmPassword) {
         throw new Error(constants.errorMessages.unmatchedPassword);
       }
       return true;

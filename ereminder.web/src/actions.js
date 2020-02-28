@@ -167,7 +167,7 @@ export const register = (email, password, confirmPassword) => dispatch => {
   post("/register", {
     email,
     password,
-    confirmpassword: confirmPassword
+    confirmPassword
   })
     .then(response => {
       if (response.message === "Something failed.") {
@@ -220,6 +220,18 @@ export const registerConfirmation = token => dispatch => {
       dispatch({ type: "IS_SUBMITTING_FAILURE" });
     });
 };
+
+export const resetPassword = (token,password,confirmPassword) => dispatch => {
+  post("/resetpassword", {
+    token,password,confirmPassword
+  }).then(res => {
+    if (res.errors && res.errors.length > 0) {
+      dispatch({ type: "IS_SUBMITTING_FAILURE" });
+    } else {
+      dispatch({ type: "IS_CONFIRMED" });
+    }
+  })
+}
 
 export const passwordInputField = (data) => dispatch => {
   dispatch({ type: "PASSWORD_INPUT",  data});

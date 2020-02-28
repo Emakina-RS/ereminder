@@ -6,12 +6,13 @@ import LoggedInRoot from "./components/LoggedInRoot";
 import Navbar from "./components/Navbar";
 import Calendar from "./pages/Calendar";
 import Configuration from "./pages/Configuration";
+import ConfirmRegistration from "./pages/ConfirmRegistration";
 import ForgotPassword from "./pages/ForgotPassword";
 import Login from "./pages/Login";
 import Notification from "./pages/Notification";
 import NotificationDashboard from "./pages/NotificationDashboard";
 import Register from "./pages/Register";
-import ConfirmRegistration from "./pages/ConfirmRegistration";
+import RestartPassword from "./pages/RestartPassword";
 
 const App = () => {
   const token = useSelector(state => state.token);
@@ -40,6 +41,7 @@ const App = () => {
               <Route path="/register" component={Register} />
               <Route path="/confirmregistration" component={ConfirmRegistration} />
               <Route path="/forgot-password" component={ForgotPassword} />
+              <Route path="/resetpassword" component={RestartPassword} />
               <Redirect to="/login" />
             </Switch>
           )}
