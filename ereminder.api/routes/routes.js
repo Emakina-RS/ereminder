@@ -93,11 +93,7 @@ module.exports = function(app) {
     notificationController.GetNotificationDashboard
   );
 
-  app.get("/calendar", validators.calendar, (req, res) =>
-    validators.returnValidationResults(req, res, calendarController.GetCalendar)
-  );
-
-  app.post("/calendar", validators.calendar, (req, res) =>
+  app.get("/calendar/startdate/:startdate/enddate/:enddate", validators.calendar, (req, res) =>
     validators.returnValidationResults(req, res, calendarController.GetCalendar)
   );
 

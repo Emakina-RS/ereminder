@@ -1,5 +1,5 @@
 const constants = require("../config/constants");
-const { body, validationResult } = require("express-validator");
+const { body, param, validationResult } = require("express-validator");
 const authentication = require("./authentication");
 const moment = require("moment");
 const rateLimiters = require("./rateLimiters");
@@ -234,18 +234,18 @@ exports.notifications = [
 
 exports.calendar = [
   authentication.EnsureAuthenticated(),
-  body("startDate")
+  param("startdate")
     .exists()
-    .withMessage(constants.errorMessages.requiredField("startDate"))
+    .withMessage(constants.errorMessages.requiredField("startdate"))
     .custom((value, { req }) => {
       if (!validateCalendarDate(value)) {
         throw new Error(constants.errorMessages.validateDate);
       }
       return true;
     }),
-  body("endDate")
+  param("enddate")
     .exists()
-    .withMessage(constants.errorMessages.requiredField("endDate"))
+    .withMessage(constants.errorMessages.requiredField("enddate"))
     .custom((value, { req }) => {
       if (!validateCalendarDate(value)) {
         throw new Error(constants.errorMessages.validateDate);
