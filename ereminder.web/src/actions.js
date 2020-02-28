@@ -3,7 +3,7 @@ const defaultHeaders = {
   "Content-Type": "application/json"
 };
 
-const get = (relativePath, payload, token) => {
+const get = (relativePath, token) => {
   let headers = defaultHeaders;
 
   if (token) {
@@ -13,7 +13,6 @@ const get = (relativePath, payload, token) => {
   return fetch(getFullApiUrl(relativePath), {
     method: "GET",
     headers,
-    body: JSON.stringify(payload)
   }).then(response => response.json());
 };
 
@@ -76,7 +75,7 @@ const fetchRefreshToken = async (auth, dispatch) => {
 export const getConfiguration = () => (dispatch, getState) => {
   fetchRefreshToken(getState().auth, dispatch);
 
-  get("/configuration", undefined, getState().token).then(configuration => {
+  get("/configuration", getState().token).then(configuration => {
     dispatch({
       type: "CONFIGURATION_RECEIVED",
       configuration
@@ -91,7 +90,7 @@ export const changeDate = (fieldValue, fieldName) => dispatch => {
 export const createOrUpdateConfiguration = dates => (dispatch, getState) => {
   fetchRefreshToken(getState().auth, dispatch);
 
-  get("/configuration", undefined, getState().token).then(configuration => {
+  get("/configuration", getState().token).then(configuration => {
     if (configuration.id) {
       patch("/configuration", dates, getState().token)
         .then(() => { getConfiguration()(dispatch, getState) })
@@ -111,7 +110,7 @@ export const calendarChangeMonth = (month) => dispatch => {
 export const getCalendar = ({ startDate, endDate }) => (dispatch, getState) => {
   fetchRefreshToken(getState().auth, dispatch);
 
-  post(`/calendar`, { startDate, endDate }, getState().token).then(calendarData => {
+  get(`/calendar/startdate/${startDate}/enddate/${endDate}`, getState().token).then(calendarData => {
     dispatch({
       type: "CALENDAR_DATA_RECEIVED",
       data: calendarData
