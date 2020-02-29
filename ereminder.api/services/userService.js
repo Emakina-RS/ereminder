@@ -27,7 +27,7 @@ exports.register = async function(email, password) {
     confirmRegistrationUrl: getUrlWithToken(user, siteUrls.confirmRegistration)
   };
 
-  //await mailer.send(constants.emailTemplates.confirmRegistration, emailProperties, email);
+  await mailer.send(constants.emailTemplates.confirmRegistration, emailProperties, email);
 
   return user;
 };
@@ -101,7 +101,7 @@ async function ensureUserDoesNotExist(email) {
 
   if (user !== null) {
     if (user.isVerified) {
-      throw new Error("Invalid user data provided.");
+      throw BadInputError("Invalid user data provided.");
     } else {
       await user.destroy();
     }

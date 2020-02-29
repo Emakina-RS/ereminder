@@ -12,7 +12,7 @@ const Input = props => {
   return (
     <div>
       {validationErrorMsg}
-      <input 
+      <input
         className={style}
         type={props.type}
         name={props.name}
@@ -20,6 +20,7 @@ const Input = props => {
         value={props.value}
         onChange={props.onChange}
         onBlur={props.onBlur}
+        onKeyUp={props.onKeyUp}
         required
       />
     </div>
