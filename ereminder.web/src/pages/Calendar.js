@@ -21,7 +21,7 @@ const iconsRepresenter = {
   nalazi: nalazi,
   apoteka: apoteka,
   lekovi: lekovi,
-  uputi: uputi
+  uput: uputi
 };
 
 const days = {
@@ -180,7 +180,7 @@ const Calendar = () => {
 };
 
 const takePills = calendarData => {
-    if (calendarData && calendarData.takeRecepieEveryHours !== null) {
+    if (calendarData && calendarData.takeRecepieEveryHours != null) {
       return(
       <div className="legend">
         <img className="legend-item" src={lekovi} alt={lekovi} />
@@ -193,10 +193,14 @@ const takePills = calendarData => {
 
 const LegendItem = ({ legendDay }) => {
   const date = Object.keys(legendDay)[0];
-  const icon = legendDay[Object.keys(legendDay)[0]][0];
+  const icons = legendDay[Object.keys(legendDay)[0]];
   return (
     <div className="legend">
-      <img className="legend-item" src={icon} alt={icon} />
+      <div className='legend-items'>
+      {icons.map((icon, key)=> {
+        return <img className="legend-item" key={key} src={icon} alt={icon} />
+      })}
+      </div>
       <label className="legend-label">{date}</label>
     </div>
   );
