@@ -11,23 +11,19 @@ const routes = require("./routes/routes");
 const authentication = require("./middleware/authentication");
 const error = require("./middleware/error");
 const logger = require("./startup/logger")();
-const rateLimiters = require("./middleware/rateLimiters");
 const xss = require("xss-clean");
-const history = require("connect-history-api-fallback");
 
 require("./config/config");
 const corsUrls = global.globalConfig.corsUrls;
 
 var app = express()
-  .use(history())
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
   .use(cors({
     origin: corsUrls
   }))
   .use(xss())
-  .use(express.json({ limit: "10kb" }))
-  .use(rateLimiters.NumberOfRequestsLimiter);
+  .use(express.json({ limit: "10kb" }));
 
 authentication(app);
 routes(app);
