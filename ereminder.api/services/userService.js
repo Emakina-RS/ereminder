@@ -27,7 +27,7 @@ exports.register = async function(email, password) {
     confirmRegistrationUrl: getUrlWithToken(user, siteUrls.confirmRegistration)
   };
 
-  await mailer.send(constants.emailTemplates.confirmRegistration, emailProperties, email);
+  //await mailer.send(constants.emailTemplates.confirmRegistration, emailProperties, email);
 
   return user;
 };

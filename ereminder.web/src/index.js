@@ -6,6 +6,7 @@ import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import thunk from "redux-thunk";
 import App from "./App";
 import "./index.css";
+import auth from "./reducers/auth";
 import calendar from "./reducers/calendar";
 import configuration from "./reducers/configuration";
 import forgotPassword from "./reducers/forgotPassword";
@@ -15,23 +16,25 @@ import register from "./reducers/register";
 import registerConfirmation from "./reducers/registerConfirmation";
 import settings from "./reducers/settings";
 import token from "./reducers/token";
-import auth from "./reducers/auth";
 
 const loadState = () => {
   try {
     const serializedState = localStorage.getItem("state");
     const serializedAuth = localStorage.getItem("auth");
+    const serializedLogin = localStorage.getItem("login");
     const token = JSON.parse(serializedState);
     const auth = JSON.parse(serializedAuth);
-    return { ...token, ...auth };
+    const login = JSON.parse(serializedLogin);
+    return { ...token, ...auth, ...login };
   } catch (exception) {
     // ignore read errors
   }
 };
 
-const saveState = (state, authState) => {
+const saveState = (state, authState, login) => {
   try {
     const serializedState = JSON.stringify(state);
+    const serializedLogin = JSON.stringify(login);
     if (authState) {
       const arrivedTokenTime = new Date().getTime() / 1000;
       authState.auth.arrivedTokenTime = arrivedTokenTime;
@@ -40,6 +43,7 @@ const saveState = (state, authState) => {
     const serializedAuth = JSON.stringify(authState);
     localStorage.setItem("state", serializedState);
     localStorage.setItem("auth", serializedAuth);
+    localStorage.setItem("login", serializedLogin);
   } catch (exception) {
     // ignore write errors
   }
@@ -67,7 +71,7 @@ const store = createStore(
 store.subscribe(
   throttle(() => {
     const state = store.getState();
-    saveState({ token: state.token }, { auth: state.auth });
+    saveState({ token: state.token }, { auth: state.auth } , {login: state.login});
   }, 1000)
 );
 

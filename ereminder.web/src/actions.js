@@ -170,7 +170,10 @@ export const register = (email, password, confirmPassword) => dispatch => {
   })
     .then(response => {
       if (response.message === "Something failed.") {
-        dispatch({ type: "REGISTER_FAILED" });
+        dispatch({
+          type: "REGISTER_FAILED",
+          data: "Došlo je do greške. Pokušajte ponovo!"
+        });
       } else {
         dispatch({
           type: "REGISTER_SUCCESSFUL",
