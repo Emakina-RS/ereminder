@@ -16,13 +16,20 @@ const register = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        confirm: action.data
+        confirm: action.data,
+        errorMsg: ''
       };
     case "REGISTER_FAILED":
       return {
         ...state,
         isFetching: false,
         errorMsg: action.data
+      };
+    case "LOAD_REGISTER":
+      return {
+        ...state,
+        confirm: '',
+        errorMsg: ''
       };
     case "PASSWORD_INPUT":
       return {
