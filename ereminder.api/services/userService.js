@@ -95,10 +95,16 @@ exports.getUserByEmail = async function(email) {
 };
 
 async function ensureUserDoesNotExist(email) {
-  let user = await exports.getUserByEmail(email);
+  let user = await models.User.findOne({
+    where: { email: email }
+  });
 
   if (user !== null) {
-    throw new Error("Invalid user data provided.");
+    if (user.isVerified) {
+      throw new Error("Invalid user data provided.");
+    } else {
+      await user.destroy();
+    }
   }
 }
 
