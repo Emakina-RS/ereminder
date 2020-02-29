@@ -33,7 +33,7 @@ exports.GetLastTimeConfiguration = async function(
     case constants.NotificationType.Pharmacy:
       return new Date(configuration.lastTimeInPharmacy);
     case constants.NotificationType.Referral:
-      return new Date(configuration.lastTimeGoReferral);
+      return new Date(configuration.lastTimeGotReferral);
     case constants.NotificationType.MedicalFindings:
       return new Date(configuration.lastTimeExamination);
     default:
