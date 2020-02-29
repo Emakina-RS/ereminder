@@ -15,7 +15,7 @@ exports.getCalendar = async function(userId, startDate, endDate, removedCalendar
     include: [
       {
         model: models.User,
-        attributes: ["createdAt"],
+        attributes: ["createdAt", "email"],
         as: "User",
         required: true
       }

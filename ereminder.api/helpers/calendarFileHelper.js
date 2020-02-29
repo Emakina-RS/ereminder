@@ -27,13 +27,11 @@ exports.getNotificationCalendarData = async function(configuration, notification
 
 async function getFileCalendarData(configuration, notifications, method) {
 
-    let calendarId = await encryptionHelper.Encrypt(configuration.User.createdAt.toString() + configuration.User.Id);
-
+    let calendarId = await encryptionHelper.MD5(configuration.User.createdAt.toString() + configuration.User.Id);
     const cal = ical({
         domain: 'reminder.com',
         prodId: {company: 'ereminder.com', product: 'ereminder'},
         name: 'E-reminder',
-        timezone: 'Europe/Belgrade',
         method: method,
     });
 
@@ -52,7 +50,9 @@ async function getFileCalendarData(configuration, notifications, method) {
             end: beginTime.add(20, 'minutes'),
             timestamp: moment()
         });
-        event.status(methods === methods.CANCEL ? 'cancelled' : 'confirmed')
+        event.status(methods === methods.CANCEL ? 'cancelled' : 'confirmed');
+        const attendee = event.createAttendee({email: configuration.User.email});
+        event.organizer('E-reminder');
         event.repeating(constants.NotificationIntervalRepeating[notifications[i].IntervalId]);
     }
     return cal.toString();
