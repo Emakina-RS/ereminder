@@ -121,7 +121,7 @@ export const getCalendar = ({ startDate, endDate }) => (dispatch, getState) => {
 export const getNotificationDashboard = () => (dispatch, getState) => {
   fetchRefreshToken(getState().auth, dispatch);
 
-  get("/notificationdashboard", undefined, getState().token).then(
+  get("/notificationdashboard", getState().token).then(
     notificationDashboard => {
       dispatch({
         type: "NOTIFICATION_PAGE_RECEIVED",
