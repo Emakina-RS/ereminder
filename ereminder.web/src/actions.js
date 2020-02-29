@@ -236,18 +236,6 @@ export const passwordInputField = (data) => dispatch => {
   dispatch({ type: "PASSWORD_INPUT",  data});
 };
 
-export const verifyRecaptcha = async token => {
-  return post("/verifyRecaptcha", {
-    token
-  })
-    .then(res => {
-      return res;
-    })
-    .catch(() => {
-      return { success: false, message: "Server unavailable" };
-    });
-};
-
 function getFullApiUrl(relativePath) {
   return process.env.REACT_APP_API_URL + relativePath;
 }
