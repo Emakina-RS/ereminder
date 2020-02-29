@@ -10,6 +10,12 @@
   width: 550px;
 }
 
+.Register-Msg {
+  color: white;
+  text-transform: uppercase;
+  font-weight: normal;
+}
+
 .Register h1 {
   color: white;
   text-transform: uppercase;
