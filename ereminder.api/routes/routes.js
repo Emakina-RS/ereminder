@@ -105,7 +105,4 @@ module.exports = function(app) {
         res
       )
   );
-
-  // app.use(error);
-
 };
