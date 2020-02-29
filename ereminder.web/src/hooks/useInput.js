@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useDispatch, useSelector   } from "react-redux";
-import { passwordInputField } from "../actions"
+import { useDispatch, useSelector } from "react-redux";
+import { passwordInputField } from "../actions";
 
 const useInput = (name, placeholder, validation) => {
   const [inputField, setInputField] = useState({
@@ -13,7 +13,7 @@ const useInput = (name, placeholder, validation) => {
   const dispatch = useDispatch();
   /**
    * Checks existence and email validity
-   * 
+   *
    * @param {String} value Value to be validated
    * @param {Object} rules Validation rules (required or email validation)
    * @returns {Object} Validation result and error message
@@ -53,9 +53,10 @@ const useInput = (name, placeholder, validation) => {
   const inputValidationHandler = (event) => {
     const validationRules = inputField.validation;
     const validationCheckObj = checkValidity(event.target.value, validationRules);
-    
+
     const updatedInputField = {
       ...inputField,
+      value: event.target.value,
       valid: validationCheckObj.isValid,
       errorMsg: validationCheckObj.errorMsg
     };
@@ -64,18 +65,13 @@ const useInput = (name, placeholder, validation) => {
   };
 
   const inputChangedHandler = (event) => {
-    const updatedInputField = {
-      ...inputField,
-      value: event.target.value
-    };
-    var name = event.target.name;
-    dispatch(passwordInputField({[name]:event.target.value}))
-
-    setInputField(updatedInputField);
+    dispatch(passwordInputField({[event.target.name]:event.target.value}))
+    inputValidationHandler(event);
   };
 
   return {
     name,
+    onKeyUp: inputValidationHandler,
     onChange: inputChangedHandler,
     onBlur: inputValidationHandler,
     placeholder,
