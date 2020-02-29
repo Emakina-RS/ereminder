@@ -121,7 +121,7 @@ export const getCalendar = ({ startDate, endDate }) => (dispatch, getState) => {
 export const getNotificationDashboard = () => (dispatch, getState) => {
   fetchRefreshToken(getState().auth, dispatch);
 
-  get("/notificationdashboard", undefined, getState().token).then(
+  get("/notificationdashboard", getState().token).then(
     notificationDashboard => {
       dispatch({
         type: "NOTIFICATION_PAGE_RECEIVED",
@@ -234,18 +234,6 @@ export const resetPassword = (token,password,confirmPassword) => dispatch => {
 
 export const passwordInputField = (data) => dispatch => {
   dispatch({ type: "PASSWORD_INPUT",  data});
-};
-
-export const verifyRecaptcha = async token => {
-  return post("/verifyRecaptcha", {
-    token
-  })
-    .then(res => {
-      return res;
-    })
-    .catch(() => {
-      return { success: false, message: "Server unavailable" };
-    });
 };
 
 function getFullApiUrl(relativePath) {

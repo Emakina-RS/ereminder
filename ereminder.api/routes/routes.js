@@ -6,7 +6,6 @@ const accountController = require("../controllers/AccountController");
 const notificationController = require("../controllers/NotificationController");
 const calendarController = require("../controllers/CalendarController");
 const configurationController = require("../controllers/ConfigurationController");
-const googleRecaptchaHelper = require("../helpers/googleRecaptchaHelper");
 const authentication = require("../middleware/authentication");
 const validators = require("../middleware/validators");
 
@@ -95,14 +94,5 @@ module.exports = function(app) {
 
   app.get("/calendar/startdate/:startdate/enddate/:enddate", validators.calendar, (req, res) =>
     validators.returnValidationResults(req, res, calendarController.GetCalendar)
-  );
-
-  app.post(
-    "/verifyRecaptcha",
-    (req, res) =>
-      googleRecaptchaHelper.VerifyRecaptcha(
-        req,
-        res
-      )
   );
 };

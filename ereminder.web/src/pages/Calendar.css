@@ -162,11 +162,17 @@ ul {
 .legend {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .legend-item {
     width: 20px;
     height: 20px;
+}
+
+.legend-items {
+    display: flex;
+    flex-flow: column;
 }
 
 .legend-label {

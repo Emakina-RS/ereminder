@@ -1,17 +1,7 @@
-import {
-  addMonths,
-  eachDayOfInterval,
-  endOfMonth,
-  endOfWeek,
-  format,
-  getDay,
-  getMonth,
-  getYear,
-  startOfDay,
-  startOfMonth,
-  startOfWeek
-} from "date-fns";
-import React, { useState, useEffect } from "react";
+import { addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, getDay, getMonth, getYear, startOfMonth, startOfWeek } from "date-fns";
+import moment from 'moment';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import apoteka from "../assets/icon/apoteka2.svg";
 import edit from "../assets/icon/edit.svg";
@@ -23,9 +13,7 @@ import recepti from "../assets/icon/recepti2.svg";
 import { ReactComponent as RightArrow } from "../assets/icon/right.svg";
 import uputi from "../assets/icon/uputi2.svg";
 import Modal from "../components/Modal";
-import {useDispatch,useSelector} from 'react-redux';
-import { getCalendar,calendarChangeMonth, updateCalendar } from './../actions';
-import moment from 'moment';
+import { calendarChangeMonth, getCalendar } from './../actions';
 import "./Calendar.css";
 
 const iconsRepresenter = {
@@ -33,7 +21,7 @@ const iconsRepresenter = {
   nalazi: nalazi,
   apoteka: apoteka,
   lekovi: lekovi,
-  uputi: uputi
+  uput: uputi
 };
 
 const days = {
@@ -69,14 +57,14 @@ const Calendar = () => {
   const dispatch = useDispatch();
   const { calendarData, date } = useSelector(state => state.calendar);
   const configurationDateChange = useSelector(state=> state.configuration.dates);
-  
+
   useEffect(() => {
     dispatch(getCalendar({
       startDate: moment(start).format('YYYY-MM-DD'),
       endDate: moment(end).format('YYYY-MM-DD'),
     }));
   }, [date]);
-  
+
   useEffect(() => {
     dispatch(getCalendar({
       startDate: moment(start).format('YYYY-MM-DD'),
@@ -111,7 +99,7 @@ const Calendar = () => {
           <li>
             <img src={edit} alt="edit" className="icon" />
             <Link to="/configuration" className="">
-              Izmeni pocetne datume
+              Izmeni početne datume
             </Link>
           </li>
           <li>
@@ -193,7 +181,7 @@ const Calendar = () => {
 };
 
 const takePills = calendarData => {
-    if (calendarData && calendarData.takeRecepieEveryHours !== null) {
+    if (calendarData && calendarData.takeRecepieEveryHours != null) {
       return(
       <div className="legend">
         <img className="legend-item" src={lekovi} alt={lekovi} />
@@ -221,10 +209,14 @@ const downloadFile = (calendarData, filename) => {
 
 const LegendItem = ({ legendDay }) => {
   const date = Object.keys(legendDay)[0];
-  const icon = legendDay[Object.keys(legendDay)[0]][0];
+  const icons = legendDay[Object.keys(legendDay)[0]];
   return (
     <div className="legend">
-      <img className="legend-item" src={icon} alt={icon} />
+      <div className='legend-items'>
+      {icons.map((icon, key)=> {
+        return <img className="legend-item" key={key} src={icon} alt={icon} />
+      })}
+      </div>
       <label className="legend-label">{date}</label>
     </div>
   );

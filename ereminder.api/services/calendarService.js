@@ -50,9 +50,7 @@ exports.getCalendar = async function(userId, startDate, endDate, removedCalendar
 
     let loopDate = new Date(startDate);
 
-    if (
-      notification.NotificationTypeId === constants.NotificationType.Medicine
-    ) {
+    if (notification.NotificationTypeId === constants.NotificationType.Medicine) {
       calendar.takeRecepieEveryHours = notification.intervalHours;
       continue;
     }
