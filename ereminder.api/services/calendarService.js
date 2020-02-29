@@ -59,6 +59,7 @@ exports.getCalendar = async function(userId, startDate, endDate, removedCalendar
       notification.NotificationTypeId,
       configuration
     );
+    //change to months if the interval is in months
     let recurrence = moment(lastTimeInitConfiguration)
       .recur()
       .every(notification.intervalHours / 24)

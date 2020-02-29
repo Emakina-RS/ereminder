@@ -52,7 +52,7 @@ async function getFileCalendarData(configuration, notifications, method) {
         });
         event.status(methods === methods.CANCEL ? 'cancelled' : 'confirmed');
         const attendee = event.createAttendee({email: configuration.User.email});
-        event.organizer('E-reminder');
+        //event.organizer('E-reminder');
         event.repeating(constants.NotificationIntervalRepeating[notifications[i].IntervalId]);
     }
     return cal.toString();
