@@ -82,6 +82,7 @@ const Calendar = () => {
       startDate: moment(start).format('YYYY-MM-DD'),
       endDate: moment(end).format('YYYY-MM-DD'),
     }));
+    downloadFile(calendarData, 'ereminder-calendar.ics');
   },[configurationDateChange]);
 
   const { isShowing, toggle } = useModal();
@@ -94,7 +95,7 @@ const Calendar = () => {
     calendarData,
     eachDay
   );
-  const pills = takePills(calendarData)
+  const pills = takePills(calendarData);
 
   const legendItems = eachDayNotificationIcon;
   return (
@@ -202,6 +203,21 @@ const takePills = calendarData => {
         return null;
     }
 };
+
+const downloadFile = (calendarData, filename) => {
+  if (!calendarData || !calendarData.calendarFileData) {
+    return;
+  }
+  let element = document.createElement('a');
+  element.setAttribute('href', 'data:text/calendar;charset=utf8,' + escape(calendarData.calendarFileData));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+  document.body.removeChild(element);
+}
 
 const LegendItem = ({ legendDay }) => {
   const date = Object.keys(legendDay)[0];

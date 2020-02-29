@@ -53,6 +53,16 @@ const NotificationTypeDictionary = {
   5: "medicalFindings"
 };
 
+
+const NotificationsCalendarTitles = {
+  1: "Reminder for medicine",
+  2: "Reminder for recepies",
+  3: "Reminder for pharmacy",
+  4: "Reminder for referral",
+  5: "Reminder for medical findings"
+};
+
+
 const NotificationInterval = {
   TwelveHours: 1,
   TwentyFourHours: 2,
@@ -77,7 +87,22 @@ const NotificationIntervalRRULE = {
   9: "RRULE:FREQ=YEARLY"
 };
 
+const NotificationIntervalRepeating = {
+  1: { freq: 'HOURLY', interval:12},
+  2: { freq: 'HOURLY', interval:24},
+  3: { freq: 'MONTHLY'},
+  4: { freq: 'MONTHLY', interval:2},
+  5: { freq: 'MONTHLY', interval:3},
+  6: { freq: 'MONTHLY', interval:4},
+  7: { freq: 'MONTHLY', interval:5},
+  8: { freq: 'MONTHLY', interval:6},
+  9: { freq: 'YEARLY'}
+};
+
+
 module.exports = Constants;
 module.exports.NotificationType = NotificationType;
 module.exports.NotificationInterval = NotificationInterval;
 module.exports.NotificationTypeDictionary = NotificationTypeDictionary;
+module.exports.NotificationIntervalRepeating = NotificationIntervalRepeating;
+module.exports.NotificationsCalendarTitles = NotificationsCalendarTitles;

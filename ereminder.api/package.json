@@ -19,6 +19,7 @@
     "express-sequelize": "0.0.4",
     "express-validator": "^6.2.0",
     "fs": "0.0.1-security",
+    "ical-generator": "^1.9.2",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "log-to-file": "^2.0.1",

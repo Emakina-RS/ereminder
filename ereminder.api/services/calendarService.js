@@ -4,16 +4,30 @@ const models = require("../models");
 const constants = require("../config/constants");
 const dateformat = require("dateformat");
 const moment = require("moment");
+const calendarFileHelper = require('../helpers/calendarFileHelper');
 const configurationService = require("./configurationService");
 require("moment-recur");
 
-exports.getCalendar = async function(userId, startDate, endDate) {
-  let configuration = await models.Configuration.findOne({
-    UserId: userId
+exports.getCalendar = async function(userId, startDate, endDate, removedCalendarNotifications, updatedConfig) {
+
+  let configuration = await  models.Configuration.findOne({
+    where: { UserId: userId },
+    include: [
+      {
+        model: models.User,
+        attributes: ["createdAt"],
+        as: "User",
+        required: true
+      }
+    ]
   });
 
   let notifications = await models.sequelize.query(
-    `SELECT n.NotificationTypeId, nt.value as 'notificationType', i.displayName, i.valueInHours as 'intervalHours'  FROM Notifications n
+    `SELECT n.NotificationTypeId,
+            n.IntervalId,
+            nt.value as 'notificationType',
+            i.displayName, i.valueInHours as 'intervalHours'
+            FROM Notifications n
                     INNER JOIN Users u ON n.UserId = u.Id
                     INNER JOIN NotificationTypes nt ON n.NotificationTypeId = nt.Id
                     INNER JOIN Intervals i ON n.IntervalId = i.Id
@@ -28,8 +42,12 @@ exports.getCalendar = async function(userId, startDate, endDate) {
     reminders: {}
   };
 
+  calendar.calendarFileData = await calendarFileHelper.getNotificationCalendarData(configuration, notifications, removedCalendarNotifications, updatedConfig);
+
   for (let i = 0; i < notifications.length; i++) {
+
     let notification = notifications[i];
+
     let loopDate = new Date(startDate);
 
     if (
