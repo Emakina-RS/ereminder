@@ -184,6 +184,10 @@ export const register = (email, password, confirmPassword) => dispatch => {
     .catch(() => dispatch({ type: "REGISTER_FAILED" }));
 };
 
+export const loadRegister = () => dispatch => {
+  dispatch({ type: "LOAD_REGISTER" });
+};
+
 export const forgotPassword = email => dispatch => {
   dispatch({ type: "FORGOT_PASSWORD" });
   post("/forgotpassword", {

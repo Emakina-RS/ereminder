@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { register } from "../actions";
+import { register, loadRegister } from "../actions";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import useInput from "../hooks/useInput";
@@ -14,6 +14,14 @@ const Register = () => {
   const confirmPassword = inputFields[2] = useInput("confirm-password", "Ponovite šifru", { required: true, checkPair: true});
   const { isFetching, confirm, errorMsg } = useSelector(state => state.register);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (confirm) {
+      return () => {
+        dispatch(loadRegister());
+      }
+    }
+  });
 
   const formSubmitHandler = (event) => {
     event.preventDefault();
