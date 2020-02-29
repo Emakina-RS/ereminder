@@ -88,8 +88,8 @@ const NotificationIntervalRRULE = {
 };
 
 const NotificationIntervalRepeating = {
-  1: { freq: 'HOURLY', interval:12},
-  2: { freq: 'HOURLY', interval:24},
+  1: { freq: 'DAILY', interval:1},
+  2: { freq: 'DAILY', interval:1},
   3: { freq: 'MONTHLY'},
   4: { freq: 'MONTHLY', interval:2},
   5: { freq: 'MONTHLY', interval:3},
