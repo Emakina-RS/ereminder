@@ -1,6 +1,7 @@
 const initialState = {
   data: {},
-  dashboardLoaded: false
+  dashboardLoaded: false,
+  shouldRedirect: false
 };
 
 const notificationDashboard = (state = initialState, action) => {
@@ -9,12 +10,14 @@ const notificationDashboard = (state = initialState, action) => {
       return {
         ...state,
         data: action.data,
-        dashboardLoaded: true
+        dashboardLoaded: true,
+        shouldRedirect: false
       };
     case "NOTIFICATION_DASHBOARD_SAVED":
       return {
         ...state,
-        dashboardLoaded: false
+        dashboardLoaded: false,
+        shouldRedirect: true
       };
     case "NOTIFICATION_CHECKBOX_TOGGLE":
       state.data[action.data.notificationType].checked = action.data.checked;

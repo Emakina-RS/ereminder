@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import {
   getNotificationDashboard,
   updateNotificationDashboard,
@@ -18,7 +18,7 @@ import Button from "../components/Button";
 import "./NotificationDashboard.css";
 
 const NotificationDashboard = () => {
-  const { data, dashboardLoaded } = useSelector(
+  const { data, dashboardLoaded, shouldRedirect } = useSelector(
     state => state.notificationDashboard
   );
   const dispatch = useDispatch();
@@ -31,6 +31,10 @@ const NotificationDashboard = () => {
 
   const saveNotificationDashboard = (data) => () => {
     dispatch(updateNotificationDashboard(data));
+  }
+
+  if (shouldRedirect) {
+    return <Redirect to="/calendar" />;
   }
 
   return (
