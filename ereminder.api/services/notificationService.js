@@ -12,11 +12,88 @@ require("moment-recur");
 
 const siteUrls = global.globalConfig.siteUrls;
 
+/**
+ * Entry point for notification dashboard update. Iterates through notifications and handles each
+ */
 exports.updateNotifications = async function (notifications, userId) {
-  return await notifications.forEach(async notification => {
-    await makeNotification(notification, userId);
-  });
+  for (const key in notifications) {
+    await handleNotification(notifications[key], key, userId);
+  }
+
+  return;
 };
+
+async function handleNotification(notificationObj, notificationType, userId) {
+  let notificationTypeId = getNotificationTypeId(notificationType);
+  if (notificationObj.checked) {
+    return await createOrUpdateNotification(notificationObj, notificationTypeId, userId);
+  }
+  else {
+    return await deleteNotification(notificationTypeId, userId);
+  }
+}
+
+/**
+ * This function searches notifications by user id and type
+ * if it doesn't find any match it creates a new notification, if it does find then it updates the existing
+ * @param {Object} notificationObj
+ * @param {String} notificationTypeId
+ * @param {Boolean} userId 
+ */
+async function createOrUpdateNotification(notificationObj, notificationTypeId, userId) {
+  let notificationIntervalId = getNotificationIntervalId(notificationObj);
+
+  return await models.Notification.findOne({
+    where: {
+      UserId: userId,
+      NotificationTypeId: notificationTypeId
+    }
+  }).then(
+    notification => {
+      if (notification) {
+        notification.update({
+          NotificationTypeId: notificationTypeId,
+          IntervalId: notificationIntervalId
+        });
+      }
+      else {
+        models.Notification.create({
+          UserId: userId,
+          NotificationTypeId: notificationTypeId,
+          IntervalId: notificationIntervalId
+        });
+      }
+    }
+  );
+}
+
+async function deleteNotification(notificationTypeId, userId) {
+  return await models.Notification.findOne({
+    where: {
+      UserId: userId,
+      NotificationTypeId: notificationTypeId
+    }
+  }).then(
+    notification => {
+      if (notification) notification.destroy();
+    }
+  );
+}
+
+/**
+ * Returns the id (Int) of the notification type based on string value defined in constants
+ * @param {String} type 
+ */
+function getNotificationTypeId(type) {
+  let dictionary = constants.NotificationTypeDictionary;
+  return Object.keys(dictionary).find(key => dictionary[key] === type);
+}
+
+function getNotificationIntervalId(notificationObj) {
+  let interval = notificationObj.intervals.find(interval => interval.checked === true);
+  return interval.id;
+}
+
 
 exports.sendEmailNotifications = async function () {
   var notifications = await getNotificationsWithAdditionalAttributes();
@@ -258,90 +335,3 @@ const arrayToObject = (array, keyField) =>
     obj[item[keyField]] = item;
     return obj;
   }, {});
-
-async function makeNotification(notification, userId) {
-  if (isCreateNotification(notification))
-    return await createNotification(notification, userId);
-
-  if (isUpdateNotification(notification))
-    return await updateNotification(notification);
-
-  if (isDeleteNotification(notification))
-    return await deleteNotification(notification);
-}
-
-/**
- * This function creates a new notification
- * @param {Object} notification 
- * @param {Boolean} userId 
- */
-async function createNotification(notification, userId) {
-  const { notificationTypeId, notificationIntervalId } = notification;
-
-  //before creating we always check if the user already has an existing notification of that type
-  return await models.Notification.findOrCreate({
-    where: {
-      UserId: userId,
-      NotificationTypeId: notificationTypeId
-    },
-    defaults: {
-      UserId: userId,
-      NotificationTypeId: notificationTypeId,
-      IntervalId: notificationIntervalId
-    }
-  });
-}
-
-async function updateNotification(notification) {
-  const {
-    notificationId,
-    notificationTypeId,
-    notificationIntervalId
-  } = notification;
-  return await models.Notification.findByPk(notificationId).then(
-    notification => {
-      if (notification) {
-        notification.update({
-          NotificationTypeId: notificationTypeId,
-          IntervalId: notificationIntervalId
-        });
-      }
-    }
-  );
-}
-
-async function deleteNotification(notification) {
-  const { notificationId } = notification;
-  return await models.Notification.findByPk(notificationId).then(
-    notification => {
-      if (notification) notification.destroy();
-    }
-  );
-}
-
-function isCreateNotification(notification) {
-  const {
-    notificationId,
-    notificationTypeId,
-    notificationIntervalId
-  } = notification;
-  return notificationTypeId && notificationIntervalId && !notificationId;
-}
-
-function isUpdateNotification(notification) {
-  const {
-    notificationId,
-    notificationTypeId,
-    notificationIntervalId
-  } = notification;
-  return notificationTypeId && notificationIntervalId && notificationId;
-}
-
-function isDeleteNotification(notification) {
-  const {
-    notificationId,
-    notificationTypeId,
-    notificationIntervalId
-  } = notification;
-  return notificationId && !notificationTypeId && !notificationIntervalId;
-}
