@@ -140,18 +140,30 @@ export const getNotificationDashboard = () => (dispatch, getState) => {
   );
 };
 
-export const updateNotificationDashboard = (notificationConfig) => (dispatch, getState) => {
+export const updateNotificationDashboard = (dashboard) => (dispatch, getState) => {
   fetchRefreshToken(getState().auth, dispatch);
 
-  post("/notifications", notificationConfig, getState().token).then(
-    notificationDashboard => {
-      getNotificationDashboard()(dispatch, getState)
+  post("/notifications", dashboard, getState().token).then(
+    resultMessage => {
       dispatch({
-        type: "NOTIFICATION_PAGE_UPDATED",
-        data: notificationDashboard
+        type: "NOTIFICATION_DASHBOARD_SAVED"
       });
     }
   );
+};
+
+export const toggleNotificationSelect = notification => dispatch => {
+  dispatch({
+    type: "NOTIFICATION_CHECKBOX_TOGGLE",
+    data: notification
+  });
+};
+
+export const toggleIntervalSelect = interval => dispatch => {
+  dispatch({
+    type: "INTERVAL_RADIO_BUTTON_TOGGLE",
+    data: interval
+  });
 };
 
 export const logIn = (email, password) => dispatch => {

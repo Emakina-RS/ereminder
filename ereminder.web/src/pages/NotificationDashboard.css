@@ -66,6 +66,9 @@
   color: #bd1e2c;
   text-decoration: none;
   text-transform: uppercase;
+  border: none;
+  background-color: #fff;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 1200px) {

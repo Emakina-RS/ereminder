@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import {
   getNotificationDashboard,
   updateNotificationDashboard,
+  toggleNotificationSelect,
+  toggleIntervalSelect
 } from "../actions";
 import Apoteka from "../assets/icon/apoteka.svg";
 import Lek from "../assets/icon/lekovi.svg";
@@ -12,83 +14,82 @@ import Recepti from "../assets/icon/recepti.svg";
 import Uput from "../assets/icon/uputi.svg";
 import Checkbox from "../components/Checkbox";
 import Radio from "../components/Radio";
+import Button from "../components/Button";
 import "./NotificationDashboard.css";
 
 const NotificationDashboard = () => {
-  const { data, receivedNotification } = useSelector(
+  const { data, dashboardLoaded, shouldRedirect } = useSelector(
     state => state.notificationDashboard
   );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!receivedNotification) {
+    if (!dashboardLoaded) {
       dispatch(getNotificationDashboard());
     }
   });
+
+  const saveNotificationDashboard = (data) => () => {
+    dispatch(updateNotificationDashboard(data));
+  }
+
+  if (shouldRedirect) {
+    return <Redirect to="/calendar" />;
+  }
+
   return (
     <div className="Notifications">
       <h1>Želim podsetnik na:</h1>
       <div className="Notifications-grid">
         {Object.keys(data).map((key, index) => {
-          let notSec = data[key];
+          let notifSection = data[key];
           return (
             <Notificationsection
               key={key}
-              icon={NOTIFICATIONS[notSec.notificationTypeDisplay]}
-              title={notSec.notificationTypeDisplay}
-              options={notSec.intervals}
-              notificationTypeId={notSec.notificationTypeId}
-              notificationId={notSec.notificationId}
-              checked={notSec.checked}
-              data={data}
-              objectKey={key}
+              notificationType={key}
+              intervals={notifSection.intervals}
+              icon={NOTIFICATIONS[notifSection.notificationTypeDisplay]}
+              title={notifSection.notificationTypeDisplay}
+              checked={notifSection.checked}
             />
           );
         })}
       </div>
 
-      <Link className="Notificationsection-link" to="/calendar">
-        Nastavi
-      </Link>
+      <Button
+        className="Notificationsection-link"
+        onClick={saveNotificationDashboard(data)}
+      >
+        Sačuvaj
+      </Button>
     </div>
   );
 };
 
 const Notificationsection = ({
+  notificationType,
+  intervals,
   icon,
   title,
-  objectKey,
-  data,
-  options,
-  notificationTypeId,
-  notificationId,
   checked
 }) => {
   const dispatch = useDispatch();
 
-  const handleNotificationSelect = ({notificationTypeId, data, notificationId}) => (event) => {
-    const checked = event.currentTarget.checked;
-    const checkedNotification = {
-      notificationTypeId: parseInt(notificationTypeId),
-      notificationIntervalId: options[0].id,
-      notificationId,
+  const handleNotificationSelect = (notificationType) => (event) => {
+    let checked = event.currentTarget.checked;
+    let checkedNotification = {
+      notificationType,
+      checked
     }
-    const emptyNotification = {
-      notificationId,
-    }
-    const updatedNotification = checked ? checkedNotification : emptyNotification
-    dispatch(updateNotificationDashboard([
-      updatedNotification
-    ]))
+    dispatch(toggleNotificationSelect(checkedNotification));
   }
-  const handleOptionSelect = ({notificationTypeId, option, title}) => () => {
-    dispatch(updateNotificationDashboard([
-      {
-        notificationTypeId: parseInt(notificationTypeId),
-        notificationIntervalId: option.id,
-        notificationId,
-      }
-    ]))
+
+  const handleIntervalSelect = (notificationType, intervalIndex) => () => {
+    let checkedInterval = {
+      notificationType,
+      intervalIndex
+    }
+    dispatch(toggleIntervalSelect(checkedInterval));
   }
   return (
     <div className="Notificationsection">
@@ -101,18 +102,18 @@ const Notificationsection = ({
               text={title}
               name={title}
               value={checked}
-              onChange={handleNotificationSelect({notificationTypeId, data, notificationId})}
+              onChange={handleNotificationSelect(notificationType)}
             />
         </div>
       </div>
       <div className="Notificationsection-container">
-        {options.map((option, index) => (
+        {intervals.map((interval, index) => (
           <Radio
-            key={option.id}
-            text={option.displayName}
-            checked={option.checked}
+            key={interval.id}
+            text={interval.displayName}
+            checked={interval.checked}
             name={title}
-            handleChange={handleOptionSelect({notificationTypeId, option, title})}
+            handleChange={handleIntervalSelect(notificationType, index)}
           />
         ))}
       </div>

@@ -83,7 +83,7 @@ async function populateIntervals() {
         updatedAt: date
       },
       {
-        displayName: "5 meseca",
+        displayName: "5 meseci",
         valueInHours: 3650,
         createdAt: date,
         updatedAt: date

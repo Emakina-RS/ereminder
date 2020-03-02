@@ -214,22 +214,21 @@ exports.updateConfiguration = [
 
 exports.notifications = [
   authentication.EnsureAuthenticated(),
-  body().isArray(),
-  body("*.notificationTypeId", constants.invalidFieldValue.notNumberField)
-    .isNumeric()
-    .optional({
-      options: { nullable: true }
-    }),
-  body("*.notificationIntervalId", constants.invalidFieldValue.notNumberField)
-    .isNumeric()
-    .optional({
-      options: { nullable: true }
-    }),
-  body("*.notificationId", constants.invalidFieldValue.notNumberField)
-    .isNumeric()
-    .optional({
-      options: { nullable: true }
-    })
+  body("medicalFindings")
+    .exists()
+    .withMessage(constants.errorMessages.requiredField),
+  body("medicine")
+    .exists()
+    .withMessage(constants.errorMessages.requiredField),
+  body("pharmacy")
+    .exists()
+    .withMessage(constants.errorMessages.requiredField),
+  body("recepies")
+    .exists()
+    .withMessage(constants.errorMessages.requiredField),
+  body("referral")
+    .exists()
+    .withMessage(constants.errorMessages.requiredField)
 ];
 
 exports.calendar = [
