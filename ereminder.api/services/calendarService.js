@@ -45,9 +45,7 @@ exports.getCalendar = async function(userId, startDate, endDate, calendarFileAct
   calendar.calendarFileData = await calendarFileHelper.getNotificationCalendarData(configuration, notifications, calendarFileAction);
 
   for (let i = 0; i < notifications.length; i++) {
-
     let notification = notifications[i];
-
     let loopDate = new Date(startDate);
 
     if (notification.NotificationTypeId === constants.NotificationType.Medicine) {
@@ -59,14 +57,17 @@ exports.getCalendar = async function(userId, startDate, endDate, calendarFileAct
       notification.NotificationTypeId,
       configuration
     );
-    //change to months if the interval is in months
-    let recurrence = moment(lastTimeInitConfiguration)
+
+    let numberOfMonths = Math.round(notification.intervalHours / 24 / 30);
+    let recurrence = moment.utc(lastTimeInitConfiguration)
       .recur()
-      .every(notification.intervalHours / 24)
-      .days();
+      .every(numberOfMonths)
+      .months();
 
     do {
-      if (recurrence.matches(loopDate)) {
+      let utcLoopData = moment.utc(loopDate);
+
+      if (recurrence.matches(utcLoopData)) {
         appendNotification(
           calendar,
           loopDate,
