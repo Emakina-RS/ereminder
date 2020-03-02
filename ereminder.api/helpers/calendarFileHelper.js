@@ -14,15 +14,15 @@ const methods = {
     REFRESH:'refresh'
 }
 
-exports.getNotificationCalendarData = async function(configuration, notifications, removedCalendar, updatedConfig) {
+exports.getNotificationCalendarData = async function(configuration, notifications, calendarFileAction) {
 
-    if(!configuration.enableCalendarNotification && !removedCalendar) return null;
+    if(!configuration.enableCalendarNotification && !calendarFileAction) return null;
 
-    if(!configuration.enableCalendarNotification && removedCalendar) return getFileCalendarData(configuration, notifications, methods.CANCEL);
+    if(!configuration.enableCalendarNotification && calendarFileAction === methods.CANCEL) return getFileCalendarData(configuration, notifications, methods.CANCEL);
 
-    if(configuration.enableCalendarNotification && updatedConfig) return getFileCalendarData(configuration, notifications, methods.REFRESH);
+    if(configuration.enableCalendarNotification && calendarFileAction === methods.PUBLISH) return getFileCalendarData(configuration, notifications, methods.PUBLISH);
 
-    return getFileCalendarData(configuration, notifications, methods.PUBLISH);
+    return null;
 
 }
 

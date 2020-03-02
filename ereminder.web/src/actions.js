@@ -1,3 +1,5 @@
+import { combineReducers } from "redux";
+
 const defaultHeaders = {
   Accept: "application/json",
   "Content-Type": "application/json"
@@ -71,6 +73,13 @@ const fetchRefreshToken = async (auth, dispatch) => {
   dispatch({ type: "GOT_AUTH", auth: authProps });
   dispatch({ type: "GOT_TOKEN", token });
 };
+//TODO - move this somewhere and update it as per the comments bellow
+const getCalendarFileAction = (state) => {
+  //return `cancel` if user had Calendar checked and unchecked it
+  //return `publish` if user updated notification intervals or start dates or checked Calendar checkbox
+  //return empty string if nothing is updated
+  return '';
+};
 
 export const getConfiguration = () => (dispatch, getState) => {
   fetchRefreshToken(getState().auth, dispatch);
@@ -109,8 +118,8 @@ export const calendarChangeMonth = (month) => dispatch => {
 
 export const getCalendar = ({ startDate, endDate }) => (dispatch, getState) => {
   fetchRefreshToken(getState().auth, dispatch);
-
-  get(`/calendar/startdate/${startDate}/enddate/${endDate}`, getState().token).then(calendarData => {
+  let calendarFileAction = getCalendarFileAction(getState());
+  get(`/calendar/startdate/${startDate}/enddate/${endDate}/${calendarFileAction}`, getState().token).then(calendarData => {
     dispatch({
       type: "CALENDAR_DATA_RECEIVED",
       data: calendarData

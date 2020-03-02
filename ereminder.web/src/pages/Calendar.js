@@ -70,9 +70,7 @@ const Calendar = () => {
       startDate: moment(start).format('YYYY-MM-DD'),
       endDate: moment(end).format('YYYY-MM-DD'),
     }));
-    downloadFile(calendarData, 'ereminder-calendar.ics');
   },[configurationDateChange]);
-
   const { isShowing, toggle } = useModal();
   const start = startOfWeek(startOfMonth(date), { weekStartsOn: 1 });
   const endOfFirstWeek = endOfWeek(startOfMonth(date), { weekStartsOn: 1 });
@@ -84,6 +82,7 @@ const Calendar = () => {
     eachDay
   );
   const pills = takePills(calendarData);
+  downloadFile(calendarData, 'ereminder-calendar.ics');
 
   const legendItems = eachDayNotificationIcon;
   return (
