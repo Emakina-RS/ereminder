@@ -19,7 +19,7 @@ const Notification = () => {
     if (!configurationReceived) {
       dispatch(getConfiguration());
     }
-  },[]);
+  });
 
   const handleNotificationTypeSelect = (key) => (event) => {
     dispatch(createOrUpdateConfiguration({

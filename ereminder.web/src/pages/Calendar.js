@@ -63,14 +63,8 @@ const Calendar = () => {
       startDate: moment(start).format('YYYY-MM-DD'),
       endDate: moment(end).format('YYYY-MM-DD'),
     }));
-  }, [date]);
+  }, [date, configurationDateChange]);
 
-  useEffect(() => {
-    dispatch(getCalendar({
-      startDate: moment(start).format('YYYY-MM-DD'),
-      endDate: moment(end).format('YYYY-MM-DD'),
-    }));
-  },[configurationDateChange]);
   const { isShowing, toggle } = useModal();
   const start = startOfWeek(startOfMonth(date), { weekStartsOn: 1 });
   const endOfFirstWeek = endOfWeek(startOfMonth(date), { weekStartsOn: 1 });

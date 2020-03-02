@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { register, loadRegister } from "../actions";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import AutofocusedInput from "../components/AutofocusedInput";
 import useInput from "../hooks/useInput";
 import "./Register.css";
 
@@ -46,7 +47,7 @@ const Register = () => {
 
     return(
       <form onSubmit={formSubmitHandler} autoComplete="off" >
-        <Input type="email" {...email} />
+        <AutofocusedInput type="email" {...email} />
         <Input type="password" {...password} />
         <Input type="password" {...confirmPassword} />
         <Button disabled={isFetching}>Registruj se</Button>

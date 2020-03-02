@@ -4,7 +4,8 @@ import { Redirect } from "react-router-dom";
 import {
   getNotificationDashboard,
   updateNotificationDashboard,
-  toggleNotificationSelect,
+  checkNotificationCheckbox,
+  uncheckNotificationCheckbox,
   toggleIntervalSelect
 } from "../actions";
 import Apoteka from "../assets/icon/apoteka.svg";
@@ -51,6 +52,7 @@ const NotificationDashboard = () => {
               icon={NOTIFICATIONS[notifSection.notificationTypeDisplay]}
               title={notifSection.notificationTypeDisplay}
               checked={notifSection.checked}
+              data={data}
             />
           );
         })}
@@ -71,17 +73,21 @@ const Notificationsection = ({
   intervals,
   icon,
   title,
-  checked
+  checked,
+  data
 }) => {
   const dispatch = useDispatch();
 
   const handleNotificationSelect = (notificationType) => (event) => {
     let checked = event.currentTarget.checked;
-    let checkedNotification = {
-      notificationType,
-      checked
+    if (checked) {
+      dispatch(checkNotificationCheckbox(notificationType));
+      console.log(data);
     }
-    dispatch(toggleNotificationSelect(checkedNotification));
+    else {
+      dispatch(uncheckNotificationCheckbox(notificationType));
+      console.log(data);
+    }
   }
 
   const handleIntervalSelect = (notificationType, intervalIndex) => () => {

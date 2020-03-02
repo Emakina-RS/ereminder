@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { closeModal, forgotPassword } from "../actions";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import AutofocusedInput from "../components/AutofocusedInput";
 import Modal from "../components/Modal";
 import useInput from "../hooks/useInput";
 import "./ForgotPassword.css";
@@ -35,7 +36,7 @@ const ForgotPassword = () => {
       <div className="ForgotPassword-content">
         <h1>Zaboravili ste šifru</h1>
         <form onSubmit={formSubmitHandler} autoComplete="off">
-          <Input type="email" {...email} />
+          <AutofocusedInput type="email" {...email} />
           <Button disabled={isSubmitting}>Restartuj šifru</Button>
           <div className="ForgotPassword-allready">
             <h2>

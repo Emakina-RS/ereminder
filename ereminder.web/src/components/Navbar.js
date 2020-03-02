@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import logo from "../assets/icon/logo.svg";
 import "./Navbar.css";
+import Button from "./Button";
 
 const Navbar = ({ isLoggedIn }) => {
   const username = useSelector(state => state.login.username);
@@ -35,9 +36,9 @@ const Navbar = ({ isLoggedIn }) => {
               </a>
             </li>
             <li>
-              <Link onClick={dynamicLinkAction} className="a">
+              <Button onClick={dynamicLinkAction}>
                 {dynamicLinkText}
-              </Link>
+              </Button>
             </li>
           </ul>
         </div>

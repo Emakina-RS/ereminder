@@ -150,10 +150,17 @@ export const updateNotificationDashboard = (dashboard) => (dispatch, getState) =
   );
 };
 
-export const toggleNotificationSelect = notification => dispatch => {
+export const checkNotificationCheckbox = notificationType => dispatch => {
   dispatch({
-    type: "NOTIFICATION_CHECKBOX_TOGGLE",
-    data: notification
+    type: "CHECK_NOTIFICATION_CHECKBOX",
+    data: notificationType
+  });
+};
+
+export const uncheckNotificationCheckbox = notificationType => dispatch => {
+  dispatch({
+    type: "UNCHECK_NOTIFICATION_CHECKBOX",
+    data: notificationType
   });
 };
 

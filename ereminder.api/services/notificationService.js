@@ -273,27 +273,24 @@ async function notificationDashboard(usersConfiguration) {
   let allConfiguration = await getAllConfiguration();
   allConfiguration = allConfiguration.map(function (notificationType) {
     return {
+      checked: false,
+      key: constants.NotificationTypeDictionary[notificationType.id],
+      notificationTypeDisplay: notificationType.value,
       intervals: notificationType.intervals.map(interval => {
         return {
           id: interval.id,
           displayName: interval.displayName,
           checked: false
         };
-      }),
-      key: constants.NotificationTypeDictionary[notificationType.id],
-      notificationTypeId: notificationType.id,
-      notificationTypeDisplay: notificationType.value,
-      checked: false
+      })
     };
   });
 
-  if (!usersConfiguration.length) {
-    return allConfiguration;
+  if (usersConfiguration.length) {
+    usersConfiguration.forEach(config => {
+      updateMatchingConfiguration(allConfiguration, config);
+    });
   }
-
-  usersConfiguration.forEach(config => {
-    updateMatchingConfiguration(allConfiguration, config);
-  });
 
   return arrayToObject(allConfiguration, "key");
 }
@@ -312,8 +309,10 @@ async function getAllConfiguration() {
 }
 
 function updateMatchingConfiguration(array, config) {
+  let configNotificationType = constants.NotificationTypeDictionary[config.NotificationTypeId];
+  
   array.forEach(item => {
-    if (item.notificationTypeId === config.NotificationTypeId) {
+    if (item.key === configNotificationType) {
       let checked = false;
       item.intervals.forEach(interval => {
         if (interval.id === config.Interval.id) {
@@ -321,11 +320,7 @@ function updateMatchingConfiguration(array, config) {
           checked = true;
         }
       });
-      if (checked) {
-        item.checked = true;
-        item.notificationId = config.id;
-        item.intervalId = config.Interval.id;
-      }
+      item.checked = checked;
     }
   });
 }

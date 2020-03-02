@@ -36,14 +36,21 @@
   display: inline;
 }
 
-.Navbar-links a {
+.Navbar-links a,
+.Navbar-links button {
   font-size: 1.25em;
+  font-family: "Roboto Condensed";
   color: white;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   padding: 14px 25px;
   text-transform: uppercase;
+  background-color: transparent;
+  border: none;
+  border-radius: 0px;
+  cursor: pointer;
+  width: auto;
 }
 
 .Navbar-links li:not(:last-child)::after {
@@ -78,7 +85,8 @@
 	.Navbar-links li {
 		display: block;
 	}
-	.Navbar-links a {
+  .Navbar-links a,
+  .Navbar-links button {
 		font-size: 0.8em;
 		padding: 5px 0;
 	}

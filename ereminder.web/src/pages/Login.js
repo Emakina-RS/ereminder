@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import { logIn } from "../actions";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import AutofocusedInput from "../components/AutofocusedInput";
 import InvalidLoginMessage from "../components/InvalidLoginMessage";
 import useInput from "../hooks/useInput";
 import "./Login.css";
@@ -55,10 +56,10 @@ const Login = ({
         autoComplete="off"
       >
         <h1>Uloguj se</h1>
-        <Input type="email" {...email} />
+        <AutofocusedInput type="email" {...email} />
         <Input type="password" {...password} />
         <InvalidLoginMessage></InvalidLoginMessage>
-        <Button active={checkFormValidation()}>Uloguj se</Button>
+        <Button>Uloguj se</Button>
 
         <div className="Login-allready">
           <h2>
