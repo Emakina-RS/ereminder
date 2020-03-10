@@ -55,16 +55,8 @@ const dateAsMonthString = date => months[getMonth(date)];
 
 const Calendar = () => {
   const dispatch = useDispatch();
-  const { calendarData, date } = useSelector(state => state.calendar);
+  const { calendarData, date, calendarFileAction } = useSelector(state => state.calendar);
   const configurationDateChange = useSelector(state=> state.configuration.dates);
-
-  useEffect(() => {
-    dispatch(getCalendar({
-      startDate: moment(start).format('YYYY-MM-DD'),
-      endDate: moment(end).format('YYYY-MM-DD'),
-    }));
-  }, [date, configurationDateChange]);
-
   const { isShowing, toggle } = useModal();
   const start = startOfWeek(startOfMonth(date), { weekStartsOn: 1 });
   const endOfFirstWeek = endOfWeek(startOfMonth(date), { weekStartsOn: 1 });
@@ -76,6 +68,15 @@ const Calendar = () => {
     eachDay
   );
   const pills = takePills(calendarData);
+
+  useEffect(() => {
+    dispatch(getCalendar({
+      startDate: moment(start).format('YYYY-MM-DD'),
+      endDate: moment(end).format('YYYY-MM-DD'),
+      calendarFileAction: calendarFileAction
+    }));
+  }, [date, configurationDateChange]);
+
   downloadFile(calendarData, 'ereminder-calendar.ics');
 
   const legendItems = eachDayNotificationIcon;
@@ -85,30 +86,32 @@ const Calendar = () => {
         <ul className="Calendar-nav-links">
           <li>
             <img src={edit} alt="edit" className="icon" />
-            <Link to="/notifications-dashboard" className="">
-              Izmeni notifikacije
-            </Link>
-          </li>
-          <li>
-            <img src={edit} alt="edit" className="icon" />
             <Link to="/configuration" className="">
               Izmeni početne datume
             </Link>
           </li>
           <li>
             <img src={edit} alt="edit" className="icon" />
+            <Link to="/notifications-dashboard" className="">
+              Izmeni podsetnike
+            </Link>
+          </li>
+          <li>
+            <img src={edit} alt="edit" className="icon" />
             <Link to="/notification" className="">
-              Izmeni tip
+              Izmeni način podsećanja
             </Link>
           </li>
         </ul>
 
-        <div className="Calendar-info-links">
-          <img src={info} alt="info" className="icon" />
-          <button className="info-button" onClick={toggle}>
-            Info
-          </button>
-        </div>
+        <ul className="Calendar-info-links">
+          <li>
+            <img src={info} alt="info" className="icon" />
+            <button className="info-button" onClick={toggle}>
+              Legenda
+            </button>
+          </li>
+        </ul>
       </div>
       <div className="Calendar-header">
         <div className="ch-left-arrow">

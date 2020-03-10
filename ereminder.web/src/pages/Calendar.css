@@ -29,17 +29,10 @@
 }
 
 .Calendar-nav {
-    height: 60px;
     margin: 0 auto;
     width: 60%;
     display: grid;
     grid-template-areas: '1 1';
-    padding: 2rem 0;
-}
-
-.Calendar-nav-links {
-    display: flex;
-    flex-direction: row;
 }
 
 .Calendar-nav-links ul {
@@ -56,6 +49,7 @@ ul {
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding: 10px;
 }
 
 .Calendar-nav-links a,
@@ -77,9 +71,22 @@ ul {
 .Calendar-info-links {
     display: flex;
     flex-direction: row;
-    align-items: center;
     justify-content: flex-end;
-    padding-right: 1rem;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.Calendar-info-links ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.Calendar-info-links li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
 }
 
 .info-button {
@@ -209,10 +216,11 @@ ul {
 }
 
 .Modal-container h2 {
+    text-align: center;
     text-transform: uppercase;
     font-weight: 400;
     font-size: 1.85em;
-    padding: 2rem 0;
+    padding-top: 1rem;
 }
 
 .calendar-icon {
@@ -277,12 +285,21 @@ ul {
     .Calendar-day-of-week {
         padding-bottom: 0;
     }
+    .Calendar-nav {
+        margin-bottom: 10px;
+        margin-top: 10px;
+        font-size: 24px;
+        grid-template-areas:
+        '1'
+        '1';
+    }
     .Calendar-nav-links {
         display: block;
         margin: 0;
     }
-    .Calendar-nav-links li:not(:last-child) {
-        margin-bottom: 0.5rem;
+    .Calendar-info-links {
+        justify-content: flex-start;
+        margin: 0;
     }
     .day {
         font-size: 1em;

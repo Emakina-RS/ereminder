@@ -60,6 +60,7 @@
   border: 1px solid #bd1e2c;
   box-sizing: border-box;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 1200px) {

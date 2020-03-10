@@ -44,7 +44,7 @@ const Notification = () => {
           onClick={handleNotificationTypeSelect('enableCalendarNotification')}
         />
         <Link className="NotificationsType-link" to="/calendar">
-          Kreiraj podsetnik
+          Sačuvaj izmene
         </Link>
       </div>
     </div>

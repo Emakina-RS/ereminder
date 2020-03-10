@@ -27,7 +27,6 @@ const Login = ({
   const password = inputFields[1] = useInput("password", "Unesite šifru", { required: true });
 
   if (shouldRedirect) {
-    console.log("redirecting...");
     return <Redirect to="/" />;
   }
 

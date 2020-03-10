@@ -3,7 +3,8 @@ import {
 } from "date-fns";
 
 const initialState = {
-  date: startOfDay(new Date())
+  date: startOfDay(new Date()),
+  calendarFileAction: ''
 };
 
 const calendar = (state = initialState, action) => {
@@ -18,6 +19,11 @@ const calendar = (state = initialState, action) => {
         ...state,
         date: action.data
       };
+    case "UPDATE_CALENDAR_FILE_ACTION":
+      return {
+        ...state,
+        calendarFileAction: action.data
+      }
     default:
       return state;
   }

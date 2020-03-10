@@ -59,10 +59,10 @@ const NotificationDashboard = () => {
       </div>
 
       <Button
-        className="Notificationsection-link"
+        className="NotificationsType-link"
         onClick={saveNotificationDashboard(data)}
       >
-        Sačuvaj
+        Sačuvaj izmene
       </Button>
     </div>
   );

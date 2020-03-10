@@ -118,7 +118,7 @@ const Configuration = () => {
                 </div>
                 <Link
                     onClick={submitConfigurationHandler}
-                    className="NotificationDate-link"
+                    className="NotificationsType-link"
                     to="/calendar"
                 >
                     Nastavi

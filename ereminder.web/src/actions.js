@@ -71,13 +71,6 @@ const fetchRefreshToken = async (auth, dispatch) => {
   dispatch({ type: "GOT_AUTH", auth: authProps });
   dispatch({ type: "GOT_TOKEN", token });
 };
-//TODO - move this somewhere and update it as per the comments bellow
-const getCalendarFileAction = (state) => {
-  //return `cancel` if user had Calendar checked and unchecked it
-  //return `publish` if user updated notification intervals or start dates or checked Calendar checkbox
-  //return empty string if nothing is updated
-  return '';
-};
 
 export const getConfiguration = () => (dispatch, getState) => {
   fetchRefreshToken(getState().auth, dispatch);
@@ -91,11 +84,17 @@ export const getConfiguration = () => (dispatch, getState) => {
 };
 
 export const changeDate = (fieldValue, fieldName) => dispatch => {
+  updateCalendarFileAction('publish');
   dispatch({ type: "DATE_CHANGED", fieldValue, fieldName });
 };
 
 export const createOrUpdateConfiguration = dates => (dispatch, getState) => {
   fetchRefreshToken(getState().auth, dispatch);
+
+  let enableNotification = dates["enableCalendarNotification"];
+  if (enableNotification !== undefined) {
+    toggleCalendarNotificationCheckbox(enableNotification);
+  }
 
   get("/configuration", getState().token).then(configuration => {
     if (configuration.id) {
@@ -110,19 +109,40 @@ export const createOrUpdateConfiguration = dates => (dispatch, getState) => {
   });
 };
 
+const toggleCalendarNotificationCheckbox = enableNotification => dispatch => {
+  let calendarFileAction;
+  if (enableNotification === true) {
+    calendarFileAction = 'publish';
+  } else if (enableNotification === false) {
+    calendarFileAction = 'cancel';
+  } else {
+    calendarFileAction = '';
+  }
+  updateCalendarFileAction(calendarFileAction);
+};
+
 export const calendarChangeMonth = (month) => dispatch => {
   dispatch({ type: "CALENDAR_CHANGE_MONTH", data: month });
 };
 
-export const getCalendar = ({ startDate, endDate }) => (dispatch, getState) => {
+export const getCalendar = ({ startDate, endDate, calendarFileAction }) => (dispatch, getState) => {
   fetchRefreshToken(getState().auth, dispatch);
-  let calendarFileAction = getCalendarFileAction(getState());
   get(`/calendar/startdate/${startDate}/enddate/${endDate}/${calendarFileAction}`, getState().token).then(calendarData => {
     dispatch({
       type: "CALENDAR_DATA_RECEIVED",
       data: calendarData
     });
   })
+};
+
+//actionString = `cancel` if user had Calendar checked and unchecked it
+//actionString = `publish` if user updated notification intervals or start dates or checked Calendar checkbox
+//actionString empty string if nothing is updated
+const updateCalendarFileAction = actionString => dispatch => {
+  dispatch({
+    type: "UPDATE_CALENDAR_FILE_ACTION",
+    data: actionString
+  });
 };
 
 export const getNotificationDashboard = () => (dispatch, getState) => {
@@ -141,11 +161,9 @@ export const getNotificationDashboard = () => (dispatch, getState) => {
 export const updateNotificationDashboard = (dashboard) => (dispatch, getState) => {
   fetchRefreshToken(getState().auth, dispatch);
 
-  post("/notifications", dashboard, getState().token).then(
-    resultMessage => {
-      dispatch({
-        type: "NOTIFICATION_DASHBOARD_SAVED"
-      });
+  post("/notifications", dashboard, getState().token).then(() => {
+      updateCalendarFileAction('publish');
+      dispatch({ type: "NOTIFICATION_DASHBOARD_SAVED" });
     }
   );
 };
