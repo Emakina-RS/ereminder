@@ -32,13 +32,13 @@ const Notification = () => {
       <div className="NotificationsType-content">
         <h1>Odaberi način podsećanja</h1>
         <NotificationSection
-          title="Mail"
+          title="Email"
           icon={mail}
           checked={enableEmailNotification}
           onClick={handleNotificationTypeSelect('enableEmailNotification')}
         />
         <NotificationSection
-          title="Calendar"
+          title="Kalendar"
           icon={calendar}
           checked={enableCalendarNotification}
           onClick={handleNotificationTypeSelect('enableCalendarNotification')}
