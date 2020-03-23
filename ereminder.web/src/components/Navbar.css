@@ -8,7 +8,7 @@
 }
 
 .Navbar-content {
-  width: 60%;
+  width: 70%;
   display: grid;
   grid-template-areas: "1 1";
 }
@@ -65,7 +65,12 @@
 @media screen and (max-width: 1200px) {
 	.Navbar-content {
 		width: calc(100% - 40px);
-		padding: 10px 20px;
+    padding: 10px 20px;
+    grid-template-columns: 20% 80%;
+  }
+  .Navbar-links a,
+  .Navbar-links button {
+		font-size: 1em;
 	}
 }
 @media screen and (max-width: 767px) {

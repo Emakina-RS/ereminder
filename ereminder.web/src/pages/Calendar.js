@@ -104,14 +104,12 @@ const Calendar = () => {
           </li>
         </ul>
 
-        <ul className="Calendar-info-links">
-          <li>
+        <div className="Calendar-info-links">
             <img src={info} alt="info" className="icon" />
             <button className="info-button" onClick={toggle}>
               Legenda
             </button>
-          </li>
-        </ul>
+        </div>
       </div>
       <div className="Calendar-header">
         <div className="ch-left-arrow">

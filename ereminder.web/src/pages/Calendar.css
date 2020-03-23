@@ -2,7 +2,7 @@
 .Calendar-days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    width: 60%;
+    width: 70%;
     margin: 0 auto;
     padding-bottom: 1rem;
 }
@@ -29,10 +29,17 @@
 }
 
 .Calendar-nav {
+    height: 60px;
     margin: 0 auto;
-    width: 60%;
+    width: 70%;
     display: grid;
     grid-template-areas: '1 1';
+    padding: 1rem 0;
+}
+
+.Calendar-nav-links {
+    display: flex;
+    flex-direction: row;
 }
 
 .Calendar-nav-links ul {
@@ -49,8 +56,6 @@ ul {
     display: flex;
     flex-direction: row;
     align-items: center;
-    height: 20px;
-    padding: 12px;
 }
 
 .Calendar-nav-links a,
@@ -72,23 +77,9 @@ ul {
 .Calendar-info-links {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
-    margin-top: 1em;
-    margin-bottom: 1em;
-}
-
-.Calendar-info-links ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-.Calendar-info-links li {
-    display: flex;
-    flex-direction: row;
     align-items: center;
-    height: 20px;
-    padding: 12px;
+    justify-content: flex-end;
+    padding-right: 1rem;
 }
 
 .info-button {
@@ -111,7 +102,7 @@ ul {
 .Calendar-header {
     position: relative;
     margin: 0 auto;
-    width: 60%;
+    width: 70%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -149,7 +140,7 @@ ul {
 
 .Calendar-legend {
     margin: 0 auto;
-    width: 60%;
+    width: 70%;
     text-align: left;
 }
 .Calendar-legend h3 {
@@ -175,8 +166,9 @@ ul {
 }
 
 .legend-item {
-    width: 20px;
-    height: 20px;
+    min-height: 15px;
+    padding: 4px;
+    width: 15px;
 }
 
 .legend-items {
@@ -185,7 +177,7 @@ ul {
 }
 
 .legend-label {
-    font-size: 1em;
+    font-size: 1.25em;
     line-height: 1.437em;
     letter-spacing: 0.001em;
     padding: 0 2rem 0 1rem;
@@ -218,11 +210,10 @@ ul {
 }
 
 .Modal-container h2 {
-    text-align: center;
     text-transform: uppercase;
     font-weight: 400;
     font-size: 1.85em;
-    padding-top: 1rem;
+    padding: 2rem 0;
 }
 
 .calendar-icon {
@@ -271,15 +262,20 @@ ul {
         width: 20px;
         height: 20px;
     }
-    .Calendar-nav-links a {
-        font-size: 0.9em;
+    .Calendar-nav-links a,
+    .Calendar-nav-links span {
+        font-size: 1em;
     }
     .calendar-icon {
         min-height: 10px;
         width: 10px;
     }
     .info-button {
-        font-size: 0.9em;
+        font-size: 1em;
+    }
+    .legend-item {
+        min-height: 10px;
+        width: 10px;
     }
 }
 
@@ -287,21 +283,15 @@ ul {
     .Calendar-day-of-week {
         padding-bottom: 0;
     }
-    .Calendar-nav {
-        margin-bottom: 10px;
-        margin-top: 10px;
-        font-size: 24px;
-        grid-template-areas:
-        '1'
-        '1';
+    .Calendar-nav-links a {
+        font-size: 0.8em;
     }
     .Calendar-nav-links {
         display: block;
         margin: 0;
     }
-    .Calendar-info-links {
-        justify-content: flex-start;
-        margin: 0;
+    .Calendar-nav-links li:not(:last-child) {
+        margin-bottom: 0.5rem;
     }
     .day {
         font-size: 1em;
@@ -331,5 +321,25 @@ ul {
     }
     .Modal-container .item:last-of-type {
         justify-content: flex-start;
+    }
+    .Calendar-legend-list {
+        flex-flow: column;
+    }
+    .Calendar-legend h3 {
+        font-size: 1em;
+    }
+    .info-button {
+        font-size: 0.8em;
+    }
+    .legend {
+        border-bottom: 1px solid #f5f3f3;
+        justify-content: center;
+    }
+    .legend-label {
+        font-size: 0.8em;
+    }
+    .legend-item {
+        min-height: 10px;
+        width: 10px;
     }
 }
