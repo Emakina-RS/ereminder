@@ -84,7 +84,7 @@ export const getConfiguration = () => (dispatch, getState) => {
 };
 
 export const changeDate = (fieldValue, fieldName) => dispatch => {
-  updateCalendarFileAction('publish');
+  updateCalendarFileAction('publish', dispatch);
   dispatch({ type: "DATE_CHANGED", fieldValue, fieldName });
 };
 
@@ -93,7 +93,7 @@ export const createOrUpdateConfiguration = dates => (dispatch, getState) => {
 
   let enableNotification = dates["enableCalendarNotification"];
   if (enableNotification !== undefined) {
-    toggleCalendarNotificationCheckbox(enableNotification);
+    toggleCalendarNotificationCheckbox(enableNotification, dispatch);
   }
 
   get("/configuration", getState().token).then(configuration => {
@@ -109,7 +109,7 @@ export const createOrUpdateConfiguration = dates => (dispatch, getState) => {
   });
 };
 
-const toggleCalendarNotificationCheckbox = enableNotification => dispatch => {
+const toggleCalendarNotificationCheckbox = (enableNotification, dispatch) => {
   let calendarFileAction;
   if (enableNotification === true) {
     calendarFileAction = 'publish';
@@ -118,7 +118,7 @@ const toggleCalendarNotificationCheckbox = enableNotification => dispatch => {
   } else {
     calendarFileAction = '';
   }
-  updateCalendarFileAction(calendarFileAction);
+  updateCalendarFileAction(calendarFileAction, dispatch);
 };
 
 export const calendarChangeMonth = (month) => dispatch => {
@@ -138,7 +138,7 @@ export const getCalendar = ({ startDate, endDate, calendarFileAction }) => (disp
 //actionString = `cancel` if user had Calendar checked and unchecked it
 //actionString = `publish` if user updated notification intervals or start dates or checked Calendar checkbox
 //actionString empty string if nothing is updated
-const updateCalendarFileAction = actionString => dispatch => {
+const updateCalendarFileAction = (actionString, dispatch) => {
   dispatch({
     type: "UPDATE_CALENDAR_FILE_ACTION",
     data: actionString
@@ -162,7 +162,7 @@ export const updateNotificationDashboard = (dashboard) => (dispatch, getState) =
   fetchRefreshToken(getState().auth, dispatch);
 
   post("/notifications", dashboard, getState().token).then(() => {
-      updateCalendarFileAction('publish');
+      updateCalendarFileAction('publish', dispatch);
       dispatch({ type: "NOTIFICATION_DASHBOARD_SAVED" });
     }
   );
