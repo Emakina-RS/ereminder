@@ -12,7 +12,8 @@ const calendar = (state = initialState, action) => {
     case "CALENDAR_DATA_RECEIVED":
       return {
         ...state,
-        calendarData: action.data
+        calendarData: action.data,
+        calendarFileAction: ''
       };
     case "CALENDAR_CHANGE_MONTH":
       return {
