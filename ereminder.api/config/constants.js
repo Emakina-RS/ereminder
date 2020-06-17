@@ -2,8 +2,8 @@
 
 const Constants = {
   stringFormats: {
-    dateTime: "DD-MM-YYYY HH:mm:ss",
-    date: "DD-MM-YYYY"
+    dateTime: "YYYY-MM-DD HH:mm",
+    date: "YYYY-MM-DD"
   },
   errorMessages: {
     requiredField: fieldName => `${fieldName} is required`,
@@ -55,11 +55,11 @@ const NotificationTypeDictionary = {
 
 
 const NotificationsCalendarTitles = {
-  1: "Reminder for medicine",
-  2: "Reminder for recepies",
-  3: "Reminder for pharmacy",
-  4: "Reminder for referral",
-  5: "Reminder for medical findings"
+  1: "Podsetnik: uzmite lekove",
+  2: "Podsetnik: vreme je za odlazak po recepte",
+  3: "Podsetnik: vreme je za odlazak u apoteku",
+  4: "Podsetnik: vreme je za odlazak po uput",
+  5: "Podsetnik: vreme je za odlazak po nalaze"
 };
 
 

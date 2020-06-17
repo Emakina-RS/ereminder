@@ -12,12 +12,15 @@ import Input from '../components/Input';
 import './Configuration.css';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
+import MomentLocaleUtils, {
+    formatDate,
+    parseDate,
+} from 'react-day-picker/moment';
+import 'moment/locale/sr';
 
 const dateFormat = {
-    inputDateTimeFormat: 'YYYY-MM-DD HH:mm',
-    outputDateTimeFormat: 'DD-MM-YYYY HH:mm:ss',
-    inputDateFormat: 'YYYY-MM-DD',
-    outputDateFormat: 'DD-MM-YYYY'
+    serverDateFormat: 'YYYY-MM-DD',
+    uiDateFormat: 'DD.MM.YYYY'
 };
 
 const LABEL = {
@@ -41,29 +44,12 @@ const Configuration = () => {
     }, [dispatch]);
 
     const submitConfigurationHandler = () => {
-        const lastTimeTookPillsString =
-            dates.lastTimeTookPills + ' ' + dates.lastTimeTookPillsTime;
         const configuration = {
-            lastTimeTookPills: moment(
-                lastTimeTookPillsString,
-                dateFormat.inputDateTimeFormat
-            ).format(dateFormat.outputDateTimeFormat),
-            lastTimeInPharmacy: moment(
-                dates.lastTimeInPharmacy,
-                dateFormat.inputDateFormat
-            ).format(dateFormat.outputDateFormat),
-            lastTimeGotPrescription: moment(
-                dates.lastTimeGotPrescription,
-                dateFormat.inputDateFormat
-            ).format(dateFormat.outputDateFormat),
-            lastTimeGotReferral: moment(
-                dates.lastTimeGotReferral,
-                dateFormat.inputDateFormat
-            ).format(dateFormat.outputDateFormat),
-            lastTimeExamination: moment(
-                dates.lastTimeExamination,
-                dateFormat.inputDateFormat
-            ).format(dateFormat.outputDateFormat)
+            lastTimeTookPills: dates.lastTimeTookPills + ' ' + dates.lastTimeTookPillsTime,
+            lastTimeInPharmacy: dates.lastTimeInPharmacy,
+            lastTimeGotPrescription: dates.lastTimeGotPrescription,
+            lastTimeGotReferral: dates.lastTimeGotReferral,
+            lastTimeExamination: dates.lastTimeExamination
         };
         dispatch(createOrUpdateConfiguration(configuration));
     };
@@ -83,7 +69,10 @@ const Configuration = () => {
                         selectorType={['date', 'time']}
                         label={LABEL.LEK}
                         value={[
-                            dates.lastTimeTookPills,
+                            moment(
+                                dates.lastTimeTookPills,
+                                dateFormat.serverDateFormat
+                            ).format(dateFormat.uiDateFormat),
                             dates.lastTimeTookPillsTime
                         ]}
                     />
@@ -92,28 +81,48 @@ const Configuration = () => {
                         key="lastTimeGotPrescription"
                         selectorType={['date']}
                         label={LABEL.RECEPTI}
-                        value={[dates.lastTimeGotPrescription]}
+                        value={[
+                            moment(
+                                dates.lastTimeGotPrescription,
+                                dateFormat.serverDateFormat
+                            ).format(dateFormat.uiDateFormat)
+                        ]}
                     />
                     <DateSelector
                         name="lastTimeInPharmacy"
                         key="lastTimeInPharmacy"
                         selectorType={['date']}
                         label={LABEL.APOTEKA}
-                        value={[dates.lastTimeInPharmacy]}
+                        value={[
+                            moment(
+                                dates.lastTimeInPharmacy,
+                                dateFormat.serverDateFormat
+                            ).format(dateFormat.uiDateFormat)
+                        ]}
                     />
                     <DateSelector
                         name="lastTimeGotReferral"
                         key="lastTimeGotReferral"
                         selectorType={['date']}
                         label={LABEL.UPUT}
-                        value={[dates.lastTimeGotReferral]}
+                        value={[
+                            moment(
+                                dates.lastTimeGotReferral,
+                                dateFormat.serverDateFormat
+                            ).format(dateFormat.uiDateFormat)
+                        ]}
                     />
                     <DateSelector
                         name="lastTimeExamination"
                         key="lastTimeExamination"
                         selectorType={['date']}
                         label={LABEL.NALAZI}
-                        value={[dates.lastTimeExamination]}
+                        value={[
+                            moment(
+                                dates.lastTimeExamination,
+                                dateFormat.serverDateFormat
+                            ).format(dateFormat.uiDateFormat)
+                        ]}
                     />
                 </div>
                 <Link
@@ -139,17 +148,25 @@ const DateSelector = ({ name, selectorType, label, value }) => {
     const dateSelectionChangedHandler = (event, modifier, object) => {
         const value = object ? object.input.value : event.target.value;
         const name = object ? object.props.name : event.target.name;
+        
         // data input field validation
-        let now = new Date();
-        now = now.setHours(0, 0, 0, 0);
-
-        let inputDate = new Date(value);
-        inputDate = inputDate.setHours(0, 0, 0, 0);
-
-        if (inputDate <= now) {
+        if (name === 'lastTimeTookPillsTime') {
             dispatch(changeDate(value, name));
-        } else if (name === 'lastTimeTookPillsTime') {
-            dispatch(changeDate(value, name));
+        } else {
+            let now = new Date();
+            now = now.setHours(0, 0, 0, 0);
+
+            let parsedValue = moment(
+                value,
+                dateFormat.uiDateFormat
+            ).format(dateFormat.serverDateFormat);
+
+            let inputDate = new Date(parsedValue);
+            inputDate = inputDate.setHours(0, 0, 0, 0);
+
+            if (inputDate <= now) {
+                dispatch(changeDate(parsedValue, name));
+            }
         }
     };
 
@@ -199,6 +216,12 @@ const DateSelector = ({ name, selectorType, label, value }) => {
               background-color:#bd1e2c;
             }`}</style>
                                 <DayPickerInput
+                                    formatDate={formatDate}
+                                    parseDate={parseDate}
+                                    dayPickerProps={{
+                                        locale: 'sr',
+                                        localeUtils: MomentLocaleUtils,
+                                    }}
                                     name={name}
                                     type={option}
                                     onDayChange={dateSelectionChangedHandler}

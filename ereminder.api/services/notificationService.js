@@ -249,9 +249,9 @@ function getEmailNotificationHtmlBodyType(notificationTypeId) {
     case 3:
       return constants.emailTemplates.pharmacyEmail;
     case 4:
-      return constants.emailTemplates.referralEmail;;
+      return constants.emailTemplates.referralEmail;
     case 5:
-      return constants.emailTemplates.medicalFindingsEmail;;
+      return constants.emailTemplates.medicalFindingsEmail;
   }
 }
 

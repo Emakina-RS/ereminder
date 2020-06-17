@@ -143,7 +143,7 @@ async function populateDashboard() {
     });
 
     models.NotificationType.findByPk(5).then(notificationType => {
-      notificationType.setIntervals([9]).then(sc => {
+      notificationType.setIntervals([8]).then(sc => {
       });
     });
   }

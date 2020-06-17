@@ -237,7 +237,7 @@ exports.calendar = [
     .exists()
     .withMessage(constants.errorMessages.requiredField("startdate"))
     .custom((value, { req }) => {
-      if (!validateCalendarDate(value)) {
+      if (!validateDate(value)) {
         throw new Error(constants.errorMessages.validateDate);
       }
       return true;
@@ -246,7 +246,7 @@ exports.calendar = [
     .exists()
     .withMessage(constants.errorMessages.requiredField("enddate"))
     .custom((value, { req }) => {
-      if (!validateCalendarDate(value)) {
+      if (!validateDate(value)) {
         throw new Error(constants.errorMessages.validateDate);
       }
       return true;
@@ -269,16 +269,12 @@ function validateDate(date) {
   return moment(date, constants.stringFormats.date, true).isValid();
 }
 
-function validateCalendarDate(date) {
-  return moment(date, 'YYYY-MM-DD', true).isValid();
-}
-
 function isInputDateInFuture(date) {
   //convert date -> dd-mm-yyyy to mm-dd-yyyy
   let splitedDate = date.split("-");
   let validDate = splitedDate[1] + "-" + splitedDate[0] + "-" + splitedDate[2];
 
-  let dateFromInput = new Date(validDate);
+  let dateFromInput = new Date(date);
   let currentDate = new Date();
 
   if (currentDate <= dateFromInput) return true;
