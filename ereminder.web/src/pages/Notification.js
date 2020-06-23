@@ -5,14 +5,12 @@ import calendar from "../assets/icon/calendar1.svg";
 import mail from "../assets/icon/mail1.svg";
 import Checkbox from "../components/Checkbox";
 import "./Notification.css";
-import { getConfiguration, createOrUpdateConfiguration } from "../actions";
+import { getConfiguration, createOrUpdateConfiguration, updateNotificationType } from "../actions";
 
 const Notification = () => {
-  const configuration = useSelector(
+  const { activeNotifications, configurationReceived } = useSelector(
     state => state.configuration
   );
-
-  const {activeNotifications: {enableCalendarNotification, enableEmailNotification}, configurationReceived} = configuration;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,9 +20,16 @@ const Notification = () => {
   });
 
   const handleNotificationTypeSelect = (key) => (event) => {
-    dispatch(createOrUpdateConfiguration({
-      [key]: event.currentTarget.checked
-    }));
+    let checked = event.currentTarget.checked;
+    dispatch(updateNotificationType(key, checked));
+  }
+
+  const submitNotificationTypeConfig = () => {
+    const configuration = {
+      enableEmailNotification: activeNotifications.enableEmailNotification,
+      enableCalendarNotification: activeNotifications.enableCalendarNotification
+    };
+    dispatch(createOrUpdateConfiguration(configuration));
   }
 
   return (
@@ -34,16 +39,20 @@ const Notification = () => {
         <NotificationSection
           title="Email"
           icon={mail}
-          checked={enableEmailNotification}
+          checked={activeNotifications.enableEmailNotification}
           onClick={handleNotificationTypeSelect('enableEmailNotification')}
         />
         <NotificationSection
           title="Kalendar"
           icon={calendar}
-          checked={enableCalendarNotification}
+          checked={activeNotifications.enableCalendarNotification}
           onClick={handleNotificationTypeSelect('enableCalendarNotification')}
         />
-        <Link className="NotificationsType-link" to="/calendar">
+        <Link
+          className="NotificationsType-link"
+          to="/calendar"
+          onClick={submitNotificationTypeConfig}
+        >
           Sačuvaj izmene
         </Link>
       </div>

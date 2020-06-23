@@ -88,6 +88,10 @@ export const changeDate = (fieldValue, fieldName) => dispatch => {
   dispatch({ type: "DATE_CHANGED", fieldValue, fieldName });
 };
 
+export const updateNotificationType = (key, value) => dispatch => {
+  dispatch({ type: "NOTIFICATION_TYPE_CHANGED", key, value });
+};
+
 export const createOrUpdateConfiguration = dates => (dispatch, getState) => {
   fetchRefreshToken(getState().auth, dispatch);
 

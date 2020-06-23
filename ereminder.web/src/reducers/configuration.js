@@ -8,7 +8,8 @@ const initialState = {
     lastTimeGotPrescription: "",
     lastTimeGotReferral: "",
     lastTimeExamination: ""
-  }, activeNotifications: {
+  },
+  activeNotifications: {
     enableEmailNotification: false,
     enableCalendarNotification: false
   },
@@ -43,8 +44,16 @@ const configuration = (state = initialState, action) => {
       const dates = { ...state.dates };
       dates[action.fieldName] = action.fieldValue;
       return {
-        dates,
-        configurationReceived: state.configurationReceived
+        ...state,
+        dates
+      };
+    case "NOTIFICATION_TYPE_CHANGED":
+      return {
+        ...state,
+        activeNotifications: {
+          ...state.activeNotifications,
+          [action.key]: action.value
+        }
       };
     default:
       return state;

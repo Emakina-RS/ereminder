@@ -130,7 +130,7 @@ const Configuration = () => {
                     className="NotificationsType-link"
                     to="/calendar"
                 >
-                    Nastavi
+                    Sačuvaj izmene
                 </Link>
             </form>
         </div>
