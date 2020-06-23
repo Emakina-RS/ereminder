@@ -19,6 +19,11 @@ const notificationDashboard = (state = initialState, action) => {
         dashboardLoaded: false,
         shouldRedirect: true
       };
+    case "RESET_DASHBOARD_LOADED":
+      return {
+        ...state,
+        dashboardLoaded: false
+      };
     case "CHECK_NOTIFICATION_CHECKBOX":
       return {
         ...state,

@@ -270,10 +270,6 @@ function validateDate(date) {
 }
 
 function isInputDateInFuture(date) {
-  //convert date -> dd-mm-yyyy to mm-dd-yyyy
-  let splitedDate = date.split("-");
-  let validDate = splitedDate[1] + "-" + splitedDate[0] + "-" + splitedDate[2];
-
   let dateFromInput = new Date(date);
   let currentDate = new Date();
 

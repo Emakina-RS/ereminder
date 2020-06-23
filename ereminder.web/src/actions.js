@@ -132,6 +132,7 @@ export const getCalendar = ({ startDate, endDate, calendarFileAction }) => (disp
       type: "CALENDAR_DATA_RECEIVED",
       data: calendarData
     });
+    dispatch({ type: "RESET_DASHBOARD_LOADED" });
   })
 };
 
@@ -143,6 +144,10 @@ const updateCalendarFileAction = (actionString, dispatch) => {
     type: "UPDATE_CALENDAR_FILE_ACTION",
     data: actionString
   });
+};
+
+export const resetCalendarFileAction = () => (dispatch) => {
+  dispatch({ type: "RESET_CALENDAR_FILE_ACTION" });
 };
 
 export const getNotificationDashboard = () => (dispatch, getState) => {

@@ -203,7 +203,12 @@ const downloadFile = (calendarData, filename) => {
 
 const LegendItem = ({ legendDay }) => {
   const date = Object.keys(legendDay)[0];
+  const dateFormat = {
+    serverDateFormat: 'YYYY-MM-DD',
+    uiDateFormat: 'DD.MM.YYYY'
+  };
   const icons = legendDay[Object.keys(legendDay)[0]];
+  
   return (
     <div className="legend">
       <div className='legend-items'>
@@ -211,7 +216,12 @@ const LegendItem = ({ legendDay }) => {
         return <img className="legend-item" key={key} src={icon} alt={icon} />
       })}
       </div>
-      <label className="legend-label">{date}</label>
+      <label className="legend-label">{
+        moment(
+          date,
+          dateFormat.serverDateFormat
+        ).format(dateFormat.uiDateFormat)
+      }</label>
     </div>
   );
 };

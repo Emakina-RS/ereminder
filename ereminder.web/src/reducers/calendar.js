@@ -25,6 +25,11 @@ const calendar = (state = initialState, action) => {
         ...state,
         calendarFileAction: action.data
       }
+    case "RESET_CALENDAR_FILE_ACTION":
+      return {
+        ...state,
+        calendarFileAction: ''
+      };
     default:
       return state;
   }
