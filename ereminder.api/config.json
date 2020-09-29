@@ -8,6 +8,11 @@
       "http://dev.ereminder.com:8081",
       "http://dev.ereminder.com:8082"
     ],
+    "ssl": {
+      "enabled": false,
+      "key": "",
+      "cert": ""
+    },
     "mailSettings": {
       "smtp": "",
       "port": 587,
@@ -37,6 +42,11 @@
     "corsUrls": [
       "http://test-ereminder.emakina.rs"
     ],
+    "ssl": {
+      "enabled": false,
+      "key": "",
+      "cert": ""
+    },
     "mailSettings": {
       "smtp": "smtp.gmail.com",
       "port": 587,
@@ -66,6 +76,11 @@
     "corsUrls": [
       ""
     ],
+    "ssl": {
+      "enabled": true,
+      "key": "/home/epodsetn/ssl/keys/af834_f401b_7517f58c2474a8bfdcc610a9b7f60fca.key",
+      "cert": "/home/epodsetn/ssl/certs/api_epodsetnik_crvenalinija_org_af834_f401b_1609157471_f2a5d08497bebe6041f1142f5eab8690.crt"
+    },
     "mailSettings": {
       "smtp": "",
       "port": 587,

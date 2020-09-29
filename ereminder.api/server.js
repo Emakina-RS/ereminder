@@ -12,6 +12,8 @@ const authentication = require("./middleware/authentication");
 const error = require("./middleware/error");
 const logger = require("./startup/logger")();
 const xss = require("xss-clean");
+const fs = require("fs");
+const https = require('https');
 
 require("./config/config");
 const corsUrls = global.globalConfig.corsUrls;
@@ -30,16 +32,7 @@ routes(app);
 
 app.use(error);
 
-var server = app.listen(global.globalConfig.apiPort, global.globalConfig.apiHostname, function () {
-  var port = server.address().port;
-
-  console.log('server url: ' + server.address().address);
-
-
-  logger.info(
-    `[Server] : Example app listening at ${global.globalConfig.apiHostname}:${port}`
-  );
-});
+const server = global.globalConfig.ssl.enabled ? getHttpsServer() : getHttpServer();
 
 dbIntializer.initializeDB(server);
 scheduler.initialize();
@@ -54,3 +47,31 @@ process.on("uncaughtException", error => {
   );
   process.exit(1);
 });
+
+function getHttpServer() {
+  const server = app.listen(global.globalConfig.apiPort, global.globalConfig.apiHostname, function () {
+    const port = server.address().port;
+
+    console.log('server url: ' + server.address().address);
+
+    logger.info(`[Server] : Example app listening at ${global.globalConfig.apiHostname}:${port}`);
+  });
+
+  return server;
+}
+
+function getHttpsServer() {
+  const server = https.createServer({
+    key: fs.readFileSync(global.globalConfig.ssl.key),
+    cert: fs.readFileSync(global.globalConfig.ssl.cert)
+  }, app)
+  .listen(global.globalConfig.apiPort, global.globalConfig.apiHostname, function () {
+      const port = server.address().port;
+    
+      console.log('server url: ' + server.address().address);
+    
+      logger.info(`[Server] : Example app listening at ${global.globalConfig.apiHostname}:${port}`);
+  });
+  
+  return server;
+}
