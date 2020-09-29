@@ -44,6 +44,8 @@ var server = app.listen(global.globalConfig.apiPort, global.globalConfig.apiHost
 dbIntializer.initializeDB(server);
 scheduler.initialize();
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+
 process.on("uncaughtException", error => {
   logger.error(
     util.format(
