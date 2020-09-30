@@ -169,11 +169,13 @@ async function doRemind(notification, configuredTime) {
 async function getNotificationsWithAdditionalAttributes() {
   let sqlQuery = `SELECT n.id as 'Id', u.id as 'userId', u.email, n.lastTimeSent, i.valueInHours, n.NotificationTypeId,
   conf.lastTimeTookPills, conf.lastTimeInPharmacy, conf.lastTimeGotPrescription, conf.lastTimeGotReferral,  conf.lastTimeExamination,
-  nt.Id as 'notificationsId'  FROM Notifications n
-  INNER JOIN Intervals i ON n.IntervalId = i.Id
-  INNER JOIN Users u ON n.UserId = u.Id
-  INNER JOIN NotificationTypes nt ON n.NotificationTypeId = nt.Id
-  INNER JOIN Configurations conf ON n.UserId = conf.UserId;`;
+  nt.Id as 'notificationsId' FROM Notifications n
+    INNER JOIN Intervals i ON n.IntervalId = i.Id
+    INNER JOIN Users u ON n.UserId = u.Id
+    INNER JOIN NotificationTypes nt ON n.NotificationTypeId = nt.Id
+    INNER JOIN Configurations conf ON n.UserId = conf.UserId
+  WHERE
+    conf.enableEmailNotification = 1`;
 
   return await models.sequelize.query(sqlQuery, {
     type: models.sequelize.QueryTypes.SELECT
