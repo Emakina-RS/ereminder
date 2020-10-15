@@ -6,7 +6,8 @@ import {
   updateNotificationDashboard,
   checkNotificationCheckbox,
   uncheckNotificationCheckbox,
-  toggleIntervalSelect
+  toggleIntervalSelect,
+  fetchRefreshToken
 } from "../actions";
 import Apoteka from "../assets/icon/apoteka.svg";
 import Lek from "../assets/icon/lekovi.svg";
@@ -33,6 +34,10 @@ const NotificationDashboard = () => {
   const saveNotificationDashboard = (data) => () => {
     dispatch(updateNotificationDashboard(data));
   }
+
+  // Refresh token or logout user if token has expired
+  let auth = useSelector(state => state.auth);
+  fetchRefreshToken(auth, dispatch);
 
   if (shouldRedirect) {
     return <Redirect to="/calendar" />;

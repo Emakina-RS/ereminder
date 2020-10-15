@@ -6,7 +6,8 @@ import MaskedInput from 'react-text-mask';
 import {
     changeDate,
     createOrUpdateConfiguration,
-    getConfiguration
+    getConfiguration,
+    fetchRefreshToken
 } from '../actions';
 import Input from '../components/Input';
 import './Configuration.css';
@@ -53,6 +54,10 @@ const Configuration = () => {
         };
         dispatch(createOrUpdateConfiguration(configuration));
     };
+
+    // Refresh token or logout user if token has expired
+    let auth = useSelector(state => state.auth);
+    fetchRefreshToken(auth, dispatch);
 
     return (
         <div className="NotificationDates">

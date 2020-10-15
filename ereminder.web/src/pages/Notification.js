@@ -5,7 +5,7 @@ import calendar from "../assets/icon/calendar1.svg";
 import mail from "../assets/icon/mail1.svg";
 import Checkbox from "../components/Checkbox";
 import "./Notification.css";
-import { getConfiguration, createOrUpdateConfiguration, updateNotificationType } from "../actions";
+import { getConfiguration, createOrUpdateConfiguration, updateNotificationType, fetchRefreshToken } from "../actions";
 
 const Notification = () => {
   const { activeNotifications, configurationReceived } = useSelector(
@@ -31,6 +31,10 @@ const Notification = () => {
     };
     dispatch(createOrUpdateConfiguration(configuration));
   }
+
+  // Refresh token or logout user if token has expired
+  let auth = useSelector(state => state.auth);
+  fetchRefreshToken(auth, dispatch);
 
   return (
     <div className="NotificationsType">

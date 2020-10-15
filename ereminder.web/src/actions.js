@@ -44,17 +44,21 @@ const patch = (relativePath, payload, token) => {
   }).then(response => response.json());
 };
 
-const fetchRefreshToken = async (auth, dispatch) => {
+export const fetchRefreshToken = async (auth, dispatch) => {
   if (!auth) return;
+  let isAuthValid = auth.expiresIn != undefined && auth.refreshToken != undefined;
+  let currentTime = new Date().getTime() / 1000;
+  let tokenExpired = (auth.arrivedTokenTime + auth.expiresIn) < currentTime;
 
-  const currentTime = (new Date().getTime() / 1000) + 300;
+  if (!isAuthValid || tokenExpired) {
+    dispatch({ type: "LOG_OUT" });
+    return;
+  }
 
-  const diffTime = (auth.arrivedTokenTime + auth.expiresIn) - currentTime;
-  const isBetween5minutebeforeExpired = diffTime > 0 && diffTime < 300;
-  if (!isBetween5minutebeforeExpired) return;
-
-  const notTimeForExpire = !(auth.refreshToken && currentTime > auth.expiresIn);
-  if (notTimeForExpire) return;
+  let expireTime = auth.arrivedTokenTime + auth.expiresIn;
+  const diffTime = expireTime - currentTime;
+  const timeToRefreshToken = diffTime < 300; //5 minutes
+  if (!timeToRefreshToken) return;
 
   let headers = defaultHeaders;
   const payload = { refreshToken: auth.refreshToken };
