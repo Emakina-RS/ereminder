@@ -92,7 +92,7 @@ module.exports = function(app) {
     notificationController.GetNotificationDashboard
   );
 
-  app.get("/calendar/startdate/:startdate/enddate/:enddate/:calendarfileaction?", validators.calendar, (req, res) =>
+  app.get("/calendar/startdate/:startdate/enddate/:enddate/:enableEmailNotification/:calendarfileaction?", validators.calendar, (req, res) =>
     validators.returnValidationResults(req, res, calendarController.GetCalendar)
   );
 };

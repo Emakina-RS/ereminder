@@ -11,7 +11,8 @@ const initialState = {
   },
   activeNotifications: {
     enableEmailNotification: false,
-    enableCalendarNotification: false
+	enableCalendarNotification: false,
+	calendarNotificationChanged: false
   },
   configurationReceived: false
 };
@@ -36,7 +37,8 @@ const configuration = (state = initialState, action) => {
         },
         activeNotifications: {
           enableEmailNotification: action.configuration.enableEmailNotification,
-          enableCalendarNotification: action.configuration.enableCalendarNotification
+          enableCalendarNotification: action.configuration.enableCalendarNotification,
+          calendarNotificationChanged: false
         },
         configurationReceived: true
       };
@@ -54,7 +56,15 @@ const configuration = (state = initialState, action) => {
           ...state.activeNotifications,
           [action.key]: action.value
         }
-      };
+	  };
+	case "CALENDAR_NOTIFICATION_CHANGED":
+	return {
+		...state,
+		activeNotifications: {
+		...state.activeNotifications,
+		[action.key]: action.value
+		}
+	};
     default:
       return state;
   }

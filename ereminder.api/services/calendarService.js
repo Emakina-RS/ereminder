@@ -8,7 +8,7 @@ const calendarFileHelper = require('../helpers/calendarFileHelper');
 const configurationService = require("./configurationService");
 require("moment-recur");
 
-exports.getCalendar = async function(userId, startDate, endDate, calendarFileAction) {
+exports.getCalendar = async function(userId, startDate, endDate, calendarFileAction, enableEmailNotification) {
 
   let configuration = await  models.Configuration.findOne({
     where: { UserId: userId },
@@ -42,7 +42,7 @@ exports.getCalendar = async function(userId, startDate, endDate, calendarFileAct
     reminders: {}
   };
 
-  calendar.calendarFileData = await calendarFileHelper.getNotificationCalendarData(configuration, notifications, calendarFileAction);
+  calendar.calendarFileData = await calendarFileHelper.getNotificationCalendarData(configuration, notifications, calendarFileAction, enableEmailNotification);
 
   for (let i = 0; i < notifications.length; i++) {
     let notification = notifications[i];
