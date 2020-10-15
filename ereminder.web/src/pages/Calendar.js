@@ -74,10 +74,9 @@ const Calendar = () => {
       startDate: moment(start).format('YYYY-MM-DD'),
       endDate: moment(end).format('YYYY-MM-DD'),
       calendarFileAction: calendarFileAction
-    }));
+	}));
+	downloadFile(calendarData, 'ereminder-calendar.ics');
   }, [date, configurationDateChange]);
-
-  downloadFile(calendarData, 'ereminder-calendar.ics');
 
   const legendItems = eachDayNotificationIcon;
   return (

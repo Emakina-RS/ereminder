@@ -94,6 +94,9 @@ export const changeDate = (fieldValue, fieldName) => dispatch => {
 
 export const updateNotificationType = (key, value) => dispatch => {
   dispatch({ type: "NOTIFICATION_TYPE_CHANGED", key, value });
+  if(key === 'enableCalendarNotification') {
+	dispatch({ type: "CALENDAR_NOTIFICATION_CHANGED", key: 'calendarNotificationChanged', value: true});
+  }
 };
 
 export const createOrUpdateConfiguration = dates => (dispatch, getState) => {
@@ -101,7 +104,8 @@ export const createOrUpdateConfiguration = dates => (dispatch, getState) => {
 
   let enableNotification = dates["enableCalendarNotification"];
   if (enableNotification !== undefined) {
-    toggleCalendarNotificationCheckbox(enableNotification, dispatch);
+	let calendarNotificationChanged = getState().configuration.activeNotifications.calendarNotificationChanged;
+    toggleCalendarNotificationCheckbox(enableNotification, dispatch, calendarNotificationChanged);
   }
 
   get("/configuration", getState().token).then(configuration => {
@@ -115,18 +119,21 @@ export const createOrUpdateConfiguration = dates => (dispatch, getState) => {
         .catch(() => console.log("Configuration addition failed."));
     }
   });
+  // return the calendarNotificationChanged to false once the configuration is updated
+  dispatch({ type: "CALENDAR_NOTIFICATION_CHANGED", key: 'calendarNotificationChanged', value: false});
 };
 
-const toggleCalendarNotificationCheckbox = (enableNotification, dispatch) => {
-  let calendarFileAction;
-  if (enableNotification === true) {
-    calendarFileAction = 'publish';
-  } else if (enableNotification === false) {
-    calendarFileAction = 'cancel';
-  } else {
-    calendarFileAction = '';
-  }
-  updateCalendarFileAction(calendarFileAction, dispatch);
+const toggleCalendarNotificationCheckbox = (enableNotification, dispatch, calendarNotificationChanged) => {
+	let calendarFileAction = '';
+	// if calendarNotificationChanged then proceed to download the right version of calendar, if not do nothing
+	if(calendarNotificationChanged) {
+		if (enableNotification === true) {
+			calendarFileAction = 'publish';
+		} else if (enableNotification === false) {
+			calendarFileAction = 'cancel';
+		} 
+	} 
+	updateCalendarFileAction(calendarFileAction, dispatch);
 };
 
 export const calendarChangeMonth = (month) => dispatch => {
@@ -135,7 +142,11 @@ export const calendarChangeMonth = (month) => dispatch => {
 
 export const getCalendar = ({ startDate, endDate, calendarFileAction }) => (dispatch, getState) => {
   fetchRefreshToken(getState().auth, dispatch);
-  get(`/calendar/startdate/${startDate}/enddate/${endDate}/${calendarFileAction}`, getState().token).then(calendarData => {
+
+  // send the information is the calendar enabled or not in the request
+  let enableCalendarNotification = getState().configuration.activeNotifications.enableCalendarNotification;
+
+  get(`/calendar/startdate/${startDate}/enddate/${endDate}/${enableCalendarNotification}/${calendarFileAction}`, getState().token).then(calendarData => {
     dispatch({
       type: "CALENDAR_DATA_RECEIVED",
       data: calendarData
