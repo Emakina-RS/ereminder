@@ -110,6 +110,12 @@ Official site for pm2: [link](https://pm2.keymetrics.io/)
 
 Now web application is deployed
 
+## Setting up the database
+
+You need to have MySql server and workbench installed. Once you have those create a new schema in workbench with the name "ereminder".
+Then you need to change the username and password properties in config.json file under development property in ereminder.api folder. The username/password combination should match the one you have set up for MySql server (most likely it will be username:root password:root).
+If you get the following error "Client does not support authentication protocol requested by server; consider upgrading MySQL client" on Win10 then you probably installed MySql server using the new auth settings which can cause problems with authentication. You need to follow the instructions described here: https://stackoverflow.com/a/56752560/13181062 in order to fix this issue.
+
 
 ## License
 
