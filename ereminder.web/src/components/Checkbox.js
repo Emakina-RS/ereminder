@@ -1,7 +1,7 @@
 import React from "react";
 import "./Checkbox.css";
 
-const Checkbox = ({text, name, value, onChange}) => {
+const Checkbox = ({text, name, value, onChange, isDisabled}) => {
   return (
     <div className="Checkbox">
       <label className="checkbox-lable">
@@ -11,7 +11,8 @@ const Checkbox = ({text, name, value, onChange}) => {
           id={text}
           name={name}
           checked={value}
-          onChange={onChange}
+		  onChange={onChange}
+		  disabled={isDisabled}
         />
         <span className="checkbox-text">{text}</span>
       </label>

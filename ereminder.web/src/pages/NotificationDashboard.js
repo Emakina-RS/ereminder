@@ -81,6 +81,7 @@ const Notificationsection = ({
   checked,
   data
 }) => {
+  const configurationDates = useSelector(state => state.configuration.dates);
   const dispatch = useDispatch();
 
   const handleNotificationSelect = (notificationType) => (event) => {
@@ -94,6 +95,38 @@ const Notificationsection = ({
       console.log(data);
     }
   }
+
+  // check if the intial dates for the given notification are defined in the *Izaberi pocetne datume* menu
+  const isNotificationDisabled = (notificationType) => {
+	if (!configurationDates || configurationDates === undefined) { 
+		return true; 
+	}
+	
+    switch(notificationType) {
+      case NOTIFICATION_TYPE.MEDICINE:
+        if (!configurationDates['lastTimeTookPills']) {
+          return true;
+        }
+      case NOTIFICATION_TYPE.RECEPIES:
+        if (!configurationDates['lastTimeGotPrescription']) {
+          return true;
+        }
+      case NOTIFICATION_TYPE.PHARMACY:
+        if(!configurationDates['lastTimeInPharmacy']) {
+          return true;
+        }
+      case NOTIFICATION_TYPE.REFERRAL:
+        if (!configurationDates['lastTimeGotReferral']) {
+          return true;
+        }
+      case NOTIFICATION_TYPE.MEDICAL_FINDINGS:
+        if (!configurationDates['lastTimeExamination']) {
+          return true;
+        }
+      default:
+        return false;
+    }
+  };
 
   const handleIntervalSelect = (notificationType, intervalIndex) => () => {
     let checkedInterval = {
@@ -113,7 +146,8 @@ const Notificationsection = ({
               text={title}
               name={title}
               value={checked}
-              onChange={handleNotificationSelect(notificationType)}
+			  onChange={handleNotificationSelect(notificationType)}
+			  isDisabled={isNotificationDisabled(notificationType)}
             />
         </div>
       </div>
@@ -125,6 +159,7 @@ const Notificationsection = ({
             checked={interval.checked}
             name={title}
             handleChange={handleIntervalSelect(notificationType, index)}
+			isDisabled={isNotificationDisabled(notificationType)}
           />
         ))}
       </div>
@@ -138,6 +173,14 @@ const NOTIFICATIONS = {
   Recepti: Recepti,
   Uput: Uput,
   Nalazi: Nalazi
+};
+
+const NOTIFICATION_TYPE = {
+	MEDICINE: "medicine",
+	RECEPIES: "recepies",
+	PHARMACY: "pharmacy",
+	REFERRAL: "referral",
+	MEDICAL_FINDINGS: "medicalFindings"
 };
 
 export default NotificationDashboard;
