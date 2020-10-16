@@ -106,26 +106,32 @@ const Notificationsection = ({
       case NOTIFICATION_TYPE.MEDICINE:
         if (!configurationDates['lastTimeTookPills']) {
           return true;
-        }
+		}
+		break;
       case NOTIFICATION_TYPE.RECEPIES:
         if (!configurationDates['lastTimeGotPrescription']) {
-          return true;
-        }
+		  return true;
+		}
+		break;
       case NOTIFICATION_TYPE.PHARMACY:
         if(!configurationDates['lastTimeInPharmacy']) {
           return true;
-        }
+		}
+		break;
       case NOTIFICATION_TYPE.REFERRAL:
         if (!configurationDates['lastTimeGotReferral']) {
           return true;
-        }
+		}
+		break;
       case NOTIFICATION_TYPE.MEDICAL_FINDINGS:
         if (!configurationDates['lastTimeExamination']) {
           return true;
-        }
+		}
+		break;
       default:
         return false;
-    }
+	}
+	return false;
   };
 
   const handleIntervalSelect = (notificationType, intervalIndex) => () => {
@@ -135,6 +141,19 @@ const Notificationsection = ({
     }
     dispatch(toggleIntervalSelect(checkedInterval));
   }
+
+  // if all the inital configuration dates are missing, redirect user to the configuration page
+  const isConfigurationDatesEmpty = !Object.values(configurationDates).some(x => (x !== undefined && x !== null && x !== ''));
+  if(isConfigurationDatesEmpty) {
+	return <Redirect to="/configuration" />;
+  }
+
+  // if the notification is missing, don`t render Notificationsection (return null if you want to skip rendering)
+  if(isNotificationDisabled(notificationType)) {
+	  return null;
+  }
+
+  // if there is defined intial date for the notification, render it
   return (
     <div className="Notificationsection">
       <div className="Notificationsection-heading">
@@ -147,7 +166,6 @@ const Notificationsection = ({
               name={title}
               value={checked}
 			  onChange={handleNotificationSelect(notificationType)}
-			  isDisabled={isNotificationDisabled(notificationType)}
             />
         </div>
       </div>
@@ -159,7 +177,6 @@ const Notificationsection = ({
             checked={interval.checked}
             name={title}
             handleChange={handleIntervalSelect(notificationType, index)}
-			isDisabled={isNotificationDisabled(notificationType)}
           />
         ))}
       </div>

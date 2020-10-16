@@ -54,7 +54,7 @@ const Notification = () => {
         />
         <Link
           className="NotificationsType-link"
-          to="/calendar"
+          to={{pathname: "calendar", fromNotificationComponent: true}}
           onClick={submitNotificationTypeConfig}
         >
           Sačuvaj izmene

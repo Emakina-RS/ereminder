@@ -1,7 +1,7 @@
 import React from "react";
 import "./Radio.css";
 
-const Radio = ({text, name, handleChange, checked, isDisabled}) => {
+const Radio = ({text, name, handleChange, checked}) => {
   return (
     <div className="Radio">
       <label className="radio-lable">
@@ -12,7 +12,6 @@ const Radio = ({text, name, handleChange, checked, isDisabled}) => {
           name={name}
           checked={checked}
           onChange={handleChange}
-		  disabled={isDisabled}
         />
         <span>{text}</span>
       </label>

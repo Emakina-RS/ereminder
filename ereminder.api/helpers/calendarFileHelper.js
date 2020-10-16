@@ -16,7 +16,7 @@ const methods = {
 
 exports.getNotificationCalendarData = async function(configuration, notifications, calendarFileAction, enableEmailNotification) {
 
-    if(!configuration.enableCalendarNotification && !calendarFileAction) return null;
+    if(enableEmailNotification === 'false' && !calendarFileAction) return null;
 
     if(enableEmailNotification === 'false' && calendarFileAction === methods.CANCEL) return getFileCalendarData(configuration, notifications, methods.CANCEL);
 

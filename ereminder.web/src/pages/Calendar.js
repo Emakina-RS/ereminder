@@ -53,7 +53,7 @@ const months = {
 
 const dateAsMonthString = date => months[getMonth(date)];
 
-const Calendar = () => {
+const Calendar = (props) => {
   const dispatch = useDispatch();
   const { calendarData, date, calendarFileAction } = useSelector(state => state.calendar);
   const configurationDateChange = useSelector(state=> state.configuration.dates);
@@ -75,7 +75,10 @@ const Calendar = () => {
       endDate: moment(end).format('YYYY-MM-DD'),
       calendarFileAction: calendarFileAction
 	}));
-	downloadFile(calendarData, 'ereminder-calendar.ics');
+	// only download the file if the component is instantiated from the Notification component - *Izmeni nacin podsecanja* menu
+	if(!!props.location.fromNotificationComponent) {
+		downloadFile(calendarData, 'ereminder-calendar.ics');
+	}
   }, [date, configurationDateChange]);
 
   const legendItems = eachDayNotificationIcon;

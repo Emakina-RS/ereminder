@@ -133,7 +133,7 @@ const Configuration = () => {
                 <Link
                     onClick={submitConfigurationHandler}
                     className="NotificationsType-link"
-                    to="/calendar"
+					to={{pathname: "calendar", fromNotificationComponent: false}}
                 >
                     Sačuvaj izmene
                 </Link>

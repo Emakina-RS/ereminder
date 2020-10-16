@@ -144,7 +144,7 @@ export const getCalendar = ({ startDate, endDate, calendarFileAction }) => (disp
   fetchRefreshToken(getState().auth, dispatch);
 
   // send the information is the calendar enabled or not in the request
-  let enableCalendarNotification = getState().configuration.activeNotifications.enableCalendarNotification;
+  let enableCalendarNotification = !!getState().configuration.activeNotifications.enableCalendarNotification;
 
   get(`/calendar/startdate/${startDate}/enddate/${endDate}/${enableCalendarNotification}/${calendarFileAction}`, getState().token).then(calendarData => {
     dispatch({
