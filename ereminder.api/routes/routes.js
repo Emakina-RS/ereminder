@@ -70,6 +70,7 @@ module.exports = function(app) {
     authentication.EnsureAuthenticated(),
     configurationController.GetConfiguration
   );
+
   app.patch("/configuration", validators.updateConfiguration, (req, res) =>
     validators.returnValidationResults(
       req,

@@ -30,7 +30,8 @@ const Constants = {
   },
   invalidFieldValue: {
     notBooleanField: "This value must be a boolean value.",
-    notNumberField: "This value must be a number value."
+    notNumberField: "This value must be a number value.",
+    dateIsNotSetInDB: "Date for this field is not populated in database."
   },
   passwordError: {
     tooShort: "Password is too short."
