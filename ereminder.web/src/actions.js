@@ -46,7 +46,7 @@ const patch = (relativePath, payload, token) => {
 
 export const fetchRefreshToken = async (auth, dispatch) => {
   if (!auth) return;
-  let isAuthValid = auth.expiresIn != undefined && auth.refreshToken != undefined;
+  let isAuthValid = auth.expiresIn !== undefined && auth.refreshToken !== undefined;
   let currentTime = new Date().getTime() / 1000;
   let tokenExpired = (auth.arrivedTokenTime + auth.expiresIn) < currentTime;
 
@@ -185,7 +185,10 @@ export const getNotificationDashboard = () => (dispatch, getState) => {
 export const updateNotificationDashboard = (dashboard) => (dispatch, getState) => {
   fetchRefreshToken(getState().auth, dispatch);
 
-  post("/notifications", dashboard, getState().token).then(() => {
+  post("/notifications", dashboard, getState().token).then((response) => {
+      if (response.errors) {
+        return;
+      }
       updateCalendarFileAction('publish', dispatch);
       dispatch({ type: "NOTIFICATION_DASHBOARD_SAVED" });
     }
