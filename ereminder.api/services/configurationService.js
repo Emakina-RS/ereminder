@@ -92,12 +92,16 @@ function createDBConfiguration(body) {
 function tryAddDateTimeToConfiguration(name, value, dbConfiguraton) {
   if (value) {
     dbConfiguraton[name] = dateTimeHelper.convertToUCTDateTime(value);
+  } else {
+    dbConfiguraton[name] = null;
   }
 }
 
 function tryAddDateToConfiguration(name, value, dbConfiguraton) {
   if (value) {
     dbConfiguraton[name] = dateTimeHelper.convertToUCTDate(value);
+  } else {
+    dbConfiguraton[name] = null;
   }
 }
 

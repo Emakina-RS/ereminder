@@ -77,62 +77,62 @@ exports.refreshToken = [
 exports.configInitialization = [
   authentication.EnsureAuthenticated(),
   body("lastTimeTookPills")
-    .exists()
-    .withMessage(constants.errorMessages.requiredField)
     .custom((value, { req }) => {
-      if (!validateDateTime(value)) {
-        throw new Error(constants.errorMessages.validateDate);
-      }
-      if (isInputDateInFuture(value)) {
-        throw new Error(constants.errorDataTime.dataTimeInFuture);
+      if (value) {
+        if (!validateDateTime(value)) {
+          throw new Error(constants.errorMessages.validateDate);
+        }
+        if (isInputDateInFuture(value)) {
+          throw new Error(constants.errorDataTime.dataTimeInFuture);
+        }
       }
       return true;
     }),
   body("lastTimeInPharmacy")
-    .exists()
-    .withMessage(constants.errorMessages.requiredField)
     .custom((value, { req }) => {
-      if (!validateDate(value)) {
-        throw new Error(constants.errorMessages.invalidDate);
-      }
-      if (isInputDateInFuture(value)) {
-        throw new Error(constants.errorDataTime.dataTimeInFuture);
+      if (value) {
+        if (!validateDate(value)) {
+          throw new Error(constants.errorMessages.validateDate);
+        }
+        if (isInputDateInFuture(value)) {
+          throw new Error(constants.errorDataTime.dataTimeInFuture);
+        }
       }
       return true;
     }),
   body("lastTimeGotPrescription")
-    .exists()
-    .withMessage(constants.errorMessages.requiredField)
     .custom((value, { req }) => {
-      if (!validateDate(value)) {
-        throw new Error(constants.errorMessages.validateDate);
-      }
-      if (isInputDateInFuture(value)) {
-        throw new Error(constants.errorDataTime.dataTimeInFuture);
+      if (value) {
+        if (!validateDate(value)) {
+          throw new Error(constants.errorMessages.validateDate);
+        }
+        if (isInputDateInFuture(value)) {
+          throw new Error(constants.errorDataTime.dataTimeInFuture);
+        }
       }
       return true;
     }),
   body("lastTimeGotReferral")
-    .exists()
-    .withMessage(constants.errorMessages.requiredField("lastTimeGotReferral"))
     .custom((value, { req }) => {
-      if (!validateDate(value)) {
-        throw new Error(constants.errorMessages.validateDate);
-      }
-      if (isInputDateInFuture(value)) {
-        throw new Error(constants.errorDataTime.dataTimeInFuture);
+      if (value) {
+        if (!validateDate(value)) {
+          throw new Error(constants.errorMessages.validateDate);
+        }
+        if (isInputDateInFuture(value)) {
+          throw new Error(constants.errorDataTime.dataTimeInFuture);
+        }
       }
       return true;
     }),
   body("lastTimeExamination")
-    .exists()
-    .withMessage(constants.errorMessages.requiredField)
     .custom((value, { req }) => {
-      if (!validateDate(value)) {
-        throw new Error(constants.errorMessages.validateDate);
-      }
-      if (isInputDateInFuture(value)) {
-        throw new Error(constants.errorDataTime.dataTimeInFuture);
+      if (value) {
+        if (!validateDate(value)) {
+          throw new Error(constants.errorMessages.validateDate);
+        }
+        if (isInputDateInFuture(value)) {
+          throw new Error(constants.errorDataTime.dataTimeInFuture);
+        }
       }
       return true;
     })
@@ -143,55 +143,65 @@ exports.updateConfiguration = [
   body("lastTimeTookPills")
     .optional({ options: { nullable: true } })
     .custom((value, { req }) => {
-      if (!validateDateTime(value)) {
-        throw new Error(constants.errorMessages.validateDate);
-      }
-      if (isInputDateInFuture(value)) {
-        throw new Error(constants.errorDataTime.dataTimeInFuture);
+      if (value) {
+        if (!validateDateTime(value)) {
+          throw new Error(constants.errorMessages.validateDate);
+        }
+        if (isInputDateInFuture(value)) {
+          throw new Error(constants.errorDataTime.dataTimeInFuture);
+        }
       }
       return true;
     }),
   body("lastTimeInPharmacy")
     .optional({ options: { nullable: true } })
     .custom((value, { req }) => {
-      if (!validateDate(value)) {
-        throw new Error(constants.errorMessages.invalidDate);
-      }
-      if (isInputDateInFuture(value)) {
-        throw new Error(constants.errorDataTime.dataTimeInFuture);
+      if (value) {
+        if (!validateDate(value)) {
+          throw new Error(constants.errorMessages.validateDate);
+        }
+        if (isInputDateInFuture(value)) {
+          throw new Error(constants.errorDataTime.dataTimeInFuture);
+        }
       }
       return true;
     }),
   body("lastTimeGotPrescription")
     .optional({ options: { nullable: true } })
     .custom((value, { req }) => {
-      if (!validateDate(value)) {
-        throw new Error(constants.errorMessages.validateDate);
-      }
-      if (isInputDateInFuture(value)) {
-        throw new Error(constants.errorDataTime.dataTimeInFuture);
+      if (value) {
+        if (!validateDate(value)) {
+          throw new Error(constants.errorMessages.validateDate);
+        }
+        if (isInputDateInFuture(value)) {
+          throw new Error(constants.errorDataTime.dataTimeInFuture);
+        }
       }
       return true;
     }),
   body("lastTimeGotReferral")
     .optional({ options: { nullable: true } })
     .custom((value, { req }) => {
-      if (!validateDate(value)) {
-        throw new Error(constants.errorMessages.validateDate);
-      }
-      if (isInputDateInFuture(value)) {
-        throw new Error(constants.errorDataTime.dataTimeInFuture);
+      if (value) {
+        if (!validateDate(value)) {
+          throw new Error(constants.errorMessages.validateDate);
+        }
+        if (isInputDateInFuture(value)) {
+          throw new Error(constants.errorDataTime.dataTimeInFuture);
+        }
       }
       return true;
     }),
   body("lastTimeExamination")
     .optional({ options: { nullable: true } })
     .custom((value, { req }) => {
-      if (!validateDate(value)) {
-        throw new Error(constants.errorMessages.validateDate);
-      }
-      if (isInputDateInFuture(value)) {
-        throw new Error(constants.errorDataTime.dataTimeInFuture);
+      if (value) {
+        if (!validateDate(value)) {
+          throw new Error(constants.errorMessages.validateDate);
+        }
+        if (isInputDateInFuture(value)) {
+          throw new Error(constants.errorDataTime.dataTimeInFuture);
+        }
       }
       return true;
     }),

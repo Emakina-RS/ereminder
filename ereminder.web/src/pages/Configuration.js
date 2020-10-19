@@ -46,7 +46,7 @@ const Configuration = () => {
 
     const submitConfigurationHandler = () => {
         const configuration = {
-            lastTimeTookPills: dates.lastTimeTookPills + ' ' + dates.lastTimeTookPillsTime,
+            lastTimeTookPills: dates.lastTimeTookPills && dates.lastTimeTookPillsTime ? dates.lastTimeTookPills + ' ' + dates.lastTimeTookPillsTime : null,
             lastTimeInPharmacy: dates.lastTimeInPharmacy,
             lastTimeGotPrescription: dates.lastTimeGotPrescription,
             lastTimeGotReferral: dates.lastTimeGotReferral,
@@ -156,10 +156,19 @@ const DateSelector = ({ name, selectorType, label, value }) => {
         
         // data input field validation
         if (name === 'lastTimeTookPillsTime') {
-            dispatch(changeDate(value, name));
+            if (value === '') {
+                dispatch(changeDate(null, name));
+            } else {
+                dispatch(changeDate(value, name));
+            }
         } else {
             let now = new Date();
             now = now.setHours(0, 0, 0, 0);
+
+            if (value === '') {
+                dispatch(changeDate(null, name));
+                return;
+            }
 
             let parsedValue = moment(
                 value,
