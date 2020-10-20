@@ -226,58 +226,62 @@ exports.updateConfiguration = [
 exports.notifications = [
   authentication.EnsureAuthenticated(),
   body("medicalFindings")
-    .exists()
-    .withMessage(constants.errorMessages.requiredField)
     .custom(async (value, { req }) => {
-      let user = await getUserConfiguration(req);
-      // check if date is configured for this field
-      if (value.checked && !user.lastTimeExamination) {
-        throw new Error(constants.invalidFieldValue.dateIsNotSetInDB);
-      }
+		if(value) {
+			let user = await getUserConfiguration(req);
+			// check if date is configured for this field
+			if (value.checked && !user.lastTimeExamination) {
+			  throw new Error(constants.invalidFieldValue.dateIsNotSetInDB);
+			}
+		}
+
       return true;
     }),
   body("medicine")
-    .exists()
-    .withMessage(constants.errorMessages.requiredField)
     .custom(async (value, { req }) => {
-      let user = await getUserConfiguration(req);
-      // check if date is configured for this field
-      if (value.checked && !user.lastTimeTookPills) {
-        throw new Error(constants.invalidFieldValue.dateIsNotSetInDB);
-      }
+      if(value) {
+		let user = await getUserConfiguration(req);
+		// check if date is configured for this field
+		if (value.checked && !user.lastTimeTookPills) {
+			throw new Error(constants.invalidFieldValue.dateIsNotSetInDB);
+		}
+	}
       return true;
     }),
   body("pharmacy")
-    .exists()
-    .withMessage(constants.errorMessages.requiredField)
     .custom(async (value, { req }) => {
-      let user = await getUserConfiguration(req);
-      // check if date is configured for this field
-      if (value.checked && !user.lastTimeInPharmacy) {
-        throw new Error(constants.invalidFieldValue.dateIsNotSetInDB);
-      }
+		if(value) {
+			let user = await getUserConfiguration(req);
+			// check if date is configured for this field
+			if (value.checked && !user.lastTimeInPharmacy) {
+			  throw new Error(constants.invalidFieldValue.dateIsNotSetInDB);
+			}
+		}
+
       return true;
     }),
   body("recepies")
-    .exists()
-    .withMessage(constants.errorMessages.requiredField)
     .custom(async (value, { req }) => {
-      let user = await getUserConfiguration(req);
-      // check if date is configured for this field
-      if (value.checked && !user.lastTimeGotPrescription) {
-        throw new Error(constants.invalidFieldValue.dateIsNotSetInDB);
-      }
+		if(value) {
+			let user = await getUserConfiguration(req);
+			// check if date is configured for this field
+			if (value.checked && !user.lastTimeGotPrescription) {
+			  throw new Error(constants.invalidFieldValue.dateIsNotSetInDB);
+			}
+		}
+     
       return true;
     }),
   body("referral")
-    .exists()
-    .withMessage(constants.errorMessages.requiredField)
     .custom(async (value, { req }) => {
-      let user = await getUserConfiguration(req);
-      // check if date is configured for this field
-      if (value.checked && !user.lastTimeGotReferral) {
-        throw new Error(constants.invalidFieldValue.dateIsNotSetInDB);
-      }
+		if(value) {
+			let user = await getUserConfiguration(req);
+			// check if date is configured for this field
+			if (value.checked && !user.lastTimeGotReferral) {
+			  throw new Error(constants.invalidFieldValue.dateIsNotSetInDB);
+			}
+		}
+     
       return true;
     })
 ];

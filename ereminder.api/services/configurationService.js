@@ -44,6 +44,22 @@ exports.GetLastTimeConfiguration = async function(
 function createDBConfiguration(body) {
   var dbConfiguraton = {};
 
+  if(body.enableEmailNotification !== undefined && body.enableCalendarNotification !== undefined) {
+	tryAddNotificationToConfiguration(
+		"enableEmailNotification",
+		body.enableEmailNotification,
+		dbConfiguraton
+	  );
+	
+	tryAddNotificationToConfiguration(
+		"enableCalendarNotification",
+		body.enableCalendarNotification,
+		dbConfiguraton
+	);
+	  
+  	return dbConfiguraton;
+  }
+
   tryAddDateTimeToConfiguration(
     "lastTimeTookPills",
     body.lastTimeTookPills,
@@ -71,18 +87,6 @@ function createDBConfiguration(body) {
   tryAddDateToConfiguration(
     "lastTimeExamination",
     body.lastTimeExamination,
-    dbConfiguraton
-  );
-
-  tryAddNotificationToConfiguration(
-    "enableEmailNotification",
-    body.enableEmailNotification,
-    dbConfiguraton
-  );
-
-  tryAddNotificationToConfiguration(
-    "enableCalendarNotification",
-    body.enableCalendarNotification,
     dbConfiguraton
   );
 
