@@ -23,6 +23,7 @@ const NotificationDashboard = () => {
   const { data, dashboardLoaded, shouldRedirect } = useSelector(
     state => state.notificationDashboard
   );
+  const configurationDates = useSelector(state => state.configuration.dates);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -32,6 +33,13 @@ const NotificationDashboard = () => {
   });
 
   const saveNotificationDashboard = (data) => () => {
+	for(const property in data) {
+		var a = data[property];
+		// only send the notifications for which the initial configuration exists
+		if(isNotificationDisabled(data[property].key, configurationDates)) {
+			delete data[property];
+		}
+	}
     dispatch(updateNotificationDashboard(data));
   }
 
@@ -88,51 +96,11 @@ const Notificationsection = ({
     let checked = event.currentTarget.checked;
     if (checked) {
       dispatch(checkNotificationCheckbox(notificationType));
-      console.log(data);
     }
     else {
       dispatch(uncheckNotificationCheckbox(notificationType));
-      console.log(data);
     }
   }
-
-  // check if the intial dates for the given notification are defined in the *Izaberi pocetne datume* menu
-  const isNotificationDisabled = (notificationType) => {
-	if (!configurationDates || configurationDates === undefined) { 
-		return true; 
-	}
-	
-    switch(notificationType) {
-      case NOTIFICATION_TYPE.MEDICINE:
-        if (!configurationDates['lastTimeTookPills']) {
-          return true;
-		}
-		break;
-      case NOTIFICATION_TYPE.RECEPIES:
-        if (!configurationDates['lastTimeGotPrescription']) {
-		  return true;
-		}
-		break;
-      case NOTIFICATION_TYPE.PHARMACY:
-        if(!configurationDates['lastTimeInPharmacy']) {
-          return true;
-		}
-		break;
-      case NOTIFICATION_TYPE.REFERRAL:
-        if (!configurationDates['lastTimeGotReferral']) {
-          return true;
-		}
-		break;
-      case NOTIFICATION_TYPE.MEDICAL_FINDINGS:
-        if (!configurationDates['lastTimeExamination']) {
-          return true;
-		}
-		break;
-      default:
-        return false;
-	}
-	return false;
-  };
 
   const handleIntervalSelect = (notificationType, intervalIndex) => () => {
     let checkedInterval = {
@@ -149,7 +117,7 @@ const Notificationsection = ({
   }
 
   // if the notification is missing, don`t render Notificationsection (return null if you want to skip rendering)
-  if(isNotificationDisabled(notificationType)) {
+  if(isNotificationDisabled(notificationType, configurationDates)) {
 	  return null;
   }
 
@@ -199,5 +167,43 @@ const NOTIFICATION_TYPE = {
 	REFERRAL: "referral",
 	MEDICAL_FINDINGS: "medicalFindings"
 };
+
+  // check if the intial dates for the given notification are defined in the *Izaberi pocetne datume* menu
+  const isNotificationDisabled = (notificationType, configurationDates) => {
+	if (!configurationDates || configurationDates === undefined) { 
+		return true; 
+	}
+	
+    switch(notificationType) {
+      case NOTIFICATION_TYPE.MEDICINE:
+        if (!configurationDates['lastTimeTookPills']) {
+          return true;
+		}
+		break;
+      case NOTIFICATION_TYPE.RECEPIES:
+        if (!configurationDates['lastTimeGotPrescription']) {
+		  return true;
+		}
+		break;
+      case NOTIFICATION_TYPE.PHARMACY:
+        if(!configurationDates['lastTimeInPharmacy']) {
+          return true;
+		}
+		break;
+      case NOTIFICATION_TYPE.REFERRAL:
+        if (!configurationDates['lastTimeGotReferral']) {
+          return true;
+		}
+		break;
+      case NOTIFICATION_TYPE.MEDICAL_FINDINGS:
+        if (!configurationDates['lastTimeExamination']) {
+          return true;
+		}
+		break;
+      default:
+        return false;
+	}
+	return false;
+  };
 
 export default NotificationDashboard;

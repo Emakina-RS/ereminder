@@ -65,9 +65,10 @@ const Calendar = (props) => {
   const eachDay = eachDayOfInterval({ start, end });
   const eachDayNotificationIcon = getIconsFormNotificationType(
     calendarData,
-    eachDay
+	eachDay,
+	configurationDateChange
   );
-  const pills = takePills(calendarData);
+  const pills = takePills(calendarData, configurationDateChange);
 
   useEffect(() => {
     dispatch(getCalendar({
@@ -176,8 +177,9 @@ const Calendar = (props) => {
   );
 };
 
-const takePills = calendarData => {
-    if (calendarData && calendarData.takeRecepieEveryHours != null) {
+const takePills = (calendarData, configuration) => {
+	let pillsConfigurationExists = getNotificationBasedOnNotificationTypeID(1, configuration);
+    if (calendarData && calendarData.takeRecepieEveryHours != null && !pillsConfigurationExists) {
       return(
       <div className="legend">
         <img className="legend-item" src={lekovi} alt={lekovi} />
@@ -273,8 +275,11 @@ const useModal = () => {
 //------------------
 // Helpers
 //------------------
-const getIconsFormNotificationType = (calendarData, eachDay) => {
+const getIconsFormNotificationType = (calendarData, eachDay, configurationDateChange) => {
   if (calendarData === null || calendarData === undefined) return [];
+
+  filterReminders(calendarData.reminders, configurationDateChange);
+
   const notificationIconsByDay = eachDay.map(day => {
     const date = format(day, "yyyy/MM/dd");
     if (calendarData.reminders && date in calendarData.reminders) {
@@ -291,6 +296,54 @@ const getIconsFormNotificationType = (calendarData, eachDay) => {
     return false;
   });
 };
+
+// leave out the reminders which don`t have intiail configuration setup for them
+const filterReminders = (reminders, configurationDateChange) => {
+	for(const date in reminders) {
+		for(var i = reminders[date].length - 1; i >= 0; --i) {
+			if(getNotificationBasedOnNotificationTypeID(reminders[date][i].notificationTypeId, configurationDateChange)) {
+				reminders[date].splice(i, 1);
+			}
+		}
+		if(reminders[date].length < 1) {
+			delete reminders[date];
+		}
+	}
+}
+
+
+const getNotificationBasedOnNotificationTypeID = (notificationTypeID, configuration) => {
+	switch(notificationTypeID) {
+	  case 1:
+		  if(!configuration['lastTimeTookPills']) {
+			  return true;
+		  }
+		  break;
+	  case 2:
+		if(!configuration['lastTimeGotPrescription']) {
+			return true;
+		}
+		break;
+	  case 3:
+		if(!configuration['lastTimeInPharmacy']) {
+			return true;
+		}
+		break;
+	  case 4:
+		if(!configuration['lastTimeGotReferral']) {
+			return true;
+		}
+		break;
+	  case 5:
+		if(!configuration['lastTimeExamination']) {
+			return true;
+		}
+		break;
+	  default:
+		return false;
+	}
+	return false;
+  };
 
 const getIconForDay = (list, calendarDay) => {
     return list.map((c) => {
