@@ -178,7 +178,7 @@ const Calendar = (props) => {
 };
 
 const takePills = (calendarData, configuration) => {
-	let pillsConfigurationExists = getNotificationBasedOnNotificationTypeID(1, configuration);
+	let pillsConfigurationExists = isNotificationEnabledBasedOnNotificationTypeID(1, configuration);
     if (calendarData && calendarData.takeRecepieEveryHours != null && !pillsConfigurationExists) {
       return(
       <div className="legend">
@@ -301,7 +301,7 @@ const getIconsFormNotificationType = (calendarData, eachDay, configurationDateCh
 const filterReminders = (reminders, configurationDateChange) => {
 	for(const date in reminders) {
 		for(var i = reminders[date].length - 1; i >= 0; --i) {
-			if(getNotificationBasedOnNotificationTypeID(reminders[date][i].notificationTypeId, configurationDateChange)) {
+			if(isNotificationEnabledBasedOnNotificationTypeID(reminders[date][i].notificationTypeId, configurationDateChange)) {
 				reminders[date].splice(i, 1);
 			}
 		}
@@ -311,38 +311,38 @@ const filterReminders = (reminders, configurationDateChange) => {
 	}
 }
 
-
-const getNotificationBasedOnNotificationTypeID = (notificationTypeID, configuration) => {
+// based on notification type ID from database check if the configuration exists for the given notification
+const isNotificationEnabledBasedOnNotificationTypeID = (notificationTypeID, configuration) => {
 	switch(notificationTypeID) {
-	  case 1:
-		  if(!configuration['lastTimeTookPills']) {
-			  return true;
-		  }
-		  break;
-	  case 2:
-		if(!configuration['lastTimeGotPrescription']) {
-			return true;
+		case 1:
+			if(!configuration['lastTimeTookPills']) {
+				return true;
+			}
+			break;
+		case 2:
+			if(!configuration['lastTimeGotPrescription']) {
+				return true;
+			}
+			break;
+		case 3:
+			if(!configuration['lastTimeInPharmacy']) {
+				return true;
+			}
+			break;
+		case 4:
+			if(!configuration['lastTimeGotReferral']) {
+				return true;
+			}
+			break;
+		case 5:
+			if(!configuration['lastTimeExamination']) {
+				return true;
+			}
+			break;
+		default:
+			return false;
 		}
-		break;
-	  case 3:
-		if(!configuration['lastTimeInPharmacy']) {
-			return true;
-		}
-		break;
-	  case 4:
-		if(!configuration['lastTimeGotReferral']) {
-			return true;
-		}
-		break;
-	  case 5:
-		if(!configuration['lastTimeExamination']) {
-			return true;
-		}
-		break;
-	  default:
 		return false;
-	}
-	return false;
   };
 
 const getIconForDay = (list, calendarDay) => {
