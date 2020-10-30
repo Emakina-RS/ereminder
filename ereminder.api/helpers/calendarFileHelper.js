@@ -26,6 +26,40 @@ exports.getNotificationCalendarData = async function(configuration, notification
 
 }
 
+// check if the configuration dates exist for the given notification type
+const isNotificationConfigurationDateEmpty = (notificationTypeID, configuration) => {
+	switch(notificationTypeID) {
+	  case 1:
+		  if(!configuration['lastTimeTookPills']) {
+			  return true;
+		  }
+		  break;
+	  case 2:
+		if(!configuration['lastTimeGotPrescription']) {
+			return true;
+		}
+		break;
+	  case 3:
+		if(!configuration['lastTimeInPharmacy']) {
+			return true;
+		}
+		break;
+	  case 4:
+		if(!configuration['lastTimeGotReferral']) {
+			return true;
+		}
+		break;
+	  case 5:
+		if(!configuration['lastTimeExamination']) {
+			return true;
+		}
+		break;
+	  default:
+		return false;
+	}
+	return false;
+  };
+
 async function getFileCalendarData(configuration, notifications, method) {
 
     let calendarId = await encryptionHelper.MD5(configuration.User.createdAt.toString() + configuration.User.Id);
@@ -38,18 +72,30 @@ async function getFileCalendarData(configuration, notifications, method) {
 
     cal.x('X-WR-RELCALID', calendarId);
 
-    for (let key in constants.NotificationTypeDictionary) {
-        let notificationTypeId = Number(key);
-
-        let notification = notifications.find(notification => notification.NotificationTypeId == notificationTypeId);
-
-        await addEvent(calendarId, cal, notification, notificationTypeId, configuration, method);
-        if(notificationTypeId !== constants.NotificationType.Medicine) continue;
+    for (var i=0; i<notifications.length; i++) {
+		let notification = notifications[i];
+		let notificationTypeId = notification.NotificationTypeId;
+		if(isNotificationConfigurationDateEmpty(notificationTypeId, configuration)) {
+			continue;
+		}
+        
+		if(notificationTypeId !== constants.NotificationType.Medicine) {
+			await addEvent(calendarId, cal, notification, notificationTypeId, configuration, method);
+			continue;
+		}
 
         if(notification && notification.IntervalId == constants.NotificationInterval.TwelveHours) {
+			// we need 2 events in one day when we have 12H reminder (one for PM and one for AM hours)
+			await addEvent(calendarId, cal, notification, notificationTypeId, configuration, method);
             await addEvent(calendarId, cal, notification, notificationTypeId, configuration, method, 12);
             continue;
-        }
+		}
+		
+		if(notification && notification.IntervalId == constants.NotificationInterval.TwentyFourHours) {
+            await addEvent(calendarId, cal, notification, notificationTypeId, configuration, method, 24);
+            continue;
+		}
+		
         await addEvent(calendarId, cal, notification, notificationTypeId, configuration, methods.CANCEL, 12);
 
     }
@@ -64,10 +110,10 @@ async function addEvent(calendarId, cal, notification, notificationTypeId, confi
         notificationTypeId,
         configuration
     );
-    let beginTime = notification ? moment(lastTimeInitConfiguration).add(notification.intervalHours, 'hours').utc() : moment();
+	let beginTime = lastTimeInitConfiguration;
 
     if(hoursToAdd){
-        beginTime.add(hoursToAdd, 'hours');
+		beginTime.setHours(beginTime.getHours() + hoursToAdd);
         calendarId = calendarId + hoursToAdd;
     }
     let event =  cal.createEvent({
@@ -75,7 +121,7 @@ async function addEvent(calendarId, cal, notification, notificationTypeId, confi
         summary : constants.NotificationsCalendarTitles[notificationTypeId],
         start: beginTime,
         sequence: 1,
-        end: beginTime.add(20, 'minutes'),
+        end: beginTime,
         timestamp: moment()
     });
 
