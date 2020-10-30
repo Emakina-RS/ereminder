@@ -62,12 +62,13 @@ const isNotificationConfigurationDateEmpty = (notificationTypeID, configuration)
 
 async function getFileCalendarData(configuration, notifications, method) {
 
-    let calendarId = await encryptionHelper.MD5(configuration.User.createdAt.toString() + configuration.User.Id);
+	let calendarId = await encryptionHelper.MD5(configuration.User.createdAt.toString() + configuration.User.Id);
+	// https://stackoverflow.com/questions/10551764/how-to-cancel-an-calendar-event-using-ics-files
     const cal = ical({
         domain: 'reminder.com',
         prodId: {company: 'ereminder.com', product: 'ereminder'},
         name: 'E-reminder',
-        method: method,
+        method: method === 'publish' ? method : 'REQUEST',
     });
 
     cal.x('X-WR-RELCALID', calendarId);
@@ -115,12 +116,13 @@ async function addEvent(calendarId, cal, notification, notificationTypeId, confi
     if(hoursToAdd){
 		beginTime.setHours(beginTime.getHours() + hoursToAdd);
         calendarId = calendarId + hoursToAdd;
-    }
+	}
+	// when deleting (canceling event) SEQUENCE must be greater than the created event
     let event =  cal.createEvent({
         uid: calendarId + notificationTypeId,
         summary : constants.NotificationsCalendarTitles[notificationTypeId],
         start: beginTime,
-        sequence: 1,
+        sequence: method === methods.CANCEL ? 2 : 1,
         end: beginTime,
         timestamp: moment()
     });
