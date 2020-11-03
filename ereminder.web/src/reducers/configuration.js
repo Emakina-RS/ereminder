@@ -14,7 +14,8 @@ const initialState = {
 	enableCalendarNotification: false,
 	calendarNotificationChanged: false
   },
-  configurationReceived: false
+  configurationReceived: false,
+  configurationChanged: false
 };
 
 const configuration = (state = initialState, action) => {
@@ -65,6 +66,11 @@ const configuration = (state = initialState, action) => {
 		[action.key]: action.value
 		}
 	};
+    case "CONFIGURATION_CHANGED":
+      return {
+        ...state,
+        [action.key]: action.value
+      };
     default:
       return state;
   }

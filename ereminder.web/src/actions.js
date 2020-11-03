@@ -99,7 +99,7 @@ export const updateNotificationType = (key, value) => dispatch => {
   }
 };
 
-export const createOrUpdateConfiguration = dates => (dispatch, getState) => {
+export const createOrUpdateConfiguration = (dates, startDate, endDate) => (dispatch, getState) => {
   fetchRefreshToken(getState().auth, dispatch);
 
   let enableNotification = dates["enableCalendarNotification"];
@@ -111,7 +111,16 @@ export const createOrUpdateConfiguration = dates => (dispatch, getState) => {
   get("/configuration", getState().token).then(configuration => {
     if (configuration.id) {
       patch("/configuration", dates, getState().token)
-        .then(() => { getConfiguration()(dispatch, getState) })
+		.then(() => { 	getConfiguration()(dispatch, getState);
+						if(!!startDate && !!endDate) {
+							dispatch(getCalendar({
+								startDate: startDate,
+								endDate: endDate,
+								calendarFileAction: 'publish',
+								downloadFromConfiguration: true
+							}));
+						}
+						})
         .catch(() => console.log("Configuration update failed."));
     } else {
       post("/configuration", dates, getState().token)
@@ -140,7 +149,7 @@ export const calendarChangeMonth = (month) => dispatch => {
   dispatch({ type: "CALENDAR_CHANGE_MONTH", data: month });
 };
 
-export const getCalendar = ({ startDate, endDate, calendarFileAction }) => (dispatch, getState) => {
+export const getCalendar = ({ startDate, endDate, calendarFileAction, downloadFromConfiguration }) => (dispatch, getState) => {
   fetchRefreshToken(getState().auth, dispatch);
 
   // send the information is the calendar enabled or not in the request
@@ -151,9 +160,27 @@ export const getCalendar = ({ startDate, endDate, calendarFileAction }) => (disp
       type: "CALENDAR_DATA_RECEIVED",
       data: calendarData
     });
-    dispatch({ type: "RESET_DASHBOARD_LOADED" });
+	dispatch({ type: "RESET_DASHBOARD_LOADED" });
+	if(downloadFromConfiguration) {
+		downloadFile(calendarData, 'ereminder-calendar.ics');
+	}
   })
 };
+
+const downloadFile = (calendarData, filename) => {
+	if (!calendarData || !calendarData.calendarFileData) {
+	  return;
+	}
+	let element = document.createElement('a');
+	element.setAttribute('href', 'data:text/calendar;charset=utf8,' + escape(calendarData.calendarFileData));
+	element.setAttribute('download', filename);
+  
+	element.style.display = 'none';
+	document.body.appendChild(element);
+  
+	element.click();
+	document.body.removeChild(element);
+  }
 
 //actionString = `cancel` if user had Calendar checked and unchecked it
 //actionString = `publish` if user updated notification intervals or start dates or checked Calendar checkbox

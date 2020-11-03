@@ -18,6 +18,7 @@ import MomentLocaleUtils, {
     parseDate,
 } from 'react-day-picker/moment';
 import 'moment/locale/sr';
+import { eachDayOfInterval, endOfMonth, endOfWeek, startOfMonth, startOfWeek } from "date-fns";
 
 const dateFormat = {
     serverDateFormat: 'YYYY-MM-DD',
@@ -33,10 +34,14 @@ const LABEL = {
 };
 
 const Configuration = () => {
-    const { dates, configurationReceived } = useSelector(
+    const { dates, configurationReceived, activeNotifications, configurationChanged } = useSelector(
         state => state.configuration
-    );
-    const dispatch = useDispatch();
+	);
+	const { date } = useSelector(state => state.calendar);
+	
+	const start = startOfWeek(startOfMonth(date), { weekStartsOn: 1 });
+	const end = endOfWeek(endOfMonth(date), { weekStartsOn: 1 });
+	const dispatch = useDispatch();
 
     useEffect(() => {
         if (!configurationReceived) {
@@ -45,16 +50,28 @@ const Configuration = () => {
     }, [dispatch]);
 
     const submitConfigurationHandler = () => {
+
+		// create or update configuration only if there are actuall changes on dates
+		if(!configurationChanged) {
+			return;
+		}
+
         const configuration = {
             lastTimeTookPills: dates.lastTimeTookPills && dates.lastTimeTookPillsTime ? dates.lastTimeTookPills + ' ' + dates.lastTimeTookPillsTime : null,
             lastTimeInPharmacy: dates.lastTimeInPharmacy,
             lastTimeGotPrescription: dates.lastTimeGotPrescription,
             lastTimeGotReferral: dates.lastTimeGotReferral,
-            lastTimeExamination: dates.lastTimeExamination
-        };
-        dispatch(createOrUpdateConfiguration(configuration));
-    };
+			lastTimeExamination: dates.lastTimeExamination,
+			enableCalendarNotification: activeNotifications.enableCalendarNotification
+		};
 
+		const startDate = moment(start).format('YYYY-MM-DD');
+		const endDate = moment(end).format('YYYY-MM-DD');
+
+		dispatch(createOrUpdateConfiguration(configuration, startDate, endDate));
+		dispatch({ type:"CONFIGURATION_CHANGED", key: 'configurationChanged' , value: false});
+	};
+	
     // Refresh token or logout user if token has expired
     let auth = useSelector(state => state.auth);
     fetchRefreshToken(auth, dispatch);
@@ -152,7 +169,8 @@ const DateSelector = ({ name, selectorType, label, value }) => {
 
     const dateSelectionChangedHandler = (event, modifier, object) => {
         const value = object ? object.input.value : event.target.value;
-        const name = object ? object.props.name : event.target.name;
+		const name = object ? object.props.name : event.target.name;
+		dispatch({ type:"CONFIGURATION_CHANGED", key: 'configurationChanged' , value: true});
         
         // data input field validation
         if (name === 'lastTimeTookPillsTime') {
