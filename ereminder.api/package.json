@@ -23,7 +23,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
     "log-to-file": "^2.0.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "moment-recur": "^1.0.7",
     "multiline": "^2.0.0",
     "mysql": "^2.17.1",
